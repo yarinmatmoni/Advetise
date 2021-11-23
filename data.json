@@ -1,0 +1,77 @@
+{
+    "data":[
+        {
+            "id":"0",
+            "title":"Coca Cola",
+            "text":
+                {
+                    "line1":"Coca Cola",
+                    "line2":"The taste of",
+                    "line3":"Life",
+                    "line4":""
+                }
+            ,
+            "colors":
+                {
+                    "line1color":"#ced4da",
+                    "line2color":"#ced4da",
+                    "line3color":"#BC4749",
+                    "line4color":"",
+                    "background": "#212529"
+                }
+            ,
+            "imgsrc":"https://s1.kikar.co.il/th/data/auto/nadm/qz/jw7daj5x__w650h433q95.jpg",
+            "days":"{0,1,2,3,4,5,6}",
+            "duration":"90"
+        },
+        {
+            "id":"1",
+            "title":"Coca Cola",
+            "text":
+                {
+                    "line1":"Coca Cola",
+                    "line2":"The taste of",
+                    "line3":"Life",
+                    "line4":""
+                }
+            ,
+            "colors":
+                {
+                    "line1color":"",
+                    "line2color":"",
+                    "line3color":"",
+                    "line4color":"",
+                    "background": ""
+                }
+            ,
+            "imgsrc":"",
+            "days":"{0,1,2,3,4,5,6}",
+            "duration":"90"
+        },
+        {
+            "id":"2",
+            "title":"Coca Cola",
+            "text":
+                {
+                    "line1":"Coca Cola",
+                    "line2":"The taste of",
+                    "line3":"Life",
+                    "line4":""
+                }
+            ,
+            "colors":
+                {
+                    "line1color":"",
+                    "line2color":"",
+                    "line3color":"",
+                    "line4color":"",
+                    "background": ""
+                }
+            ,
+            "imgsrc":"",
+            "days":"{0,1,2,3,4,5,6}",
+            "duration":"90"
+        }
+    ]
+}
+

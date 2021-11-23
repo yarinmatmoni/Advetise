@@ -1,0 +1,40 @@
+body {
+  padding: 2rem;
+  margin: 0px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+}
+
+.continer {
+  width: 50%;
+}
+
+.continer > img {
+  width: 100%;
+  height: 80vh;
+  object-fit: cover;
+  margin-top: 3rem;
+  border-radius: 3rem;
+  border-color: whitesmoke;
+  border: 3px solid whitesmoke;
+}
+
+.data {
+  color: rgb(206, 212, 218);
+  padding: 3rem;
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+}
+
+.line1 {
+  font-size: 6rem;
+}
+
+.line2,
+.line3,
+.line4 {
+  font-size: 3.5rem;
+}
