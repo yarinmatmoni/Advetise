@@ -12,6 +12,5 @@ $.getJSON( "./data.json", function( data ) {
         .css("color",data.data[0].colors.line3color);
       $("img").attr("src",data.data[0].imgsrc);
     });
-    
 });
 
