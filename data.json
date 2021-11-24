@@ -22,7 +22,7 @@
             ,
             "imgsrc":"https://s1.kikar.co.il/th/data/auto/nadm/qz/jw7daj5x__w650h433q95.jpg",
             "days":"{0,1,2,3,4,5,6}",
-            "duration":"90"
+            "duration":"0.5"
         },
         {
             "id":"1",
@@ -46,7 +46,7 @@
             ,
             "imgsrc":"",
             "days":"{0,1,2,3,4,5,6}",
-            "duration":"90"
+            "duration":"1"
         },
         {
             "id":"2",
@@ -70,7 +70,7 @@
             ,
             "imgsrc":"",
             "days":"{0,1,2,3,4,5,6}",
-            "duration":"90"
+            "duration":"1.5"
         }
     ]
 }
