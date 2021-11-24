@@ -22,7 +22,7 @@ $.getJSON( "./data.json", function( data ) {
       },3000);
     });
 });
-//
+//eden
 function firstAdv(){
   $.getJSON( "./data.json", function( data ){
     $("body").css("background",data.data[0].colors.background);
