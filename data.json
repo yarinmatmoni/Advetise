@@ -2,12 +2,158 @@
     "data":[
         {
             "id":"0",
+            "title":"jbl",
+            "text":
+                {
+                    "line1":"JBL",
+                    "line2":"pro sound",
+                    "line3":"perfect fit.",
+                    "line4":""
+                }
+            ,
+            "colors":
+                {
+                    "line1color":"#E9724C",
+                    "line2color":"#E9724C",
+                    "line3color":"#E9724C",
+                    "line4color":"",
+                    "background": "#EDF2F4"
+                }
+            ,
+            "imgsrc":"https://www.jbl.com/on/demandware.static/-/Sites-JB-US-Library/default/dw2291e42a/glp/true-wireless/images/clubpro-bg.jpg",
+            "days":"{0,1,2,3,4,5,6}",
+            "duration":"1"
+        },
+        {
+            "id":"1",
+            "title":"mac",
+            "text":
+                {
+                    "line1":"MAC",
+                    "line2":"Changing the beauty industry.",
+                    "line3":"",
+                    "line4":""
+                }
+            ,
+            "colors":
+                {
+                    "line1color":"white",
+                    "line2color":"white",
+                    "line3color":"",
+                    "line4color":"",
+                    "background": "black"
+                }
+            ,
+            "imgsrc":"https://www.valtech.com/4ac5b0/globalassets/00-global/02-images/07-work/mac/mac-case-primary-image-two-column-807x651.png?w=940&h=530&mode=crop&format=jpg",
+            "days":"{0,1,2,3,4,5,6}",
+            "duration":"1"
+        },
+        {
+            "id":"2",
+            "title":"disneyland",
+            "text":
+                {
+                    "line1":"Disneyland",
+                    "line2":"The Magic",
+                    "line3":"Is Here.",
+                    "line4":""
+                }
+            ,
+            "colors":
+                {
+                    "line1color":"#9F86C0",
+                    "line2color":"#BE95C4",
+                    "line3color":"#E0B1CB",
+                    "line4color":"",
+                    "background": "#F5F1ED"
+                }
+            ,
+            "imgsrc":"https://i.ytimg.com/vi/2v9uqysr7C4/maxresdefault.jpg",
+            "days":"{0,1,2,3,4,5,6}",
+            "duration":"1"
+        },
+        {
+            "id":"3",
+            "title":"nike",
+            "text":
+                {
+                    "line1":"NIKE.",
+                    "line2":"JUST DO IT.",
+                    "line3":"",
+                    "line4":""
+                }
+            ,
+            "colors":
+                {
+                    "line1color":"#FF6700",
+                    "line2color":"#FEC89A",
+                    "line3color":"#FEC89A",
+                    "line4color":"",
+                    "background": "#001B2E"
+                }
+            ,
+            "imgsrc":"https://static.nike.com/a/images/w_1920,c_limit/7543470b-9ad1-4e8b-8d39-8f9609e6a0d0/tips-for-buying-the-right-shoe-for-your-next-run.jpg",
+            "days":"{0,1,2,3,4,5,6}",
+            "duration":"1"
+        },
+        {
+            "id":"4",
+            "title":"Corona",
+            "text":
+                {
+                    "line1":"Log off.",
+                    "line2":"Lime in.",
+                    "line3":"Find your beach.",
+                    "line4":""
+                }
+            ,
+            "colors":
+                {
+                    "line1color":"#E2EAFC",
+                    "line2color":"#FFF3B0",
+                    "line3color":" #E2EAFC",
+                    "line4color":"",
+                    "background": "#073B4C"
+                }
+            ,
+            "imgsrc":"https://image.cnbcfm.com/api/v1/image/48801806-corona-on-beach-courtesy.jpg?v=1359654649&w=720&h=405",
+            "days":"{0,1,2,3,4,5,6}",
+            "duration":"1"
+        },
+
+        {
+            "id":"5",
+            "title":"iphone",
+            "text":
+                {
+                    "line1":"Introducing ,",
+                    "line2":"the new iPhone",
+                    "line3":"Is Here.",
+                    "line4":""
+                }
+            ,
+            "colors":
+                {
+                    "line1color":"#E0E1DD",
+                    "line2color":"#E0E1DD",
+                    "line3color":"#E0E1DD",
+                    "line4color":"",
+                    "background": "#1B263B"
+                }
+            ,
+            "imgsrc":"https://i.insider.com/61412b7d2db0850019a97c09?width=1136&format=jpeg",
+            "days":"{0,1,2,3,4,5,6}",
+            "duration":"1"
+        },
+       
+        {
+            "id":"6",
             "title":"Coca Cola",
             "text":
                 {
-                    "line1":"Coca Cola",
+                    "line1":"Coca Cola,",
                     "line2":"The taste of",
-                    "line3":"Life",
+                    "line3":"Life.",
                     "line4":""
                 }
             ,
@@ -22,56 +168,10 @@
             ,
             "imgsrc":"https://s1.kikar.co.il/th/data/auto/nadm/qz/jw7daj5x__w650h433q95.jpg",
             "days":"{0,1,2,3,4,5,6}",
-            "duration":"0.5"
-        },
-        {
-            "id":"1",
-            "title":"Coca Cola",
-            "text":
-                {
-                    "line1":"matmoni",
-                    "line2":"The taste of",
-                    "line3":"Life",
-                    "line4":""
-                }
-            ,
-            "colors":
-                {
-                    "line1color":"#ced4da",
-                    "line2color":"",
-                    "line3color":"",
-                    "line4color":"",
-                    "background": ""
-                }
-            ,
-            "imgsrc":"",
-            "days":"{0,1,2,3,4,5,6}",
             "duration":"1"
-        },
-        {
-            "id":"2",
-            "title":"Coca Cola",
-            "text":
-                {
-                    "line1":"yarin",
-                    "line2":"The taste of",
-                    "line3":"Life",
-                    "line4":""
-                }
-            ,
-            "colors":
-                {
-                    "line1color":"#ced4da",
-                    "line2color":"",
-                    "line3color":"",
-                    "line4color":"",
-                    "background": ""
-                }
-            ,
-            "imgsrc":"",
-            "days":"{0,1,2,3,4,5,6}",
-            "duration":"1.5"
         }
+        
+        
     ]
 }
 
