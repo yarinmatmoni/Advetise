@@ -30,8 +30,8 @@
             "text":
                 {
                     "line1":"MAC",
-                    "line2":"Changing the beauty industry.",
-                    "line3":"",
+                    "line2":"Changing",
+                    "line3":"the beauty industry.",
                     "line4":""
                 }
             ,
@@ -77,9 +77,9 @@
             "title":"nike",
             "text":
                 {
-                    "line1":"NIKE.",
-                    "line2":"JUST DO IT.",
-                    "line3":"",
+                    "line1":"",
+                    "line2":"NIKE.",
+                    "line3":"JUST DO IT.",
                     "line4":""
                 }
             ,
@@ -126,7 +126,7 @@
             "title":"iphone",
             "text":
                 {
-                    "line1":"Introducing ,",
+                    "line1":"Introducing,",
                     "line2":"the new iPhone",
                     "line3":"Is Here.",
                     "line4":""
