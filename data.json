@@ -30,8 +30,8 @@
             "text":
                 {
                     "line1":"MAC",
-                    "line2":"Changing",
-                    "line3":"the beauty industry.",
+                    "line2":"Changing the",
+                    "line3":"beauty industry.",
                     "line4":""
                 }
             ,
@@ -85,10 +85,10 @@
             ,
             "colors":
                 {
-                    "line1color":"#FF6700",
-                    "line2color":"#FEC89A",
+                    "line1color":"",
+                    "line2color":"#FF6700",
                     "line3color":"#FEC89A",
-                    "line4color":"",
+                    "line4color":"#FEC89A",
                     "background": "#001B2E"
                 }
             ,
