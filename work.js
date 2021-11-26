@@ -9,18 +9,18 @@ $.getJSON( "./data.json", function( data ) {
       function request(){
 
         console.log(firstTime);
-
-        $("img").attr("src",data.data[i].imgsrc);
-        $("body").css("background",data.data[i].colors.background);
-        $(".line1").text(data.data[i].text.line1)
-          .css("color",data.data[i].colors.line1color);
-        $(".line2").text(data.data[i].text.line2)
-          .css("color",data.data[i].colors.line2color);
-        $(".line3").text(data.data[i].text.line3)
-          .css("color",data.data[i].colors.line3color);
-        $(".line4").text(data.data[i].text.line4)
-          .css("color",data.data[i].colors.line4color);
-                  
+        if(data.data[i].imgsrc != null){
+          $("img").attr("src",data.data[i].imgsrc);
+          $("body").css("background",data.data[i].colors.background);
+          $(".line1").text(data.data[i].text.line1)
+            .css("color",data.data[i].colors.line1color);
+          $(".line2").text(data.data[i].text.line2)
+            .css("color",data.data[i].colors.line2color);
+          $(".line3").text(data.data[i].text.line3)
+            .css("color",data.data[i].colors.line3color);
+          $(".line4").text(data.data[i].text.line4)
+            .css("color",data.data[i].colors.line4color);
+        }
         clearInterval(run); 
         firstTime = data.data[i].duration*10000;
 
