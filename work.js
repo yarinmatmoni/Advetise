@@ -45,7 +45,7 @@ $.getJSON( "./data.json", function( data ) {
 
 
 
-// //eden
+
 // function firstAdv(){
 //   $.getJSON( "./data.json", function( data ){
 //     console.log("first ad");
