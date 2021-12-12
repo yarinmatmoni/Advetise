@@ -1,5 +1,7 @@
 var express = require('express');
 var app = express();
+var fs = require('fs');
+var data = JSON.parse(fs.readFileSync("./data.json"));
 
 app.get('/screen=1',function(request,response){
     response.sendFile(__dirname + "/screen.html");
@@ -19,3 +21,4 @@ app.get('/style.css', function(req, response) {
 });
 
 app.listen(8080);
+

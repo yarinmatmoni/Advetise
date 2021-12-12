@@ -1,9 +1,8 @@
 $.getJSON( "./data.json", function( data ) {
- 
     $(document).ready(function(){
       let size = data.data.length;
       let i=0;
-      let firstTime = data.data[0].duration*10000;
+      let firstTime = data.data[i].duration*10000;
       var run = setInterval(function(){ request() , firstTime});
       
       function request(){
