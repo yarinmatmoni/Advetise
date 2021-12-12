@@ -5,6 +5,9 @@ var data = JSON.parse(fs.readFileSync("./data.json"));
 
 app.get('/screen=1',function(request,response){
     response.sendFile(__dirname + "/screen.html");
+    const array1 = data.screen[0].advArray;
+
+    
 });
 
 app.get('/screen=2',function(request,response){
