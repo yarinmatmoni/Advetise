@@ -2,12 +2,13 @@ var express = require('express');
 var app = express();
 var fs = require('fs');
 var data = JSON.parse(fs.readFileSync("./data.json"));
+const getWork = require("./work");
 
 app.get('/screen=1',function(request,response){
     response.sendFile(__dirname + "/screen.html");
     const array1 = data.screen[0].advArray;
 
-    
+    getWork();
 });
 
 app.get('/screen=2',function(request,response){

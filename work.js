@@ -1,3 +1,5 @@
+const getWork = () => {
+
 $.getJSON( "./data.json", function( data ) {
   $(document).ready(function(){
     let size = data.data.length;
@@ -34,3 +36,6 @@ $.getJSON( "./data.json", function( data ) {
   }
   
 });
+}
+
+module.exports = getWork;
