@@ -46,7 +46,7 @@
             ,
             "imgsrc":"https://www.valtech.com/4ac5b0/globalassets/00-global/02-images/07-work/mac/mac-case-primary-image-two-column-807x651.png?w=940&h=530&mode=crop&format=jpg",
             "days":"{0,1,2,3,4,5,6}",
-            "duration":"1"
+            "duration":"2"
         },
         {
             "id":"2",
@@ -176,16 +176,31 @@
     "screen":[
         {
             "id":"0",
-            "advArray":"{0,1}"
+            "advArray":["0","1"]
         },
         {
             "id":"1",
-            "advArray":"{2,3}"
+            "advArray":["2","3"]
         },
         {
             "id":"2",
-            "advArray":"{4,5}"
+            "advArray":["4","5"]
+        }
+    ], 
+    "Timing":[
+        {
+            "days":"{0,1,2,3,4,5,6}",
+            "duration":"1, 3"
+        },
+        {
+            "days":"{0,1,2,5,6}",
+            "duration":"3, 6"
+        },
+        {
+            "days":"{0,1,6}",
+            "duration":"2, 4" 
         }
     ]
+    
 }
 

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <title>screen3</title>
+</head>
+<body id="body">
+    <div class="continer">
+        <div class="continer_img">
+            <img id="myImg" src="#"/>
+        </div>
+        <div class="data">
+            <h1 id="line1"></h1>
+            <h2 id="line2"></h2>
+            <h2 id="line3"></h2>
+            <h2 id="line4"></h2>
+        </div>
+    </div>
+</body>
+</html>
+
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript">
+    var socket = io();
+    socket.on("getJson", function(json){
+        const array = json.screen[2].advArray;  
+        const data = json.data;
+        const size = array.length;
+        const firstTime = data[array[0]].duration * 10000;
+        let i = 0; 
+
+        var run = setInterval(function(){ request() , firstTime});
+  
+        function request(){
+            displayAdv(i);      
+            clearInterval(run); 
+            const firstTime = data[array[i]].duration*10000;
+            if(i==size-1)
+            i=0;
+            else
+            i++;    
+            
+            run = setInterval(request, firstTime);
+        }
+
+
+     function displayAdv(i){
+        document.getElementById("myImg").src = data[array[i]].imgsrc;
+        console.log(data[array[i]].colors.line1color);
+        document.getElementById("line1").style.color = data[array[i]].colors.line1color;
+        document.getElementById("line2").style.color = data[array[i]].colors.line2color;
+        document.getElementById("line3").style.color = data[array[i]].colors.line3color;
+        document.getElementById("line4").style.color = data[array[i]].colors.line4color;
+        document.getElementById("line1").innerHTML = data[array[i]].text.line1;
+        document.getElementById("line2").innerHTML = data[array[i]].text.line2;
+        document.getElementById("line3").innerHTML = data[array[i]].text.line3;
+        document.getElementById("line4").innerHTML = data[array[i]].text.line4;
+        document.getElementById("body").style.background = data[array[i]].colors.background;
+        }
+    });
+</script>
