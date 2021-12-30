@@ -3,6 +3,10 @@ var app = express();
 var fs = require("fs");
 var server = require("http").Server(app);
 var io = require("socket.io")(server);
+const dataBase = require("./db.js");
+
+
+dataBase();
 
 app.use(express.static(__dirname + "/public"));
 
