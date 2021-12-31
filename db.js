@@ -6,26 +6,63 @@ const dataBase = () => {
   MongoClient.connect(url, function (err, db) {
     if (err) return console.log("can't connect to Database");
     console.log("Database created!");
-
     const dbo = db.db("AdvDB");
 
-    dbo.collection("screen").drop(function (err, delOK) {
+    dbo.listCollections().toArray(function (err, collInfos) {
       if (err) throw err;
-      if (delOK) console.log("Collection screen deleted");
-    });
-    dbo.collection("advData").drop(function (err, delOK) {
-      if (err) throw err;
-      if (delOK) console.log("Collection advData deleted");
+
+      if (collInfos.length == 0) {
+        dbo.collection("screen").insertMany(screenObj, function (err, res) {
+          if (err) throw err;
+          console.log(
+            "Number of documents inserted to screen collection: " +
+              res.insertedCount
+          );
+        });
+        dbo.collection("advData").insertMany(advDataObj, function (err, res) {
+          if (err) throw err;
+          console.log(
+            "Number of documents inserted to advData collection: " +
+              res.insertedCount
+          );
+        });
+      } else {
+        dbo.collection("screen").drop(function (err, delOK) {
+          if (err) throw err;
+          if (delOK) console.log("Collection screen deleted");
+        });
+
+        dbo.collection("advData").drop(function (err, delOK) {
+          if (err) throw err;
+          if (delOK) console.log("Collection advData deleted");
+        });
+
+        dbo.collection("screen").insertMany(screenObj, function (err, res) {
+          if (err) throw err;
+          console.log(
+            "Number of documents inserted to screen collection: " +
+              res.insertedCount
+          );
+        });
+
+        dbo.collection("advData").insertMany(advDataObj, function (err, res) {
+          if (err) throw err;
+          console.log(
+            "Number of documents inserted to advData collection: " +
+              res.insertedCount
+          );
+        });
+      }
     });
 
     const screenObj = [
-      { id: "0", advArray: ["0", "1"] },
-      { id: "1", advArray: ["2", "3"] },
-      { id: "2", advArray: ["4", "5"] },
+      { myId: "0", advArray: ["0", "1"] },
+      { myId: "1", advArray: ["2", "3"] },
+      { myId: "2", advArray: ["4", "5"] },
     ];
     var advDataObj = [
       {
-        id: "0",
+        myId: "0",
         title: "jbl",
         text: {
           line1: "JBL",
@@ -45,7 +82,7 @@ const dataBase = () => {
         duration: "1",
       },
       {
-        id: "1",
+        myId: "1",
         title: "mac",
         text: {
           line1: "MAC",
@@ -65,7 +102,7 @@ const dataBase = () => {
         duration: "2",
       },
       {
-        id: "2",
+        myId: "2",
         title: "disneyland",
         text: {
           line1: "Disneyland",
@@ -84,7 +121,7 @@ const dataBase = () => {
         duration: "1",
       },
       {
-        id: "3",
+        myId: "3",
         title: "nike",
         text: {
           line1: "",
@@ -104,7 +141,7 @@ const dataBase = () => {
         duration: "1",
       },
       {
-        id: "4",
+        myId: "4",
         title: "Corona",
         text: {
           line1: "Log off.",
@@ -125,7 +162,7 @@ const dataBase = () => {
       },
 
       {
-        id: "5",
+        myId: "5",
         title: "iphone",
         text: {
           line1: "Introducing,",
@@ -146,7 +183,7 @@ const dataBase = () => {
       },
 
       {
-        id: "6",
+        myId: "6",
         title: "Coca Cola",
         text: {
           line1: "Coca Cola,",
@@ -166,21 +203,6 @@ const dataBase = () => {
         duration: "1",
       },
     ];
-    dbo.collection("screen").insertMany(screenObj, function (err, res) {
-      if (err) throw err;
-      console.log(
-        "Number of documents inserted to screen collection: " +
-          res.insertedCount
-      );
-    });
-    dbo.collection("advData").insertMany(advDataObj, function (err, res) {
-      if (err) throw err;
-      console.log(
-        "Number of documents inserted to advData collection: " +
-          res.insertedCount
-      );
-      db.close();
-    });
   });
 };
 

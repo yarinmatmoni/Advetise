@@ -3,8 +3,10 @@ var app = express();
 var fs = require("fs");
 var server = require("http").Server(app);
 var io = require("socket.io")(server);
+var mongo = require("mongodb");
+var MongoClient = require("mongodb").MongoClient;
+var url = "mongodb://localhost:27017/AdvDB";
 const dataBase = require("./db.js");
-
 
 dataBase();
 
@@ -14,14 +16,18 @@ app.get("/", function (request, response) {
   const { screen } = request.query;
   switch (screen) {
     case "1": {
-      response.sendFile(__dirname + "/screen1.html");
-      io.sockets.on("connection", function (socket) {
-        fs.readFile("./data.json", (err, data) => {
-          if (err) {
-            console.log(err);
-          }
-          let json = JSON.parse(data);
-          socket.emit("getJson", json);
+      MongoClient.connect(url, function (err, db) {
+        if (err) throw err;
+        const dbo = db.db("AdvDB");
+        // dbo.collection("screen").findOne({},function(err,result){
+        //   if (err) throw err;
+        // });
+        dbo.collection("advData").findOne({myId: "1"}, function (err, result) {
+          if (err) throw err;
+          response.sendFile(__dirname + "/screen1.html");
+          io.sockets.on("connection", function (socket) {
+            socket.emit("getResult", result);
+          });
         });
       });
       break;
