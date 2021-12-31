@@ -19,15 +19,21 @@ app.get("/", function (request, response) {
       MongoClient.connect(url, function (err, db) {
         if (err) throw err;
         const dbo = db.db("AdvDB");
-        // dbo.collection("screen").findOne({},function(err,result){
-        //   if (err) throw err;
-        // });
+      
+        dbo.collection('screen').find({myId:"0"}, {projection: {advArray: 1 , _id:0}}).toArray(function(err,collInfos){
+          if (err) throw err;
+          io.sockets.on("connection", function (socket) {
+                socket.emit("getScreen", collInfos[0].advArray);
+          });
+        });
+        
         dbo.collection("advData").findOne({myId: "1"}, function (err, result) {
           if (err) throw err;
           response.sendFile(__dirname + "/screen1.html");
           io.sockets.on("connection", function (socket) {
             socket.emit("getResult", result);
           });
+          db.close();
         });
       });
       break;

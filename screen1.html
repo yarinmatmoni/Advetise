@@ -25,6 +25,9 @@
 <script src="/socket.io/socket.io.js"></script>
 <script type="text/javascript">
     var socket = io();
+    socket.on("getScreen",function(result){
+        console.log(result);
+    });
     socket.on("getResult", function(result){
         console.log(result);
         // const array = json.screen[0].advArray;  

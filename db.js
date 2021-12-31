@@ -56,7 +56,7 @@ const dataBase = () => {
     });
 
     const screenObj = [
-      { myId: "0", advArray: ["0", "1"] },
+      { myId: "0", advArray: ["0", "1","6"] },
       { myId: "1", advArray: ["2", "3"] },
       { myId: "2", advArray: ["4", "5"] },
     ];
