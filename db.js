@@ -12,7 +12,6 @@ const dataBase = () => {
       if (err) throw err;
 
       if (collInfos.length == 0) {
-     
         dbo.collection("advData").insertMany(advDataObj, function (err, res) {
           if (err) throw err;
           console.log(
@@ -21,8 +20,6 @@ const dataBase = () => {
           );
         });
       } else {
-      
-
         dbo.collection("advData").drop(function (err, delOK) {
           if (err) throw err;
           if (delOK) console.log("Collection advData deleted");
@@ -55,7 +52,7 @@ const dataBase = () => {
           line4color: "",
           background: "#EDF2F4",
         },
-        imgsrc: "https://www.jbl.com/on/demandware.static/-/Sites-JB-US-Library/default/dw2291e42a/glp/true-wireless/images/clubpro-bg.jpg",
+        imgsrc: "/image/jbl5.jpg",
         duration: "1",
         show: ["0"],
       },
@@ -75,8 +72,7 @@ const dataBase = () => {
           line4color: "",
           background: "black",
         },
-        imgsrc:
-          "https://www.valtech.com/4ac5b0/globalassets/00-global/02-images/07-work/mac/mac-case-primary-image-two-column-807x651.png?w=940&h=530&mode=crop&format=jpg",
+        imgsrc: "/image/mac.jpg",
         duration: "2",
         show: ["0"],
       },
@@ -96,7 +92,7 @@ const dataBase = () => {
           line4color: "",
           background: "#F5F1ED",
         },
-        imgsrc: "https://i.ytimg.com/vi/2v9uqysr7C4/maxresdefault.jpg",
+        imgsrc: "/image/disney.jpg",
         duration: "1",
         show: ["1", "0"],
       },
@@ -116,8 +112,7 @@ const dataBase = () => {
           line4color: "#FEC89A",
           background: "#001B2E",
         },
-        imgsrc:
-          "https://static.nike.com/a/images/w_1920,c_limit/7543470b-9ad1-4e8b-8d39-8f9609e6a0d0/tips-for-buying-the-right-shoe-for-your-next-run.jpg",
+        imgsrc: "/image/nike.jpg",
         duration: "1",
         show: ["1", "2"],
       },
@@ -137,8 +132,7 @@ const dataBase = () => {
           line4color: "",
           background: "#073B4C",
         },
-        imgsrc:
-          "https://image.cnbcfm.com/api/v1/image/48801806-corona-on-beach-courtesy.jpg?v=1359654649&w=720&h=405",
+        imgsrc: "/image/corona.jpg",
         duration: "1",
         show: ["2"],
       },
@@ -159,8 +153,7 @@ const dataBase = () => {
           line4color: "",
           background: "#1B263B",
         },
-        imgsrc:
-          "https://i.insider.com/61412b7d2db0850019a97c09?width=1136&format=jpeg",
+        imgsrc: "/image/iphone.jpg",
         duration: "1",
         show: ["2"],
       },
@@ -181,8 +174,7 @@ const dataBase = () => {
           line4color: "",
           background: "#212529",
         },
-        imgsrc:
-          "https://s1.kikar.co.il/th/data/auto/nadm/qz/jw7daj5x__w650h433q95.jpg",
+        imgsrc: "/image/cola.jpg",
         duration: "1",
         show: ["0"],
       },

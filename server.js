@@ -13,7 +13,6 @@ const dataBase = require("./db.js");
 dataBase();
 
 app.use(express.static(__dirname + "/public"));
-app.use(express.static(__dirname + "/image"));
 
 app.get("/", function (request, response) {
   const { screen } = request.query;
@@ -22,15 +21,18 @@ app.get("/", function (request, response) {
       MongoClient.connect(url, function (err, db) {
         if (err) throw err;
         const dbo = db.db("AdvDB");
-      
-        dbo.collection("advData").find({show: "0"}).toArray(function(err, result){
+
+        dbo
+          .collection("advData")
+          .find({ show: "0" })
+          .toArray(function (err, result) {
             if (err) throw err;
             console.log(result);
             response.sendFile(__dirname + "/screen1.html");
             io.sockets.on("connection", function (socket) {
-            socket.emit("getResult", result);
+              socket.emit("getResult", result);
+            });
           });
-        });
       });
       break;
     }
@@ -38,15 +40,18 @@ app.get("/", function (request, response) {
       MongoClient.connect(url, function (err, db) {
         if (err) throw err;
         const dbo = db.db("AdvDB");
-      
-        dbo.collection("advData").find({show: "1"}).toArray(function(err, result){
+
+        dbo
+          .collection("advData")
+          .find({ show: "1" })
+          .toArray(function (err, result) {
             if (err) throw err;
             console.log(result);
             response.sendFile(__dirname + "/screen2.html");
             io.sockets.on("connection", function (socket) {
-            socket.emit("getResult", result);
+              socket.emit("getResult", result);
+            });
           });
-        });
       });
       break;
     }
@@ -55,15 +60,18 @@ app.get("/", function (request, response) {
         MongoClient.connect(url, function (err, db) {
           if (err) throw err;
           const dbo = db.db("AdvDB");
-        
-          dbo.collection("advData").find({show: "2"}).toArray(function(err, result){
+
+          dbo
+            .collection("advData")
+            .find({ show: "2" })
+            .toArray(function (err, result) {
               if (err) throw err;
               console.log(result);
               response.sendFile(__dirname + "/screen3.html");
               io.sockets.on("connection", function (socket) {
-              socket.emit("getResult", result);
+                socket.emit("getResult", result);
+              });
             });
-          });
         });
       }
       break;
