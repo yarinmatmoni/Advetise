@@ -1,6 +1,6 @@
 var mongo = require("mongodb");
 var MongoClient = require("mongodb").MongoClient;
-var url = "mongodb://localhost:27017/AdvDB";
+var url = "mongodb://127.0.0.1:27017/AdvDB"; // or localhost ot 127.0.0.1
 
 const dataBase = () => {
   MongoClient.connect(url, function (err, db) {
@@ -12,13 +12,7 @@ const dataBase = () => {
       if (err) throw err;
 
       if (collInfos.length == 0) {
-        dbo.collection("screen").insertMany(screenObj, function (err, res) {
-          if (err) throw err;
-          console.log(
-            "Number of documents inserted to screen collection: " +
-              res.insertedCount
-          );
-        });
+     
         dbo.collection("advData").insertMany(advDataObj, function (err, res) {
           if (err) throw err;
           console.log(
@@ -27,22 +21,11 @@ const dataBase = () => {
           );
         });
       } else {
-        dbo.collection("screen").drop(function (err, delOK) {
-          if (err) throw err;
-          if (delOK) console.log("Collection screen deleted");
-        });
+      
 
         dbo.collection("advData").drop(function (err, delOK) {
           if (err) throw err;
           if (delOK) console.log("Collection advData deleted");
-        });
-
-        dbo.collection("screen").insertMany(screenObj, function (err, res) {
-          if (err) throw err;
-          console.log(
-            "Number of documents inserted to screen collection: " +
-              res.insertedCount
-          );
         });
 
         dbo.collection("advData").insertMany(advDataObj, function (err, res) {
@@ -55,11 +38,6 @@ const dataBase = () => {
       }
     });
 
-    const screenObj = [
-      { myId: "0", advArray: ["0", "1","6"] },
-      { myId: "1", advArray: ["2", "3"] },
-      { myId: "2", advArray: ["4", "5"] },
-    ];
     var advDataObj = [
       {
         myId: "0",
@@ -77,9 +55,9 @@ const dataBase = () => {
           line4color: "",
           background: "#EDF2F4",
         },
-        imgsrc:
-          "https://www.jbl.com/on/demandware.static/-/Sites-JB-US-Library/default/dw2291e42a/glp/true-wireless/images/clubpro-bg.jpg",
+        imgsrc: "https://www.jbl.com/on/demandware.static/-/Sites-JB-US-Library/default/dw2291e42a/glp/true-wireless/images/clubpro-bg.jpg",
         duration: "1",
+        show: "0",
       },
       {
         myId: "1",
@@ -100,6 +78,7 @@ const dataBase = () => {
         imgsrc:
           "https://www.valtech.com/4ac5b0/globalassets/00-global/02-images/07-work/mac/mac-case-primary-image-two-column-807x651.png?w=940&h=530&mode=crop&format=jpg",
         duration: "2",
+        show: "0",
       },
       {
         myId: "2",
@@ -119,6 +98,7 @@ const dataBase = () => {
         },
         imgsrc: "https://i.ytimg.com/vi/2v9uqysr7C4/maxresdefault.jpg",
         duration: "1",
+        show: "1",
       },
       {
         myId: "3",
@@ -139,6 +119,7 @@ const dataBase = () => {
         imgsrc:
           "https://static.nike.com/a/images/w_1920,c_limit/7543470b-9ad1-4e8b-8d39-8f9609e6a0d0/tips-for-buying-the-right-shoe-for-your-next-run.jpg",
         duration: "1",
+        show: "1",
       },
       {
         myId: "4",
@@ -159,6 +140,7 @@ const dataBase = () => {
         imgsrc:
           "https://image.cnbcfm.com/api/v1/image/48801806-corona-on-beach-courtesy.jpg?v=1359654649&w=720&h=405",
         duration: "1",
+        show: "2",
       },
 
       {
@@ -180,6 +162,7 @@ const dataBase = () => {
         imgsrc:
           "https://i.insider.com/61412b7d2db0850019a97c09?width=1136&format=jpeg",
         duration: "1",
+        show: "2",
       },
 
       {
@@ -201,6 +184,7 @@ const dataBase = () => {
         imgsrc:
           "https://s1.kikar.co.il/th/data/auto/nadm/qz/jw7daj5x__w650h433q95.jpg",
         duration: "1",
+        show: "0",
       },
     ];
   });
