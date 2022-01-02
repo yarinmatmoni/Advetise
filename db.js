@@ -57,7 +57,7 @@ const dataBase = () => {
         },
         imgsrc: "https://www.jbl.com/on/demandware.static/-/Sites-JB-US-Library/default/dw2291e42a/glp/true-wireless/images/clubpro-bg.jpg",
         duration: "1",
-        show: "0",
+        show: ["0"],
       },
       {
         myId: "1",
@@ -78,7 +78,7 @@ const dataBase = () => {
         imgsrc:
           "https://www.valtech.com/4ac5b0/globalassets/00-global/02-images/07-work/mac/mac-case-primary-image-two-column-807x651.png?w=940&h=530&mode=crop&format=jpg",
         duration: "2",
-        show: "0",
+        show: ["0"],
       },
       {
         myId: "2",
@@ -98,7 +98,7 @@ const dataBase = () => {
         },
         imgsrc: "https://i.ytimg.com/vi/2v9uqysr7C4/maxresdefault.jpg",
         duration: "1",
-        show: "1",
+        show: ["1", "0"],
       },
       {
         myId: "3",
@@ -119,7 +119,7 @@ const dataBase = () => {
         imgsrc:
           "https://static.nike.com/a/images/w_1920,c_limit/7543470b-9ad1-4e8b-8d39-8f9609e6a0d0/tips-for-buying-the-right-shoe-for-your-next-run.jpg",
         duration: "1",
-        show: "1",
+        show: ["1", "2"],
       },
       {
         myId: "4",
@@ -140,7 +140,7 @@ const dataBase = () => {
         imgsrc:
           "https://image.cnbcfm.com/api/v1/image/48801806-corona-on-beach-courtesy.jpg?v=1359654649&w=720&h=405",
         duration: "1",
-        show: "2",
+        show: ["2"],
       },
 
       {
@@ -162,7 +162,7 @@ const dataBase = () => {
         imgsrc:
           "https://i.insider.com/61412b7d2db0850019a97c09?width=1136&format=jpeg",
         duration: "1",
-        show: "2",
+        show: ["2"],
       },
 
       {
@@ -184,7 +184,7 @@ const dataBase = () => {
         imgsrc:
           "https://s1.kikar.co.il/th/data/auto/nadm/qz/jw7daj5x__w650h433q95.jpg",
         duration: "1",
-        show: "0",
+        show: ["0"],
       },
     ];
   });
