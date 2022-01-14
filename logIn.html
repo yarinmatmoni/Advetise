@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" type="text/css" href="css/login.css" /> -->
+    <link rel="stylesheet" href="css/login.css"> 
+    <title>LogIn</title>
+</head>
+<body>
+
+    <h1> Log In </h1>
+    <div class="login">
+        <input type="text" id="userName" placeholder="User Name" autocomplete="off"/>
+        <input type="text" id="password" placeholder="Password" autocomplete="off"/> 
+
+        <button id="loginbtn" type="submit"> Log In </button>
+
+    </div>
+    
+    
+</body>
+</html>
+
+<script>
+
+// var express = require("express");
+// var app = express();
+// var fs = require("fs");
+// var server = require("http").Server(app);
+// var io = require("socket.io");
+
+const userName = document.getElementById("userName");
+const password = document.getElementById("password");
+const loginbtn = document.getElementById("loginbtn");
+
+loginbtn.addEventListener("click", ()=> {
+
+    sumbit(); 
+});
+
+function sumbit(){
+
+    loginbtn.sumbit(function(e){
+
+        const name = userName.value;
+        const pass = password.value;
+        // socket.emit('username', name);
+        // socket.emit('passowrd', pass);
+
+    });
+
+    // io.sockets.on("connection", function (socket) {
+    //           socket.emit("getResult", result);
+    //         });
+    
+    
+}
+
+
+
+
+
+
+
+
+
+
+</script>

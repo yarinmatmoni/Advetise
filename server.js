@@ -75,6 +75,22 @@ app.get("/", function (request, response) {
         });
       }
       break;
+      case "admin":{
+
+        response.sendFile(__dirname + "/logIn.html");
+
+
+        // io.socket.on('sumbit', function(client){
+        //   client.on('username', function(name){
+        //     console.log(name);
+        //   });
+        //   client.on('password', function(pass){
+        //     console.log(pass);
+        //   });
+        // });
+
+        break;
+      }
   }
 });
 

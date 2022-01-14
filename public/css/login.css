@@ -1,0 +1,22 @@
+h1{
+    color: rgb(60, 85, 62);
+    text-align: center;
+}
+
+.login{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    width: 15rem;
+    margin: auto;
+}
+
+.login input{
+    margin: 0.5rem;
+}
+
+#loginbtn{
+
+  width: 15rem;
+  padding: 0.3rem;
+}
