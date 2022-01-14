@@ -75,37 +75,32 @@ app.get("/", function (request, response) {
         });
         break;
       }
-      case "admin":{
+      case "admin":
+        {
+          response.sendFile(__dirname + "/logIn.html");
+          let username;
+          let userPassword;
+          io.on('connection', function(socket) {
+            socket.on('getDataAdmin', function(adminData) {
+              username = adminData[0];
+              userPassword = adminData[1];
 
-        response.sendFile(__dirname + "/logIn.html");
-        let username;
-        let userPassword;
-        io.on('connection', function(socket) {
-          socket.on('getDataAdmin', function(adminData) {
-            username = adminData[0];
-            userPassword = adminData[1];
-
-            MongoClient.connect(url, function (err, db) {
-              if (err) throw err;
-                const dbo = db.db("AdvDB");
-                dbo.collection("userAdmin").find({}).toArray(function(err,result){
-                  if (err) throw err;
-                  if(result[0].userName == username && result[0].password == userPassword){
-                    console.log("ok");
-                  }else{
-                    console.log("not ok");
-                  }
-                });
+              MongoClient.connect(url, function (err, db) {
+                if (err) throw err;
+                  const dbo = db.db("AdvDB");
+                  dbo.collection("userAdmin").find({}).toArray(function(err,result){
+                    if (err) throw err;
+                    if(result[0].userName == username && result[0].password == userPassword){
+                      console.log("ok");
+                    }else{
+                      socket.emit("validition");
+                    }
+                  });
+              });
             });
           });
-        });
-
-
-
-
-
-        break;
-      }
+          break;
+        }
   }
 });
 

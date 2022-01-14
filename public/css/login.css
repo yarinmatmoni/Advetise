@@ -80,3 +80,9 @@ input :focus {
 #loginbtn:hover {
   background-color: #6b9080;
 }
+
+.err {
+  font-family: "Dosis", sans-serif;
+  color: #ff0000b3;
+  font-size: 16px;
+}

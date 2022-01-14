@@ -34,13 +34,22 @@
     const password = document.getElementById("password");
     const loginbtn = document.getElementById("loginbtn");
     const loginDiv = document.getElementsByClassName("login");
+    let flag = false;
 
     loginbtn.addEventListener("click", ()=> {
+        if(flag){
+            flag = false;
+            errorText.classList.remove("err");
+            loginDiv[0].removeChild(errorText);
+        }
         if(userName.value !== "" && password.value !== "")
             sumbit();
         else{
+            flag = true;
             errorText = document.createElement("h3");
-            //print eror
+            errorText.innerText = "* You have to enter user name and password...";
+            errorText.classList.add("err");
+            loginDiv[0].appendChild(errorText);
         } 
     });
 
@@ -53,10 +62,19 @@
         socket.emit('getDataAdmin', adminData);
         userName.value = "";
         password.value = "";
+
+        socket.on("validition",function(){
+            if(flag){
+                flag = false;
+                errorText.classList.remove("err");
+                loginDiv[0].removeChild(errorText);
+            }
+            flag = true;
+            errorText = document.createElement("h3");
+            errorText.innerText = "* The password and/or username are wrong...";
+            errorText.classList.add("err");
+            loginDiv[0].appendChild(errorText);
+        });
     }
 
 </script>
-
-<!-- validition + print eror
-wrong input
-send with enter-->
