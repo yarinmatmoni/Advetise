@@ -5,6 +5,7 @@
 body {
   background-color: #eaf4f4;
 }
+
 h1 {
   color: #023047;
   text-align: center;
@@ -12,11 +13,13 @@ h1 {
   font-size: 35px;
   margin-top: 40px;
 }
+
 i {
   font-size: 30px;
   margin-bottom: 10px;
   color: #023047;
 }
+
 .box {
   border: 2px solid;
   border-color: #023047;
@@ -54,6 +57,7 @@ i {
   font-size: 18px;
   margin-bottom: 18px;
 }
+
 textarea:focus,
 input :focus {
   outline: none;
@@ -69,4 +73,10 @@ input :focus {
   color: white;
   margin-top: 20px;
   font-size: 16px;
+  cursor: pointer;
+  transition: 0.5s all ease;
+}
+
+#loginbtn:hover {
+  background-color: #6b9080;
 }
