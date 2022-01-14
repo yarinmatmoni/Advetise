@@ -19,58 +19,44 @@
     <div class="login">
         <input type="text" id="userName" placeholder="User Name" autocomplete="off"/>
         <input type="text" id="password" placeholder="Password" autocomplete="off"/> 
-
         <button id="loginbtn" type="submit"> Log In </button>
-
+        
     </div>
 </div>
     
     
 </body>
 </html>
+    <script src='/socket.io/socket.io.js'></script>
+    <script>
+    const socket = io.connect('http://localhost:8080');
+    const userName = document.getElementById("userName");
+    const password = document.getElementById("password");
+    const loginbtn = document.getElementById("loginbtn");
+    const loginDiv = document.getElementsByClassName("login");
 
-<script>
-
-// var express = require("express");
-// var app = express();
-// var fs = require("fs");
-// var server = require("http").Server(app);
-// var io = require("socket.io");
-
-const userName = document.getElementById("userName");
-const password = document.getElementById("password");
-const loginbtn = document.getElementById("loginbtn");
-
-loginbtn.addEventListener("click", ()=> {
-
-    sumbit(); 
-});
-
-function sumbit(){
-
-    loginbtn.sumbit(function(e){
-
-        const name = userName.value;
-        const pass = password.value;
-        // socket.emit('username', name);
-        // socket.emit('passowrd', pass);
-
+    loginbtn.addEventListener("click", ()=> {
+        if(userName.value !== "" && password.value !== "")
+            sumbit();
+        else{
+            errorText = document.createElement("h3");
+            //print eror
+        } 
     });
 
-    // io.sockets.on("connection", function (socket) {
-    //           socket.emit("getResult", result);
-    //         });
-    
-    
-}
-
-
-
-
-
-
-
-
-
+    function sumbit(){
+        const adminData = [];
+        const name = userName.value;
+        const pass = password.value;
+        adminData.push(name);
+        adminData.push(pass);
+        socket.emit('getDataAdmin', adminData);
+        userName.value = "";
+        password.value = "";
+    }
 
 </script>
+
+<!-- validition + print eror
+wrong input
+send with enter-->

@@ -19,10 +19,24 @@ const dataBase = () => {
               res.insertedCount
           );
         });
+
+        dbo.collection("userAdmin").insertMany(adminDataObj, function (err, res) {
+          if (err) throw err;
+          console.log(
+            "Number of documents inserted to userAdmin collection: " +
+              res.insertedCount
+          );
+        });
+
       } else {
         dbo.collection("advData").drop(function (err, delOK) {
           if (err) throw err;
           if (delOK) console.log("Collection advData deleted");
+        });
+
+        dbo.collection("userAdmin").drop(function (err, delOK) {
+          if (err) throw err;
+          if (delOK) console.log("Collection userAdmin deleted");
         });
 
         dbo.collection("advData").insertMany(advDataObj, function (err, res) {
@@ -32,6 +46,15 @@ const dataBase = () => {
               res.insertedCount
           );
         });
+        
+        dbo.collection("userAdmin").insertMany(adminDataObj, function (err, res) {
+          if (err) throw err;
+          console.log(
+            "Number of documents inserted to userAdmin collection: " +
+              res.insertedCount
+          );
+        });
+
       }
     });
 
@@ -179,6 +202,14 @@ const dataBase = () => {
         show: ["0"],
       },
     ];
+
+    var adminDataObj = [
+      {
+        userName: "myadmin",
+        password: "mypassword",
+      }
+    ];
+
   });
 };
 
