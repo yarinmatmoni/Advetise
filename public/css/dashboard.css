@@ -1,0 +1,45 @@
+body {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+h1 {
+  text-align: center;
+  padding: 2rem;
+  font-size: 4rem;
+}
+
+.info-continer {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.info {
+  background-color: royalblue;
+  width: 18rem;
+  padding: 1rem 2rem;
+  text-align: center;
+  border-radius: 2rem;
+  margin-bottom: 2rem;
+}
+
+.info h3 {
+  font-size: 1.3rem;
+}
+
+.info h2 {
+  font-size: 2rem;
+  color: coral;
+}
+
+.priview-continer {
+  background-color: crimson;
+  min-height: 50vh;
+  display: flex;
+}
+
+.displayAdv {
+  background-color: cyan;
+  flex: 0.9;
+}

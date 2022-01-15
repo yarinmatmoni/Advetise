@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/dashboard.css"> 
+    <title>Dashboard</title>
+</head>
+<body>
+    <h1>Dashboard</h1>
+    <div class="info-continer">
+        <div class="info">
+            <h3>Number of connected Clients:</h3>
+            <h2>3</h2>
+        </div>
+        <div class="info">
+            <h3>Number of adverties:</h3>
+            <h2>7</h2>
+        </div>
+    </div>
+    <div class="priview-continer">
+        <div class="displayAdv">
+            <h2>Title</h2>   
+        </div>
+        <div class="control">
+            <div class="advList">
+                <h3>1</h3>
+                <h3>2</h3>
+                <h3>3</h3>
+            </div>
+            <button id="add">Add</button>
+            <button id="edit">Edit</button>
+            <button id="delete">Delete</button>
+        </div>
+    </div>
+</body>
+</html>
+
+<script src='/socket.io/socket.io.js'></script>
+<script>
+    const socket = io.connect('http://localhost:8080');
+</script>

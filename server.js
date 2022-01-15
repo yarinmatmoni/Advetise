@@ -92,6 +92,8 @@ app.get("/", function (request, response) {
                     if (err) throw err;
                     if(result[0].userName == username && result[0].password == userPassword){
                       console.log("ok");
+                      // connect to dashboard
+
                     }else{
                       socket.emit("validition");
                     }
@@ -102,6 +104,11 @@ app.get("/", function (request, response) {
           break;
         }
   }
+});
+
+// ptoblem - everyone have acssess
+app.get('/login', function (req, res) {
+  res.sendFile(__dirname + "/dashboard.html");
 });
 
 server.listen(8080);
