@@ -31,41 +31,50 @@
   
     socket.on("getResult",function(data){
 
-        console.log("data:");
-        console.log(data);
-        allData = data;
+        socket.on("getTiming", function(timing){
 
-        const firstTime = allData[0].duration * 10000;
-        let i = 0;
-        const size = allData.length ;
-        var run = setInterval(function(){ request() , firstTime});
+            var timingArray = timing[0].timing;
+            console.log("timingArray: " + timingArray);
+            allData = data;
 
-        function request(){
-            displayAdv(i);      
-            clearInterval(run); 
-            const firstTime = allData[i].duration*10000;
+            const firstTime = timingArray[0] * 1000;
+            let i = 0;
+            const size = allData.length ;
+            var run = setInterval(function(){ request() , firstTime});
 
-            if(i==size-1)
-            i=0;
-            else
-            i++;  
+            function request(){
+                displayAdv(i);      
+                clearInterval(run); 
+                
+                const firstTime = timingArray[i] * 1000;
 
-            run = setInterval(request, firstTime);
-        }
+                if(i==size-1)
+                i=0;
+                else
+                i++;  
 
-        function displayAdv(i){
+                run = setInterval(request, firstTime);
+            }
 
-            document.getElementById("myImg").src = allData[i].imgsrc;
-            document.getElementById("line1").style.color = allData[i].colors.line1color;
-            document.getElementById("line2").style.color = allData[i].colors.line2color;
-            document.getElementById("line3").style.color = allData[i].colors.line3color;
-            document.getElementById("line4").style.color = allData[i].colors.line4color;
-            document.getElementById("line1").innerHTML = allData[i].text.line1;
-            document.getElementById("line2").innerHTML = allData[i].text.line2;
-            document.getElementById("line3").innerHTML = allData[i].text.line3;
-            document.getElementById("line4").innerHTML = allData[i].text.line4;
-            document.getElementById("body").style.background = allData[i].colors.background;
-        }
+            function displayAdv(i){
+
+                document.getElementById("myImg").src = allData[i].imgsrc;
+                document.getElementById("line1").style.color = allData[i].colors.line1color;
+                document.getElementById("line2").style.color = allData[i].colors.line2color;
+                document.getElementById("line3").style.color = allData[i].colors.line3color;
+                document.getElementById("line4").style.color = allData[i].colors.line4color;
+                document.getElementById("line1").innerHTML = allData[i].text.line1;
+                document.getElementById("line2").innerHTML = allData[i].text.line2;
+                document.getElementById("line3").innerHTML = allData[i].text.line3;
+                document.getElementById("line4").innerHTML = allData[i].text.line4;
+                document.getElementById("body").style.background = allData[i].colors.background;
+            }
+
+
+        });
+
+    
+
 
     });
 </script>

@@ -31,19 +31,31 @@ app.get("/", function (request, response) {
             response.sendFile(__dirname + "/screen1.html");
             io.sockets.on("connection", function (socket) {
               socket.emit("getResult", result);
+              
+              dbo.
+                collection("users")
+                .find({userId: "0"})
+                .toArray(function(err, user){
+                  if (err) throw err;
+                  console.log(result);
+                  socket.emit("getTiming", user);
+
+                });
+
+                setActive("0");
+
+                socket.on("disconnect", function(err, res){ 
+                  console.log("disconnect");
+                  setNotActive("0");
+
+                });
             });
+
+         
           });
 
-          setActive("0");
-
-          // dbo
-          // .collection("users").updateOne({userId: "0"}, 
-          // {$set: {status: "active"}});
-      
+        
       });
-
-    
-
       break;
     }
     case "2": {
@@ -60,10 +72,28 @@ app.get("/", function (request, response) {
             response.sendFile(__dirname + "/screen2.html");
             io.sockets.on("connection", function (socket) {
               socket.emit("getResult", result);
+              
+              dbo.
+                collection("users")
+                .find({userId: "1"})
+                .toArray(function(err, user){
+                  if (err) throw err;
+                  console.log(result);
+                  socket.emit("getTiming", user);
+
+                });
+
+                setActive("1");
+              
+                socket.on("disconnect", function(err, res){
+                console.log("in disconnection"); 
+                setNotActive("1");
+
+              });
             });
           });
 
-          setActive("1");
+         
       });
       break;
     }
@@ -82,10 +112,27 @@ app.get("/", function (request, response) {
               response.sendFile(__dirname + "/screen3.html");
               io.sockets.on("connection", function (socket) {
                 socket.emit("getResult", result);
+
+                dbo.
+                collection("users")
+                .find({userId: "2"})
+                .toArray(function(err, user){
+                  if (err) throw err;
+                  console.log(result);
+                  socket.emit("getTiming", user);
+
+                });
+
+                setActive("2");
+                
+                socket.on("disconnect", function(err, res){
+                  console.log("in disconnection"); 
+                  setNotActive("2"); 
+
+                });
+
               });
             });
-
-            setActive("2");
         });
         break;
       }
@@ -146,5 +193,29 @@ function setActive(a){
       {$set: {status: "active"}});
   
   });
+
+}
+
+
+function setNotActive(a){
+
+  MongoClient.connect(url, function (err, db) {
+    
+    const dbo = db.db("AdvDB");
+    var date = new Date();
+    console.log("UTC: " + date.getUTCMonth());
+    var currentDate = `${date.getUTCDate()}.${date.getMonth() + 1}.${date.getFullYear()}   ${date.getHours()}:${date.getUTCMinutes()}`;
+
+    console.log("current date: " + currentDate);
+
+    dbo
+    .collection("users").updateOne({userId: a}, 
+    {$set: {status: "Not Active"}});
+
+    dbo.collection("users").updateOne({userId: a}, 
+      {$set: {lastConnection: currentDate}});
+  
+});
+
 
 }

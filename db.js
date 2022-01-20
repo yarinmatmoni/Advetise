@@ -102,7 +102,6 @@ const dataBase = () => {
           background: "#EDF2F4",
         },
         imgsrc: "/image/jbl5.jpg",
-        duration: "1",
         show: ["0"],
       },
       {
@@ -122,7 +121,6 @@ const dataBase = () => {
           background: "black",
         },
         imgsrc: "/image/mac.jpg",
-        duration: "2",
         show: ["0"],
       },
       {
@@ -142,7 +140,6 @@ const dataBase = () => {
           background: "#F5F1ED",
         },
         imgsrc: "/image/disney.jpg",
-        duration: "1",
         show: ["1", "0"],
       },
       {
@@ -162,7 +159,6 @@ const dataBase = () => {
           background: "#001B2E",
         },
         imgsrc: "/image/nike.jpg",
-        duration: "1",
         show: ["1", "2"],
       },
       {
@@ -182,7 +178,6 @@ const dataBase = () => {
           background: "#073B4C",
         },
         imgsrc: "/image/corona.jpg",
-        duration: "1",
         show: ["2"],
       },
 
@@ -203,7 +198,6 @@ const dataBase = () => {
           background: "#1B263B",
         },
         imgsrc: "/image/iphone.jpg",
-        duration: "1",
         show: ["2"],
       },
 
@@ -224,7 +218,6 @@ const dataBase = () => {
           background: "#212529",
         },
         imgsrc: "/image/cola.jpg",
-        duration: "1",
         show: ["0"],
       },
     ];
@@ -243,21 +236,26 @@ const dataBase = () => {
       lastConnection: "",
       status: "Not Active",
       advList: ["0","1","2","6"],
+      timing:  ["1", "3", "5", "1"],
     },
     {
       userId: "1",
       lastConnection: "",
       status: "Not Active",
       advList: ["2","3"],
+      timing:  ["1", "3"],
     },
     {
       userId: "2",
       lastConnection: "", // date
       status: "Not Active", 
       advList: ["3","4","5"],
+      timing:  ["1", "3", "5"],
     }
 
-    ]
+  ]
+
+   
 
   });
 };
