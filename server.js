@@ -33,7 +33,17 @@ app.get("/", function (request, response) {
               socket.emit("getResult", result);
             });
           });
+
+          setActive("0");
+
+          // dbo
+          // .collection("users").updateOne({userId: "0"}, 
+          // {$set: {status: "active"}});
+      
       });
+
+    
+
       break;
     }
     case "2": {
@@ -52,6 +62,8 @@ app.get("/", function (request, response) {
               socket.emit("getResult", result);
             });
           });
+
+          setActive("1");
       });
       break;
     }
@@ -72,6 +84,8 @@ app.get("/", function (request, response) {
                 socket.emit("getResult", result);
               });
             });
+
+            setActive("2");
         });
         break;
       }
@@ -92,14 +106,17 @@ app.get("/", function (request, response) {
                     if (err) throw err;
                     if(result[0].userName == username && result[0].password == userPassword){
                       console.log("ok");
+
+                      socket.emit("ok", "ok");
                       // app.get('/login', function (req, res) {
-                      //   res.sendFile(__dirname + "/dashboard.html");
+                        // res.sendFile(__dirname + "/dashboard.html");
                       // });                    
                     }else{
                       socket.emit("validition");
                     }
                   });
               });
+            
             });
           });
           break;
@@ -107,4 +124,27 @@ app.get("/", function (request, response) {
   }
 });
 
+
+//TODO: authentication to admin
+  app.get('/dashboard', function (req, res) {
+
+    res.sendFile(__dirname + "/dashboard.html");
+  }); 
+
 server.listen(8080);
+
+
+
+function setActive(a){
+
+  MongoClient.connect(url, function (err, db) {
+    
+      const dbo = db.db("AdvDB");
+
+      dbo
+      .collection("users").updateOne({userId: a}, 
+      {$set: {status: "active"}});
+  
+  });
+
+}

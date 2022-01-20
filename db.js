@@ -28,7 +28,18 @@ const dataBase = () => {
           );
         });
 
+        dbo.collection("users").insertMany(users, function (err, res) {
+          if (err) throw err;
+          console.log(
+            "Number of documents inserted to users collection: " +
+              res.insertedCount
+          );
+        });
+
       } else {
+
+        /////////////////////////////////////// drops /////////////////////////////////////////
+
         dbo.collection("advData").drop(function (err, delOK) {
           if (err) throw err;
           if (delOK) console.log("Collection advData deleted");
@@ -38,6 +49,13 @@ const dataBase = () => {
           if (err) throw err;
           if (delOK) console.log("Collection userAdmin deleted");
         });
+
+        dbo.collection("users").drop(function (err, delOK) {
+          if (err) throw err;
+          if (delOK) console.log("Collection users deleted");
+        });
+
+        /////////////////////////////////////// insertMany /////////////////////////////////////////
 
         dbo.collection("advData").insertMany(advDataObj, function (err, res) {
           if (err) throw err;
@@ -51,6 +69,14 @@ const dataBase = () => {
           if (err) throw err;
           console.log(
             "Number of documents inserted to userAdmin collection: " +
+              res.insertedCount
+          );
+        });
+
+        dbo.collection("users").insertMany(users, function (err, res) {
+          if (err) throw err;
+          console.log(
+            "Number of documents inserted to users collection: " +
               res.insertedCount
           );
         });
@@ -205,10 +231,33 @@ const dataBase = () => {
 
     var adminDataObj = [
       {
-        userName: "myadmin",
-        password: "mypassword",
+        userName: "0",
+        password: "0",
       }
     ];
+
+    var users = [
+
+    {
+      userId: "0",
+      lastConnection: "",
+      status: "Not Active",
+      advList: ["0","1","2","6"],
+    },
+    {
+      userId: "1",
+      lastConnection: "",
+      status: "Not Active",
+      advList: ["2","3"],
+    },
+    {
+      userId: "2",
+      lastConnection: "", // date
+      status: "Not Active", 
+      advList: ["3","4","5"],
+    }
+
+    ]
 
   });
 };

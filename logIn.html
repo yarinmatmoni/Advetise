@@ -23,6 +23,7 @@
         <!-- <a id="loginbtn" href="/login">Log In</a> -->
         
     </div>
+
 </div>
     
     
@@ -52,6 +53,13 @@
             errorText.classList.add("err");
             loginDiv[0].appendChild(errorText);
         } 
+
+
+        socket.on("ok", function(err, res){
+            
+            location.href = "/dashboard";
+
+        });
     });
 
     function sumbit(){
