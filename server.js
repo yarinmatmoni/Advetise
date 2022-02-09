@@ -12,6 +12,8 @@ const dataBase = require("./db.js");
 
 dataBase();
 
+let count = 0; 
+
 app.use(express.static(__dirname + "/public"));
 
 app.get("/", function (request, response) {
@@ -29,7 +31,9 @@ app.get("/", function (request, response) {
             if (err) throw err;
             console.log(result);
             response.sendFile(__dirname + "/screen1.html");
-            io.sockets.on("connection", function (socket) {
+            io.sockets.on("connection", function (socket) { // 4 times
+              // socket.removeAllListeners(); 
+              count++
               socket.emit("getResult", result);
               
               dbo.
@@ -44,8 +48,9 @@ app.get("/", function (request, response) {
 
                 setActive("0");
 
-                socket.on("disconnect", function(err, res){ 
+                socket.on("disconnect", function(err, res){ // 2 times
                   console.log("disconnect");
+                  count--;
                   setNotActive("0");
 
                 });
@@ -155,6 +160,7 @@ app.get("/", function (request, response) {
                       console.log("ok");
 
                       socket.emit("ok", "ok");
+                      
                       // app.get('/login', function (req, res) {
                         // res.sendFile(__dirname + "/dashboard.html");
                       // });                    
@@ -172,14 +178,46 @@ app.get("/", function (request, response) {
 });
 
 
+
 //TODO: authentication to admin
   app.get('/dashboard', function (req, res) {
 
     res.sendFile(__dirname + "/dashboard.html");
+
+    io.on('connection', function(socket) {
+
+      const result = [];
+     
+
+      MongoClient.connect(url, function (err, db) {
+        if (err) throw err;
+        const dbo = db.db("AdvDB");
+
+        dbo.collection("users").find({status: "active"}).toArray(function(err,numOfClients){
+          if (err) throw err;
+        
+          // result[0] = numOfClients.length;
+          result[0] = count; 
+
+          dbo.collection("advData").find({}).toArray(function(err,numOfAdvs){
+            if (err) throw err;
+            result[1] = numOfAdvs.length;
+
+            console.log("numOfC ================ " + result[0]);
+            console.log("numOfA ================ " + result[1]);
+
+            socket.emit("getInfoForAdmin", result);
+
+          });
+        });
+      });  
+    });
+
+    res.set("Connection", "close");
+
   }); 
 
 server.listen(8080);
-
 
 
 function setActive(a){
@@ -193,7 +231,6 @@ function setActive(a){
       {$set: {status: "active"}});
   
   });
-
 }
 
 

@@ -12,11 +12,11 @@
     <div class="info-continer">
         <div class="info">
             <h3>Number of connected Clients:</h3>
-            <h2>3</h2>
+            <h2 id="numOfClients">0</h2>
         </div>
         <div class="info">
             <h3>Number of adverties:</h3>
-            <h2>7</h2>
+            <h2 id="numOfAdvs">0</h2>
         </div>
     </div>
     <div class="priview-continer">
@@ -37,9 +37,19 @@
 </body>
 </html>
 
-
+<script src='/socket.io/socket.io.js'></script>
 <script>
 
+    const socket = io.connect('http://localhost:8080');
+    const numOfAdvs = document.getElementById("numOfAdvs");
+    const numOfClients = document.getElementById("numOfClients");
+
+
+    socket.on("getInfoForAdmin",function(info){
+
+        numOfClients.innerHTML = info[0];
+        numOfAdvs.innerHTML = info[1];
+    });
     
 </script>
 
