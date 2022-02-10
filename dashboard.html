@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/dashboard.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Dashboard</title>
 </head>
 <body>
@@ -24,14 +25,28 @@
             <h2>Title</h2>   
         </div>
         <div class="control">
-            <div class="advList">
+            <button class="btn">Button</button>
+                <div class="dropdown">
+                <button class="btn" style="border-left:1px solid #0d8bf2">
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="#">Adv 1</a>
+                    <a href="#">Adv 2</a>
+                    <a href="#">Adv 3</a>
+                </div>
+                </div>
+            <!-- <div class="advList">
                 <h3>1</h3>
                 <h3>2</h3>
                 <h3>3</h3>
+            </div> -->
+            <div class = "buttons"> 
+                <button id="add">Add</button>
+                <button id="edit">Edit</button>
+                <button id="delete">Delete</button>
             </div>
-            <button id="add">Add</button>
-            <button id="edit">Edit</button>
-            <button id="delete">Delete</button>
+            
         </div>
     </div>
 </body>
