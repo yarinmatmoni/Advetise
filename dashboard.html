@@ -22,7 +22,15 @@
     </div>
     <div class="priview-continer">
         <div class="displayAdv">
-            <h2>Title</h2>   
+            <!-- <div class="continer_img">
+                <img id="myImg" src="#"/>
+            </div> -->
+            <div class="data">
+                <h1 id="line1"> line 1 </h1>
+                <h2 id="line2"> line 2 </h2>
+                <h2 id="line3"> line 3 </h2>
+                <h2 id="line4"> line 4 </h2>
+            </div>  
         </div>
         <div class="control">
             <button class="btn">Button</button>
@@ -31,9 +39,9 @@
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <a href="#">Adv 1</a>
-                    <a href="#">Adv 2</a>
-                    <a href="#">Adv 3</a>
+                    <a>Adv 1</a>
+                    <a>Adv 2</a>
+                    <a>Adv 3</a>
                 </div>
                 </div>
             <!-- <div class="advList">
@@ -64,6 +72,16 @@
 
         numOfClients.innerHTML = info[0];
         numOfAdvs.innerHTML = info[1];
+    });
+
+
+    // need to get all the advs in order to show it on the screen accordingly to 
+    // the button list which was clicked. 
+
+    socket.on("getAllAdvs", function(allAdvs){
+
+        
+
     });
     
 </script>
