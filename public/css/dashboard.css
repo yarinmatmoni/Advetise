@@ -1,13 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Assistant&display=swap');
+
 body {
   margin: 0px;
   padding: 0px;
   box-sizing: border-box;
+  background-color: #ffffff;
+  font-family: 'Assistant', sans-serif;
 }
 
 h1 {
-  text-align: center;
+   text-align: center;
   padding: 2rem;
   font-size: 4rem;
+
 }
 
 .info-continer {
@@ -16,13 +21,15 @@ h1 {
 }
 
 .info {
-  background-color: royalblue;
-  width: 18rem;
+  background-color:#e2e5eb;
+  width: 16rem;
   padding: 1rem 2rem;
   text-align: center;
   border-radius: 2rem;
   margin-bottom: 2rem;
-}
+  border: 1px solid;
+  border-color: #023047;
+ }
 
 .info h3 {
   font-size: 1.3rem;
@@ -30,19 +37,25 @@ h1 {
 
 .info h2 {
   font-size: 2rem;
-  color: coral;
+  color: #023047;
 }
 
 .priview-continer {
-  background-color: crimson;
+  border: 1px solid;
+  border-color: #023047;
   min-height: 50vh;
   display: flex;
 }
 
 .displayAdv {
-  background-color: cyan;
+  border: 1px solid;
+  border-color: #023047;
   flex: 0.9;
 }
+/* .control{
+   align-items: center;
+   display: flex;
+} */
 
 .btn {
   background-color: #2196F3;
@@ -81,6 +94,11 @@ h1 {
 
 .btn:hover, .dropdown:hover .btn {
   background-color: #0b7dda;
+}
+
+.buttons{
+  margin-top: 60px;
+  align-items: center;
 }
 
 
