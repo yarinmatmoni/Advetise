@@ -185,7 +185,7 @@ app.get("/", function (request, response) {
     res.sendFile(__dirname + "/dashboard.html");
 
     io.on('connection', function(socket) {
-
+      console.log("TAL");
       const result = [];
      
 
