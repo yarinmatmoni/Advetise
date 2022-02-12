@@ -44,13 +44,7 @@
                   <a href="#">Link 3</a>
                 </div>
             </div> -->
-            <select name="Adv" id="advSelect">
-                <!-- <option value="volvo">Volvo</option>
-                <option value="saab">Saab</option>
-                <option value="mercedes">Mercedes</option>
-                <option value="audi">Audi</option> -->
-                
-            </select>
+            <select name="Adv" id="advSelect" onchange="selectAdvOption()"></select>
 
             <div class = "buttons"> 
                 <button id="add">Add</button>
@@ -113,27 +107,10 @@
         var allAdv = [] 
         allAdv = allAdvs;
         createOption(allAdvs);
-        const options = selectAdv.querySelectorAll(".option");
-        console.log(options);
-        
-        // options.forEach((o)=>{
-        //     console.log(o.value);
-        // });
-
-        // salectOption.forEach((option)=> {
-        //     // option.addEventListener("click",() => {
-        //     //      console.log(option);
-        //     // });
-        //     option.addEventListener("",()=>{
-        //         console.log(option);
-        //     });
-            
-        // });
-
-
     });
 
     selectAdv.addEventListener("load",createOption());
+    
 
     addBtn.addEventListener("click",()=>{
         dataLines.length = 0;
@@ -180,6 +157,10 @@
                 selectAdv.appendChild(opt);
             });
         }
+    }
+
+    function selectAdvOption(){
+        console.log(selectAdv.options[selectAdv.selectedIndex].value);
     }
 
 </script>
