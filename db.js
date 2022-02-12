@@ -5,83 +5,125 @@ var url = "mongodb://127.0.0.1:27017/AdvDB"; // or localhost ot 127.0.0.1
 const dataBase = () => {
   MongoClient.connect(url, function (err, db) {
     if (err) return console.log("can't connect to Database");
-    console.log("Database created!");
     const dbo = db.db("AdvDB");
 
     dbo.listCollections().toArray(function (err, collInfos) {
       if (err) throw err;
 
-      if (collInfos.length == 0) {
-        dbo.collection("advData").insertMany(advDataObj, function (err, res) {
-          if (err) throw err;
-          console.log(
-            "Number of documents inserted to advData collection: " +
-              res.insertedCount
-          );
-        });
+      /* *********************** newDelete **************** */
 
-        dbo.collection("userAdmin").insertMany(adminDataObj, function (err, res) {
-          if (err) throw err;
-          console.log(
-            "Number of documents inserted to userAdmin collection: " +
-              res.insertedCount
-          );
-        });
+      dbo.dropDatabase();
+      console.log("delete here");
 
-        dbo.collection("users").insertMany(users, function (err, res) {
-          if (err) throw err;
-          console.log(
-            "Number of documents inserted to users collection: " +
-              res.insertedCount
-          );
-        });
-
-      } else {
-
-        /////////////////////////////////////// drops /////////////////////////////////////////
-
-        dbo.collection("advData").drop(function (err, delOK) {
-          if (err) throw err;
-          if (delOK) console.log("Collection advData deleted");
-        });
-
-        dbo.collection("userAdmin").drop(function (err, delOK) {
-          if (err) throw err;
-          if (delOK) console.log("Collection userAdmin deleted");
-        });
-
-        dbo.collection("users").drop(function (err, delOK) {
-          if (err) throw err;
-          if (delOK) console.log("Collection users deleted");
-        });
-
-        /////////////////////////////////////// insertMany /////////////////////////////////////////
-
-        dbo.collection("advData").insertMany(advDataObj, function (err, res) {
-          if (err) throw err;
-          console.log(
-            "Number of documents inserted to advData collection: " +
-              res.insertedCount
-          );
-        });
+      dbo.collection("advData").insertMany(advDataObj, function (err, res) {
+        if (err) throw err;
+        console.log(
+          "Number of documents inserted to advData collection: " +
+            res.insertedCount
+        );
+      });
         
-        dbo.collection("userAdmin").insertMany(adminDataObj, function (err, res) {
-          if (err) throw err;
-          console.log(
-            "Number of documents inserted to userAdmin collection: " +
-              res.insertedCount
-          );
-        });
+      dbo.collection("userAdmin").insertMany(adminDataObj, function (err, res) {
+        if (err) throw err;
+        console.log(
+          "Number of documents inserted to userAdmin collection: " +
+            res.insertedCount
+        );
+      });
 
-        dbo.collection("users").insertMany(users, function (err, res) {
-          if (err) throw err;
-          console.log(
-            "Number of documents inserted to users collection: " +
-              res.insertedCount
-          );
-        });
+      dbo.collection("users").insertMany(users, function (err, res) {
+        if (err) throw err;
+        console.log(
+          "Number of documents inserted to users collection: " +
+            res.insertedCount
+        );
+      });
 
-      }
+      console.log("Database created!");
+
+
+
+      /* *********************** newDelete **************** */
+
+
+      // if (collInfos.length == 0) {
+        // dbo.collection("advData").insertMany(advDataObj, function (err, res) {
+        //   if (err) throw err;
+        //   console.log(
+        //     "Number of documents inserted to advData collection: " +
+        //       res.insertedCount
+        //   );
+        // });
+
+        // dbo.collection("userAdmin").insertMany(adminDataObj, function (err, res) {
+        //   if (err) throw err;
+        //   console.log(
+        //     "Number of documents inserted to userAdmin collection: " +
+        //       res.insertedCount
+        //   );
+        // });
+
+        // dbo.collection("users").insertMany(users, function (err, res) {
+        //   if (err) throw err;
+        //   console.log(
+        //     "Number of documents inserted to users collection: " +
+        //       res.insertedCount
+        //   );
+        // });
+
+      // } else {
+
+      /* *********************************** drops *********************************** */
+
+
+        // dbo.dropDatabase();
+        // console.log("delete here");
+
+
+        // dbo.collection("advData").drop(function (err, delOK) {
+        //   if (err) throw err;
+        //   if (delOK) console.log("Collection advData deleted");
+        // });
+
+        // dbo.collection("userAdmin").drop(function (err, delOK) {
+        //   if (err) throw err;
+        //   if (delOK) console.log("Collection userAdmin deleted");
+        // });
+
+        // dbo.collection("users").drop(function (err, delOK) {
+        //   if (err) throw err;
+        //   if (delOK) console.log("Collection users deleted");
+        // });
+
+
+
+        /* *********************************** insertMany *********************************** */
+
+        // dbo.collection("advData").insertMany(advDataObj, function (err, res) {
+        //   if (err) throw err;
+        //   console.log(
+        //     "Number of documents inserted to advData collection: " +
+        //       res.insertedCount
+        //   );
+        // });
+        
+        // dbo.collection("userAdmin").insertMany(adminDataObj, function (err, res) {
+        //   if (err) throw err;
+        //   console.log(
+        //     "Number of documents inserted to userAdmin collection: " +
+        //       res.insertedCount
+        //   );
+        // });
+
+        // dbo.collection("users").insertMany(users, function (err, res) {
+        //   if (err) throw err;
+        //   console.log(
+        //     "Number of documents inserted to users collection: " +
+        //       res.insertedCount
+        //   );
+        // });
+
+      // }
     });
 
     var advDataObj = [
