@@ -24,27 +24,19 @@
     <div class="priview-continer">
         <div class="displayAdv">
             <div class="data">
-                <h2 id="line1"> line 1 </h2>
-                <h2 id="line2"> line 2 </h2>
-                <h2 id="line3"> line 3 </h2>
-                <h2 id="line4"> line 4 </h2>
+                <h2 id="line1"></h2>
+                <h2 id="line2"></h2>
+                <h2 id="line3"></h2>
+                <h2 id="line4"></h2>
             </div>  
             <div class="continer_img">
                 <img id="myImg" src="#"/>
             </div>
         </div>
         <div class="control">
-            <!-- <div class="dropdown">
-                <button class="btn">Dropdown
-                    <i class="fa fa-caret-down"></i>
-                </button>
-                <div class="dropdown-content">
-                  <a href="#">Link 1</a>
-                  <a href="#">Link 2</a>
-                  <a href="#">Link 3</a>
-                </div>
-            </div> -->
-            <select name="Adv" id="advSelect" onchange="selectAdvOption()"></select>
+            <select name="Adv" id="advSelect" onchange="selectAdvOption()">
+                <option disabled selected value> -- select an advertie -- </option>
+            </select>
 
             <div class = "buttons"> 
                 <button id="add">Add</button>
