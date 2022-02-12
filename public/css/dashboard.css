@@ -1,18 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Assistant&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Assistant&display=swap");
 
 body {
   margin: 0px;
   padding: 0px;
   box-sizing: border-box;
   background-color: #ffffff;
-  font-family: 'Assistant', sans-serif;
+  font-family: "Assistant", sans-serif;
 }
 
 h1 {
-   text-align: center;
+  text-align: center;
   padding: 2rem;
   font-size: 4rem;
-
 }
 
 .info-continer {
@@ -21,7 +20,7 @@ h1 {
 }
 
 .info {
-  background-color:#e2e5eb;
+  background-color: #e2e5eb;
   width: 16rem;
   padding: 1rem 2rem;
   text-align: center;
@@ -29,7 +28,7 @@ h1 {
   margin-bottom: 2rem;
   border: 1px solid;
   border-color: #023047;
- }
+}
 
 .info h3 {
   font-size: 1.3rem;
@@ -58,7 +57,7 @@ h1 {
 } */
 
 .btn {
-  background-color: #2196F3;
+  background-color: #2196f3;
   color: white;
   padding: 16px;
   font-size: 16px;
@@ -86,21 +85,23 @@ h1 {
   display: block;
 }
 
-.dropdown-content a:hover {background-color: #ddd}
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
 
 .dropdown:hover .dropdown-content {
   display: block;
 }
 
-.btn:hover, .dropdown:hover .btn {
+.btn:hover,
+.dropdown:hover .btn {
   background-color: #0b7dda;
 }
 
-.buttons{
+.buttons {
   margin-top: 60px;
   align-items: center;
 }
-
 
 .continer_img > img {
   width: 100%;
@@ -130,4 +131,17 @@ h1 {
 #line3,
 #line4 {
   font-size: 3.5rem;
+}
+
+.addNewAdv,
+.editAdv {
+  padding: 0.5rem;
+}
+.addNewAdv input,
+.editAdv input {
+  display: flex;
+  flex-direction: column;
+  margin: 0.5rem;
+  width: 20rem;
+  padding: 0.4rem;
 }

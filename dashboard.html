@@ -34,7 +34,7 @@
             </div>  
         </div>
         <div class="control">
-            <div class="dropdown">
+            <!-- <div class="dropdown">
                 <button class="btn">Dropdown
                     <i class="fa fa-caret-down"></i>
                 </button>
@@ -43,24 +43,15 @@
                   <a href="#">Link 2</a>
                   <a href="#">Link 3</a>
                 </div>
-            </div>
-              
-            <!-- <button class="btn">Button</button>
-            <div class="dropdown">
-                <button class="btn" style="border-left:1px solid #0d8bf2">
-                    <i class="fa fa-caret-down"></i>
-                </button>
-                <div class="dropdown-content">
-                    <a>Adv 1</a>
-                    <a>Adv 2</a>
-                    <a>Adv 3</a>
-                </div>
-                </div> -->
-            <!-- <div class="advList">
-                <h3>1</h3>
-                <h3>2</h3>
-                <h3>3</h3>
             </div> -->
+            <select name="Adv" id="advSelect">
+                <!-- <option value="volvo">Volvo</option>
+                <option value="saab">Saab</option>
+                <option value="mercedes">Mercedes</option>
+                <option value="audi">Audi</option> -->
+                
+            </select>
+
             <div class = "buttons"> 
                 <button id="add">Add</button>
                 <button id="edit">Edit</button>
@@ -68,12 +59,23 @@
             </div>
 
             <div class="addNewAdv">
+                <input type="text" class="addLine" placeholder="title">
                 <input type="text" class="addLine" placeholder="line 1">
                 <input type="text" class="addLine" placeholder="line 2">
                 <input type="text" class="addLine" placeholder="line 3">
                 <input type="text" class="addLine" placeholder="line 4">
                 <input type="text" id="addImage" placeholder="image src">
-                <button type="submit" id="addButtuon" >+</button>
+                <button type="submit" id="addButtuon">+</button>
+            </div>
+
+            <div class="editAdv">
+                <input type="text" class="editLine" placeholder="title">
+                <input type="text" class="editLine" placeholder="line 1">
+                <input type="text" class="editLine" placeholder="line 2">
+                <input type="text" class="editLine" placeholder="line 3">
+                <input type="text" class="editLine" placeholder="line 4">
+                <input type="text" id="editImage" placeholder="image src">
+                <button type="submit" id="editButtuon">Save</button>
             </div>
             
         </div>
@@ -90,7 +92,11 @@
     const lines = document.querySelectorAll(".addLine");
     const addBtn = document.getElementById("addButtuon");
     const addImage = document.getElementById("addImage");
+    const editBtn = document.getElementById("editButtuon");
+    const editLines = document.querySelectorAll(".editLine");
+    const selectAdv = document.getElementById("advSelect");
     const dataLines = [];
+    const editDataLines = [];
     let flag = 1;
 
     socket.on("getInfoForAdmin",function(info){
@@ -99,30 +105,58 @@
     });
 
 
+
     // need to get all the advs in order to show it on the screen accordingly to 
     // the button list which was clicked. 
 
-    socket.on("getAllAdvs", function(allAdvs){
-
-
-
-
+    socket.on("sendAdv", function(allAdvs){
+        var allAdv = [] 
+        allAdv = allAdvs;
+        createOption(allAdvs);
+        const options = selectAdv.querySelectorAll(".option");
+        console.log(options);
         
+        // options.forEach((o)=>{
+        //     console.log(o.value);
+        // });
+
+        // salectOption.forEach((option)=> {
+        //     // option.addEventListener("click",() => {
+        //     //      console.log(option);
+        //     // });
+        //     option.addEventListener("",()=>{
+        //         console.log(option);
+        //     });
+            
+        // });
+
 
     });
-    
+
+    selectAdv.addEventListener("load",createOption());
+
     addBtn.addEventListener("click",()=>{
+        dataLines.length = 0;
         newAdv();
         cleanInputs();
+        socket.emit("newAdvData",dataLines);
         console.log(dataLines);
-        dataLines.length = 0;
+    });
+
+    editBtn.addEventListener("click",()=> {
+        //dataLines.length = 0;
+        editAdv(editDataLines);
+        socket.emit("editAdvData",dataLines);
+        cleanInputs();
     });
 
     function newAdv(){
         lines.forEach((line)=>{
-            dataLines.push(line.value);
+            if(line.value !== "")
+                dataLines.push(line.value);
         });
-        dataLines.push(addImage.value);
+        if(addImage.value !== "" )
+            dataLines.push(addImage.value);
     }
 
     function cleanInputs(){
@@ -132,7 +166,21 @@
         addImage.value = "";
     }
 
+    function editAdv(editDataLines){
+        
+    }
 
+    function createOption(allAdvs){
+        if(allAdvs !== undefined){
+            allAdvs.forEach((adv)=> {
+                var opt = document.createElement('option');
+                opt.value = adv.myId;
+                opt.innerHTML = adv.title;
+                opt.classList.add("option");
+                selectAdv.appendChild(opt);
+            });
+        }
+    }
 
 </script>
 

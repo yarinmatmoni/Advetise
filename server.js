@@ -183,12 +183,46 @@ function sendTiming(socket, num){
           if (err) throw err;
           result[1] = numOfAdvs.length;
           socket.emit("getInfoForAdmin", result);
+          socket.emit("sendAdv",numOfAdvs);
         });
+        socket.on("newAdvData",function(res){
+          var a = newObj(res,result[1]);
+          dbo.collection("advData").insertOne(a,function(err,res){
+            if(err)
+              throw err;
+            console.log(res);
+          });
+        });
+
       });
     }); 
   }
 
 server.listen(8080);
+
+function newObj(res,num){
+  var Advobj = {
+    myId: num.toString(),
+    title: res[0],
+    text: {
+      line1: res[1],
+      line2: res[2],
+      line3: res[3],
+      line4: res[4],
+    },
+    colors: {
+      line1color: "#E9724C",
+      line2color: "#E9724C",
+      line3color: "#E9724C",
+      line4color: "",
+      background: "#EDF2F4",
+    },
+    imgsrc: res[5],
+    show: [""],
+  }
+  return Advobj;
+} 
+
 
 /* *********************************** Active or Not Active *********************************** */
 
