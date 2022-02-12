@@ -42,7 +42,7 @@
                   <a href="#">Link 2</a>
                   <a href="#">Link 3</a>
                 </div>
-              </div>
+            </div>
               
             <!-- <button class="btn">Button</button>
             <div class="dropdown">
@@ -65,6 +65,15 @@
                 <button id="edit">Edit</button>
                 <button id="delete">Delete</button>
             </div>
+
+            <div class="addNewAdv">
+                <input type="text" class="addLine" placeholder="line 1">
+                <input type="text" class="addLine" placeholder="line 2">
+                <input type="text" class="addLine" placeholder="line 3">
+                <input type="text" class="addLine" placeholder="line 4">
+                <input type="text" id="addImage" placeholder="image src">
+                <button type="submit" id="addButtuon" >+</button>
+            </div>
             
         </div>
     </div>
@@ -77,10 +86,13 @@
     const socket = io.connect('http://localhost:8080');
     const numOfAdvs = document.getElementById("numOfAdvs");
     const numOfClients = document.getElementById("numOfClients");
-
+    const lines = document.querySelectorAll(".addLine");
+    const addBtn = document.getElementById("addButtuon");
+    const addImage = document.getElementById("addImage");
+    const dataLines = [];
+    let flag = 1;
 
     socket.on("getInfoForAdmin",function(info){
-
         numOfClients.innerHTML = info[0];
         numOfAdvs.innerHTML = info[1];
     });
@@ -95,6 +107,29 @@
 
     });
     
+    addBtn.addEventListener("click",()=>{
+        newAdv();
+        cleanInputs();
+        console.log(dataLines);
+        dataLines.length = 0;
+    });
+
+    function newAdv(){
+        lines.forEach((line)=>{
+            dataLines.push(line.value);
+        });
+        dataLines.push(addImage.value);
+    }
+
+    function cleanInputs(){
+        lines.forEach((line)=>{
+            line.value = "";
+        });
+        addImage.value = "";
+    }
+
+
+
 </script>
 
 <!-- <script src='/socket.io/socket.io.js'></script>
