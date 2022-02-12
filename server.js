@@ -193,7 +193,13 @@ function sendTiming(socket, num){
             console.log(res);
           });
         });
-
+        socket.on("getSelectAdv",function(idAdv){
+          dbo.collection("advData").findOne({myId:idAdv},function(err,res){
+            if(err)
+              throw err;
+            socket.emit("returnSelectedAdv",res);
+          })
+        });
       });
     }); 
   }

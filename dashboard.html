@@ -23,15 +23,15 @@
     </div>
     <div class="priview-continer">
         <div class="displayAdv">
-            <!-- <div class="continer_img">
-                <img id="myImg" src="#"/>
-            </div> -->
             <div class="data">
-                <h1 id="line1"> line 1 </h1>
+                <h2 id="line1"> line 1 </h2>
                 <h2 id="line2"> line 2 </h2>
                 <h2 id="line3"> line 3 </h2>
                 <h2 id="line4"> line 4 </h2>
             </div>  
+            <div class="continer_img">
+                <img id="myImg" src="#"/>
+            </div>
         </div>
         <div class="control">
             <!-- <div class="dropdown">
@@ -53,7 +53,6 @@
             </div>
 
             <div class="addNewAdv">
-                <input type="text" class="addLine" placeholder="title">
                 <input type="text" class="addLine" placeholder="line 1">
                 <input type="text" class="addLine" placeholder="line 2">
                 <input type="text" class="addLine" placeholder="line 3">
@@ -63,11 +62,10 @@
             </div>
 
             <div class="editAdv">
-                <input type="text" class="editLine" placeholder="title">
-                <input type="text" class="editLine" placeholder="line 1">
-                <input type="text" class="editLine" placeholder="line 2">
-                <input type="text" class="editLine" placeholder="line 3">
-                <input type="text" class="editLine" placeholder="line 4">
+                <input type="text" id="editLine1" placeholder="line 1">
+                <input type="text" id="editLine2" placeholder="line 2">
+                <input type="text" id="editLine3" placeholder="line 3">
+                <input type="text" id="editLine4" placeholder="line 4">
                 <input type="text" id="editImage" placeholder="image src">
                 <button type="submit" id="editButtuon">Save</button>
             </div>
@@ -159,8 +157,36 @@
         }
     }
 
+
+    const title = document.getElementById("line1");
     function selectAdvOption(){
-        console.log(selectAdv.options[selectAdv.selectedIndex].value);
+        socket.emit("getSelectAdv",selectAdv.options[selectAdv.selectedIndex].value);
+        socket.on("returnSelectedAdv",function(res){
+            displayAdv(res);
+            displayEdit(res);
+        });
+        
+    }
+
+    function displayAdv(res){
+        //document.getElementById("line1").style.color = allData[i].colors.line1color;
+        //document.getElementById("line2").style.color = allData[i].colors.line2color;
+        //document.getElementById("line3").style.color = allData[i].colors.line3color;
+        //document.getElementById("line4").style.color = allData[i].colors.line4color;
+        document.getElementById("line1").innerHTML = res.text.line1;
+        document.getElementById("line2").innerHTML = res.text.line2;
+        document.getElementById("line3").innerHTML = res.text.line3;
+        document.getElementById("line4").innerHTML = res.text.line4;
+        document.getElementById("myImg").src = res.imgsrc;
+        //document.getElementById("body").style.background = allData[i].colors.background;
+    }
+    
+    function displayEdit(res){
+        document.getElementById("editLine1").value = res.text.line1;
+        document.getElementById("editLine2").value = res.text.line2;
+        document.getElementById("editLine3").value = res.text.line3;
+        document.getElementById("editLine4").value = res.text.line4;
+        document.getElementById("editImage").value = res.imgsrc;
     }
 
 </script>

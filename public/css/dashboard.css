@@ -145,3 +145,13 @@ h1 {
   width: 20rem;
   padding: 0.4rem;
 }
+
+#advSelect {
+  padding: 0.2rem;
+  margin: 1rem;
+  width: 10rem;
+}
+
+#advSelect option {
+  padding: 0.2rem;
+}
