@@ -40,20 +40,26 @@ const dataBase = () => {
 
         /////////////////////////////////////// drops /////////////////////////////////////////
 
-        dbo.collection("advData").drop(function (err, delOK) {
-          if (err) throw err;
-          if (delOK) console.log("Collection advData deleted");
-        });
+        dbo.dropDatabase();
+        console.log("delete here");
 
-        dbo.collection("userAdmin").drop(function (err, delOK) {
-          if (err) throw err;
-          if (delOK) console.log("Collection userAdmin deleted");
-        });
 
-        dbo.collection("users").drop(function (err, delOK) {
-          if (err) throw err;
-          if (delOK) console.log("Collection users deleted");
-        });
+        // dbo.collection("advData").drop(function (err, delOK) {
+        //   if (err) throw err;
+        //   if (delOK) console.log("Collection advData deleted");
+        // });
+
+        // dbo.collection("userAdmin").drop(function (err, delOK) {
+        //   if (err) throw err;
+        //   if (delOK) console.log("Collection userAdmin deleted");
+        // });
+
+        // dbo.collection("users").drop(function (err, delOK) {
+        //   if (err) throw err;
+        //   if (delOK) console.log("Collection users deleted");
+        // });
+
+
 
         /////////////////////////////////////// insertMany /////////////////////////////////////////
 

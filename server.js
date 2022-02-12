@@ -30,9 +30,6 @@ app.get("/screen=:screen" , function(request, response){
 
 ioConnection();
 
-// mongoForScreen0();
-// mongoForScreen1();
-
 /* **************************************** functions **************************************** */
 
 function ioConnection(){
@@ -42,6 +39,7 @@ function ioConnection(){
       setActive("0");
       count++; 
       mongoFor1(socket);
+
     }
     else if(screen == 2){
       console.log("con 2");
@@ -61,30 +59,32 @@ function ioConnection(){
       console.log("admin here");
       mongoForAdmin(socket);
     }
-    ioDisconnection(socket)
+    ioDisconnection(socket, screen);
   });
 }
 
-function ioDisconnection(socket){
+function ioDisconnection(socket, num){
 
   socket.on("disconnect", function(err, res){
-  if(screen == 1){
-    console.log("discon 1");
-    setNotActive("0");
-    count--;
+    
+    console.log("screen in disconnection: " + num);
 
-  }
-  else if(screen == 2){
-    console.log("discon 2");
-    setNotActive("1");
-    count--;
-  }
-  else if(screen == 3){
-    console.log("discon 3");
-    setNotActive("2");
-    count--;
-  }
-});
+    if(num == 1){
+      console.log("discon 1");
+      setNotActive("0");
+      count--;
+    }
+    else if(num == 2){
+      console.log("discon 2");
+      setNotActive("1");
+      count--;
+    }
+    else if(num == 3){
+      console.log("discon 3");
+      setNotActive("2");
+      count--;
+    }
+  });
 
 }
 
@@ -137,9 +137,6 @@ function mongoFor3(socket){
   });
 }
 
-
-
-
 function sendTiming(socket, num){
   MongoClient.connect(url, function (err, db){
     if(err) throw err; 
@@ -155,7 +152,6 @@ function sendTiming(socket, num){
     }
 
     var n = num - 1;
-
     const dbo = db.db("AdvDB");
       dbo
       .collection("users")
@@ -166,7 +162,6 @@ function sendTiming(socket, num){
       });
   });
 }
-
 
 /* ******************************************** Admin ******************************************** */ 
 
