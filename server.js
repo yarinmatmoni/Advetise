@@ -28,121 +28,111 @@ app.get("/screen=:screen" , function(request, response){
 
 });
 
+ioConnection();
 
-mongoForScreen0();
+// mongoForScreen0();
 // mongoForScreen1();
 
-/* **************************************** mongo **************************************** */
+/* **************************************** functions **************************************** */
 
+function ioConnection(){
+    io.on("connection", function (socket) { // 4 times
+    if(screen == 1){
+      console.log("con 1");
+      setActive("0");
+      count++; 
+      mongoFor1(socket);
+    }
+    else if(screen == 2){
+      console.log("con 2");
+      setActive("1");
+      count++; 
+      mongoFor2(socket);
+    }
+    else if(screen == 3){
+      console.log("con 3");
+      setActive("2");
+      count++; 
+      mongoFor3(socket);
+    }
+    else if(screen == "admin"){
 
+      console.log("the count in connection to admin is: " + count);
+      console.log("admin here");
+      mongoForAdmin(socket);
+    }
+    ioDisconnection(socket)
+  });
+}
 
-function mongoForScreen0(){
+function ioDisconnection(socket){
 
-  console.log("screen in mongo ========= " + screen);
+  socket.on("disconnect", function(err, res){
+  if(screen == 1){
+    console.log("discon 1");
+    setNotActive("0");
+    count--;
 
+  }
+  else if(screen == 2){
+    console.log("discon 2");
+    setNotActive("1");
+    count--;
+  }
+  else if(screen == 3){
+    console.log("discon 3");
+    setNotActive("2");
+    count--;
+  }
+});
+
+}
+
+/* ****************************** mongo ************************* */
+
+function mongoFor1(socket){
   MongoClient.connect(url, function (err, db){
-
     if(err) throw err; 
-    console.log("in mongo");
     const dbo = db.db("AdvDB");
-
     dbo
     .collection("advData")
     .find({show: "0"})
     .toArray(function (err, result){
-
       if(err) throw err;
-      console.log("intooooo db");
-
-      count++;
-      console.log("count ======= " + count);
-
-      io.on("connection", function (socket) { // 4 times
-
-        console.log("connection");
-          
-        socket.emit("getResult", result);
-
-        console.log("************* here 1 *************");
-          
-        dbo
-          .collection("users")
-          .find({userId: "0"})
-          .toArray(function(err, user){
-            if (err) throw err;
-            // console.log(result);
-            socket.emit("getTiming", user);
-
-            console.log("************* here 2 *************");
-
-
-          });
-
-          setActive("0");
-
-          socket.on("disconnect", function(err, res){ // 2 times
-            console.log("disconnect");
-            count--;
-            setNotActive("0");
-
-          });
-      });
+      socket.emit("getResultScreen1", result);
+      sendTiming(socket, 1);
     });
   });
 }
 
-
-
-function mongoForScreen1(){
-
-  console.log("screen in mongo ========= " + screen);
-
+function mongoFor2(socket){
   MongoClient.connect(url, function (err, db){
-
     if(err) throw err; 
-    console.log("in mongo");
     const dbo = db.db("AdvDB");
-
     dbo
     .collection("advData")
     .find({show: "1"})
     .toArray(function (err, result){
 
       if(err) throw err;
-      console.log("intooooo db");
+      socket.emit("getResultScreen2", result);
+      sendTiming(socket, 2);
+    });
+  });
+}
 
-      count++;
-      console.log("count ======= " + count);
+function mongoFor3(socket){
+  MongoClient.connect(url, function (err, db){
+    if(err) throw err; 
+    const dbo = db.db("AdvDB");
+    dbo
+    .collection("advData")
+    .find({show: "2"})
+    .toArray(function (err, result){
 
-      io.on("connection", function (socket) { // 4 times
-
-        console.log("connection");
-          
-        socket.emit("getResult", result);
-
-        console.log("************* here 1 *************");
-          
-        dbo
-          .collection("users")
-          .find({userId: "1"})
-          .toArray(function(err, user){
-            if (err) throw err;
-            // console.log(result);
-            socket.emit("getTiming", user);
-
-            console.log("************* here 2 *************");
-
-
-          });
-
-          setActive("1");
-
-          socket.on("disconnect", function(err, res){ // 2 times
-            console.log("disconnect");
-            count--;
-            setNotActive("1");
-          });
-      });
+      if(err) throw err;
+      socket.emit("getResultScreen3", result);
+      sendTiming(socket, 3);
     });
   });
 }
@@ -150,68 +140,131 @@ function mongoForScreen1(){
 
 
 
-// צריך לשנות שמות לכל ה   getResult
-// function mongoForScreen(screenNum){
+function sendTiming(socket, num){
+  MongoClient.connect(url, function (err, db){
+    if(err) throw err; 
+    var str;
+    if(num == 1){
+      str ="getTimingScreen1"; 
+    }
+    else if(num == 2){
+      str = "getTimingScreen2";
+    }
+    else if(num == 3){
+      str = "getTimingScreen3";
+    }
 
-//   MongoClient.connect(url, function (err, db){
+    var n = num - 1;
 
-//       if(err) throw err; 
-//       console.log("in mongo" + screenNum);
-      
-//       const dbo = db.db("AdvDB");
- 
-//       dbo
-//       .collection("advData")
-//       .find({show: screenNum})
-//       .toArray(function (err, result){
-
-//         if(err) throw err;
-//         console.log("intooooo db");
+    const dbo = db.db("AdvDB");
+      dbo
+      .collection("users")
+      .find({userId: n.toString}) /////////////TODO: check this!
+      .toArray(function(err, user){
+        if (err) throw err;
+        socket.emit(str, user);
+      });
+  });
+}
 
 
-//           io.on("connection", function (socket) { // 4 times
+/* ******************************************** Admin ******************************************** */ 
 
-//           console.log("connection");
-       
-//           count++;
+  app.get('/dashboard', function (req, res) {
 
-//           console.log("count ============ " + count);
+    screen = "admin";
+    res.sendFile(__dirname + "/dashboard.html"); 
 
-//           var str = "getResult" + screenNum;
+    // io.on('connection', function(socket) { // need to do in a seperate functions!!! (because the sendFile happend twice)
+      // const result = [];
+     
+      // MongoClient.connect(url, function (err, db) {
+      //   if (err) throw err;
+      //   const dbo = db.db("AdvDB");
+
+      //   dbo.collection("users").find({status: "active"}).toArray(function(err,numOfClients){
+      //     if (err) throw err;
         
-//           socket.emit("getResult", result); // change to screenNum
-          
-//           dbo.
-//             collection("users")
-//             .find({userId: screenNum})
-//             .toArray(function(err, user){
-//               if (err) throw err;
-//               socket.emit("getTiming", user);
+      //     // result[0] = numOfClients.length
+      //     console.log("count in admin === " + count);
+      //     result[0] = count; 
 
-//             });
+      //     dbo.collection("advData").find({}).toArray(function(err,numOfAdvs){
+      //       if (err) throw err;
+      //       result[1] = numOfAdvs.length;
 
-//              setActive(screenNum);
+      //       console.log("numOfC ================ " + result[0]);
+      //       console.log("numOfA ================ " + result[1]);
 
-//             socket.on("disconnect", function(err, res){ // 2 times
-//               console.log("disconnect");
-//               count--;
-//               console.log("count at the end ======= " + count);
-//               setNotActive(screenNum);
+      //       socket.emit("getInfoForAdmin", result);
 
-//             });
-//         });
+      //     });
+      //   });
+      // });  
+    // });
 
-//       });
+    // res.set("Connection", "close");
 
-//   });
+  }); 
 
-// }
+  function mongoForAdmin(socket){
+
+    const result = [];
+    MongoClient.connect(url, function (err, db) {
+      if (err) throw err;
+      const dbo = db.db("AdvDB");
+
+      dbo.collection("users").find({status: "active"}).toArray(function(err,numOfClients){
+        if (err) throw err;
+      
+        // result[0] = numOfClients.length
+        console.log("count in admin === " + count);
+        result[0] = count; 
+
+        dbo.collection("advData").find({}).toArray(function(err,numOfAdvs){
+          if (err) throw err;
+          result[1] = numOfAdvs.length;
+
+          console.log("numOfC ================ " + result[0]);
+          console.log("numOfA ================ " + result[1]);
+
+          socket.emit("getInfoForAdmin", result);
+
+        });
+      });
+    }); 
+  }
+
+server.listen(8080);
+
+/* *********************************** Active or Not Active *********************************** */
+
+function setActive(a){
+  MongoClient.connect(url, function (err, db) {
+      const dbo = db.db("AdvDB");
+      dbo
+      .collection("users").updateOne({userId: a}, 
+      {$set: {status: "active"}});
+  });
+}
 
 
+function setNotActive(a){
+  MongoClient.connect(url, function (err, db) {
+    const dbo = db.db("AdvDB");
+    var date = new Date();
+    // console.log("UTC: " + date.getUTCMonth());
+    var currentDate = `${date.getUTCDate()}.${date.getMonth() + 1}.${date.getFullYear()}   ${date.getHours()}:${date.getUTCMinutes()}`;
+    // console.log("current date: " + currentDate);
+    dbo
+    .collection("users").updateOne({userId: a}, 
+    {$set: {status: "Not Active"}});
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
+    dbo.collection("users").updateOne({userId: a}, 
+      {$set: {lastConnection: currentDate}});
+  
+  });
+}
 
 
 
@@ -481,83 +534,3 @@ function mongoForScreen1(){
 //   //       }
 //   // }
 // });
-
-
-
-//TODO: authentication to admin
-  app.get('/dashboard', function (req, res) {
-
-    res.sendFile(__dirname + "/dashboard.html");
-
-    io.on('connection', function(socket) {
-      // console.log("TAL");
-      const result = [];
-     
-
-      MongoClient.connect(url, function (err, db) {
-        if (err) throw err;
-        const dbo = db.db("AdvDB");
-
-        dbo.collection("users").find({status: "active"}).toArray(function(err,numOfClients){
-          if (err) throw err;
-        
-          // result[0] = numOfClients.length;
-          result[0] = count; 
-
-          dbo.collection("advData").find({}).toArray(function(err,numOfAdvs){
-            if (err) throw err;
-            result[1] = numOfAdvs.length;
-
-            console.log("numOfC ================ " + result[0]);
-            console.log("numOfA ================ " + result[1]);
-
-            socket.emit("getInfoForAdmin", result);
-
-          });
-        });
-      });  
-    });
-
-    res.set("Connection", "close");
-
-  }); 
-
-server.listen(8080);
-
-
-function setActive(a){
-
-  MongoClient.connect(url, function (err, db) {
-    
-      const dbo = db.db("AdvDB");
-
-      dbo
-      .collection("users").updateOne({userId: a}, 
-      {$set: {status: "active"}});
-  
-  });
-}
-
-
-function setNotActive(a){
-
-  MongoClient.connect(url, function (err, db) {
-    
-    const dbo = db.db("AdvDB");
-    var date = new Date();
-    // console.log("UTC: " + date.getUTCMonth());
-    var currentDate = `${date.getUTCDate()}.${date.getMonth() + 1}.${date.getFullYear()}   ${date.getHours()}:${date.getUTCMinutes()}`;
-
-    // console.log("current date: " + currentDate);
-
-    dbo
-    .collection("users").updateOne({userId: a}, 
-    {$set: {status: "Not Active"}});
-
-    dbo.collection("users").updateOne({userId: a}, 
-      {$set: {lastConnection: currentDate}});
-  
-});
-
-
-}
