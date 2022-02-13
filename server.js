@@ -177,44 +177,101 @@ function sendTiming(socket, num){
       const dbo = db.db("AdvDB");
       dbo.collection("users").find({status: "active"}).toArray(function(err,numOfClients){
         if (err) throw err;
-        console.log("count in admin === " + count);
+        // console.log("count in admin === " + count);
         result[0] = count; 
-        dbo.collection("advData").find({}).toArray(function(err,numOfAdvs){
+        dbo.collection("advData").find({}).toArray(function(err,Advs){
           if (err) throw err;
-          result[1] = numOfAdvs.length;
-          socket.emit("getInfoForAdmin", result);
-          socket.emit("sendAdv",numOfAdvs);
+          result[1] = Advs.length;
+          socket.emit("getInfoForAdmin", result); // send to num of connections and num of advs. 
+          socket.emit("sendAdv",Advs); // send all the advs.
         });
+
+        /* *********************** sockets for buttons ********************** */
+
+        // add button:
+
         socket.on("newAdvData",function(res){
+          result[1];
           var a = newObj(res,result[1]);
+          result[1]++;
           dbo.collection("advData").insertOne(a,function(err,res){
             if(err)
               throw err;
             console.log(res);
+            dbo.collection("advData").find({}).toArray(function(err, res){
+              if(err) throw err;
+              socket.emit("getAllAdvsForAdd", res);
+            });
           });
         });
+
         socket.on("getSelectAdv",function(idAdv){
           dbo.collection("advData").findOne({myId:idAdv},function(err,res){
             if(err)
               throw err;
             socket.emit("returnSelectedAdv",res);
-          })
+          });
+
+
+          // edit button: 
+
+          socket.on("editAdvData", function(res){
+
+            var adv = newObj(res, idAdv);
+            // var a = adv.get();
+            console.log("inside the edit in mongo");
+
+            console.log("res: " + res);
+            console.log("res[0]: " + res[0]);
+            console.log("res[1]: " + res[1]);
+            console.log("res[2]: " + res[2]);
+            console.log("res[3]: " + res[3]);
+
+            dbo.collection("advData").replaceOne({myId: idAdv}, adv);
+
+
+          
+            // dbo.collection("advData").updateOne({myId: idAdv},  { $set: {
+            //    title: adv.title,
+            //    line1:adv.text.line1,
+            //    line2: adv.text.line2,
+            //    line3: adv.text.line3,
+            //    line4: adv.text.line4,
+            //    line1color: adv.colors.line1color,
+            //    line2color: adv.colors.line2color,
+            //    line3color: adv.colors.line3color,
+            //    line4color: adv.colors.line4color,
+            //    background: adv.colors.background,
+            //    imgsrc: adv.imgsrc,
+            //    show: adv.show,
+            //      }  } );
+
+
+                 console.log("after the edit in mongo");
+           
+            
+          });
+
         });
+        
       });
     }); 
   }
 
 server.listen(8080);
 
+
+
+
 function newObj(res,num){
   var Advobj = {
     myId: num.toString(),
     title: res[0],
     text: {
-      line1: res[1],
-      line2: res[2],
-      line3: res[3],
-      line4: res[4],
+      line1: res[0],
+      line2: res[1],
+      line3: res[2],
+      line4: res[3],
     },
     colors: {
       line1color: "#E9724C",
@@ -226,6 +283,7 @@ function newObj(res,num){
     imgsrc: res[5],
     show: [""],
   }
+
   return Advobj;
 } 
 
