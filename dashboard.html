@@ -77,28 +77,26 @@
 
     <div class="clients hide" id="client"> 
         <!-- <label> Please choose client: </label> -->
-        <select name="clientChoose" id="clientChoose" onchange="chooseScreen()">
-            <option disabled selected value> -- select a screen -- </option>
-            <option id="screen1" value="0"> screen 1 </option>
-            <option id="screen2" value="1"> screen 2 </option>
-            <option id="screen3" value="2"> screen 3 </option>
-        </select>
-
-        <div class="clients-toScreen hide" id="clients-toScreen">
-            <button id="addAdvToScreen"> add Adv to screen </button> 
-            <button id="deleteAdvFromScreen"> delete Adv from screen </button>
+        <div class="clients-top">
+            <select name="clientChoose" id="clientChoose" onchange="chooseScreen()">
+                <option disabled selected value> -- select a screen -- </option>
+                <option id="screen1" value="0"> screen 1 </option>
+                <option id="screen2" value="1"> screen 2 </option>
+                <option id="screen3" value="2"> screen 3 </option>
+            </select>
+            <div class="clients-toScreen" id="clients-toScreen">
+                <button id="addAdvToScreen"> add Adv to screen </button> 
+                <button id="deleteAdvFromScreen"> delete Adv from screen </button>
+            </div>
         </div>
-        
-        <div class="buttonsOfScreen">
-            <div class="divForAddToScreen"> 
-            <select name="addAdvToScreen" id="addAdvToScreen">
+        <div class="divForAddToScreen hide" id="divForAddToScreen"> 
+            <select name="addAdvToScreen" id="addAdvToScreenSelect">
                 <option disabled selected value> -- select adv -- </option>
             </select>
             <button id="saveBtnAdvToScreen"> save </button>
         </div>
-
-        <div class="divForDeleteToScreen"> 
-            <select name="deleteAdvFromScreen" id="deleteAdvFromScreen">
+        <div class="divForDeleteToScreen hide" id="divForDeleteToScreen"> 
+            <select name="deleteAdvFromScreen" id="deleteAdvFromScreenSelect">
                 <option disabled selected value> -- select adv -- </option>
             </select>
             <button id="deleteBtnAdvFromSceeen"> delete </button>
@@ -150,11 +148,18 @@
     const overAll = document.querySelector("#priview-continer");
     const client = document.querySelector("#client");
     const toScreen = document.querySelector("#clients-toScreen");
+    const addAdvToScreen = document.querySelector("#addAdvToScreen");
+    const deleteAdvFromScreen = document.querySelector("#deleteAdvFromScreen");
+    const divForAddToScreen = document.querySelector("#divForAddToScreen");
+    const divForDeleteToScreen = document.querySelector("#divForDeleteToScreen");
+    const addAdvToScreenSelect = document.querySelector("#addAdvToScreenSelect");
+    const deleteAdvFromScreenSelect = document.querySelector("#deleteAdvFromScreenSelect");
 
 
     deleteButton.disabled=true;
-
-
+    editButton.disabled = true;
+    addAdvToScreen.disabled = true;
+    deleteAdvFromScreen.disabled = true;
 
     addBtn.addEventListener("click",()=>{
         console.log("addBtn clicked");
@@ -212,6 +217,18 @@
        client.classList.toggle("hide");
     });
 
+    addAdvToScreen.addEventListener("click",()=>{
+        if(!divForDeleteToScreen.classList.contains("hide"))
+            divForDeleteToScreen.classList.add("hide");
+        divForAddToScreen.classList.toggle("hide");
+    });
+
+    deleteAdvFromScreen.addEventListener("click",()=> {
+        if(!divForAddToScreen.classList.contains("hide"))
+            divForAddToScreen.classList.add("hide");
+        divForDeleteToScreen.classList.toggle("hide");
+    });
+
     /* ****************************** selectors names ****************************** */
     const selectAdv = document.getElementById("advSelect");
     const selectClient = document.getElementById("clientChoose");
@@ -227,7 +244,6 @@
 
     /* ****************************************************** */
 
-
     socket.on("sendAdv", function(allAdvs){
         var allAdv = [] 
         allAdv = allAdvs;
@@ -235,12 +251,11 @@
 
         countAdvs = advsArray[advsArray.length - 1].myId;
         // console.log("count ==== " + countAdvs);
-        createOption(allAdvs);
+        createOption(allAdvs,selectAdv);
     });
 
     selectAdv.addEventListener("load",createOption());  
     
-
     /* ************************************************ */
 
     function creatInfoOfAdvInArray(dlines){ // return an array with informatin from lines (from client).
@@ -268,9 +283,8 @@
         });
         editImage.value = "";
     }
-
-    
-    function createOption(allAdvs){
+ 
+    function createOption(allAdvs,selectAdv){
         if(allAdvs !== undefined){
             allAdvs.forEach((adv)=> {
                 var opt = document.createElement('option');
@@ -282,10 +296,10 @@
         }
     }
 
-
     /* ************************* functions of select ************************* */
     function selectAdvOption(){
         deleteButton.disabled=false;
+        editButton.disabled = false;
         socket.emit("getSelectAdv",selectAdv.options[selectAdv.selectedIndex].value);
         idOfChoosenAdv = selectAdv.options[selectAdv.selectedIndex].value;
         socket.on("returnSelectedAdv",function(res){           
@@ -295,23 +309,25 @@
     }
 
     function chooseScreen(){
-        toScreen.classList.remove("hide");
+        addAdvToScreen.disabled = false;
+        deleteAdvFromScreen.disabled = false;
         currentScreen = selectClient.options[selectClient.selectedIndex].value;
         socket.emit("getAdvByScreen", currentScreen);
+        socket.on("getArrayOfAdsToAdd",function(resToAddSelect){
+            createOption(resToAddSelect,addAdvToScreenSelect)
+        });
+        socket.on("getArrayOfAdsToDelete",function(resToDeleteSelect){
+            createOption(resToDeleteSelect,deleteAdvFromScreenSelect);
+        });
     }
 
-
-
-
     /* ************************* displayes ************************* */
-
     function displayAdv(res){
         //document.getElementById("line1").style.color = allData[i].colors.line1color;
         //document.getElementById("line2").style.color = allData[i].colors.line2color;
         //document.getElementById("line3").style.color = allData[i].colors.line3color;
         //document.getElementById("line4").style.color = allData[i].colors.line4color;s
         // document.getElementById("title").innerHTML = res.text.title;
-
         document.getElementById("line1").innerHTML = res.text.line1;
         document.getElementById("line2").innerHTML = res.text.line2;
         document.getElementById("line3").innerHTML = res.text.line3;
@@ -321,7 +337,6 @@
     }
     
     function displayEdit(res){
-    
         document.getElementById("editTitle").value = res.title;
         document.getElementById("editLine1").value = res.text.line1;
         document.getElementById("editLine2").value = res.text.line2;

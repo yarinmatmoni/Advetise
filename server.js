@@ -242,25 +242,23 @@ function sendTiming(socket, num){
             var advList = result[0].advList; // id of currentScreen
             dbo.collection("advData").find({}).toArray(function(err, all){
               var sendAdv = [];
-
+              var sendToDelete = [];
               for(let i=0; i<all.length; i++){
-
-              var bol = false; 
-              for(let j=0; j<advList.length; j++){
-
-                if(all[i].myId == advList[j]){
-                  bol = true;
+                var bol = false; 
+                for(let j=0; j<advList.length; j++){
+                  if(all[i].myId == advList[j]){
+                    bol = true;
+                  }
                 }
-              }
-
-              if(bol == false){
-                sendAdv.push(all[i]);
-              }
+                if(bol == false){
+                  sendAdv.push(all[i]);
+                }else{
+                  sendToDelete.push(all[i]);
+                }
             }
-            console.log("sendAdv:" + sendAdv);
-        
+            socket.emit("getArrayOfAdsToAdd",sendAdv);
+            socket.emit("getArrayOfAdsToDelete",sendToDelete);
           });   
-
         });
       });
 

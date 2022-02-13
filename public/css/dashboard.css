@@ -10,7 +10,6 @@ body {
 
 h1 {
   text-align: center;
-  padding: 2rem;
   font-size: 4rem;
 }
 
@@ -22,56 +21,58 @@ h1 {
 .info {
   background-color: #e2e5eb;
   width: 16rem;
-  padding: 1rem 2rem;
+  padding: 0rem 1rem;
   text-align: center;
   border-radius: 2rem;
-  margin-bottom: 2rem;
+  margin-bottom: 0.8rem;
   border: 1px solid;
   border-color: #023047;
 }
 
-.info h3{
+.info h3 {
   font-size: 1.3rem;
 }
 
-.info h2{
+.info h2 {
   font-size: 2rem;
   color: #023047;
 }
 
-.SelectMode{
+.SelectMode {
   text-align: center;
-  padding: 1rem;
+  padding: 0.5rem;
 }
-.SelectMode button{
+.SelectMode button {
   padding: 0.5rem;
   margin: 0.5rem;
 }
 
-.hide{
+.hide {
   display: none;
 }
 
 .priview-continer {
   align-items: center;
   text-align: center;
-  margin-top: 1rem; 
+  margin-top: 1rem;
 }
 
-.control-container, .clientChoose{
+.control-container,
+.clientChoose {
   align-items: center;
   display: flex;
   flex-direction: column;
 }
-.buttons{
+.buttons {
   display: flex;
 }
-.buttons button{
+.buttons button {
   padding: 0.5rem;
   margin: 0px 2px;
 }
 
-.addNewAdv-input, .editAdv-input{
+.addNewAdv-input,
+.editAdv-input {
   display: flex;
   flex-direction: column;
   width: 20rem;
@@ -113,7 +114,7 @@ h1 {
 
 #advSelect {
   padding: 0.2rem;
-  margin: 1rem;
+  margin-bottom: 1rem;
   width: 11rem;
 }
 
@@ -121,10 +122,31 @@ h1 {
   padding: 0.2rem;
 }
 
-.clients{
+.clients {
   text-align: center;
+  margin-top: 1rem;
 }
-#clientChoose{
-  margin-bottom: 1.5rem;
+#clientChoose {
+  margin-bottom: 0.4rem;
+  padding: 0.4rem;
+}
+
+.clients-top {
+  display: flex;
+  justify-content: center;
+}
+
+.clients-toScreen {
+  padding-inline: 0.5rem;
+}
+
+.clients-toScreen button {
+  padding: 0.4rem;
+}
+
+#addAdvToScreenSelect,
+#deleteAdvFromScreenSelect,
+#saveBtnAdvToScreen,
+#deleteBtnAdvFromSceeen {
   padding: 0.4rem;
 }
