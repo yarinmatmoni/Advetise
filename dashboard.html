@@ -45,13 +45,13 @@
             </div>
 
             <div class="addNewAdv">
-                <input type="text" class="addLine" placeholder="title">
-                <input type="text" class="addLine" placeholder="line 1">
-                <input type="text" class="addLine" placeholder="line 2">
-                <input type="text" class="addLine" placeholder="line 3">
-                <input type="text" class="addLine" placeholder="line 4">
+                <input type="text" class="addLine" id= "addTitle" placeholder="title">
+                <input type="text" class="addLine" id= "addLine1" placeholder="line 1">
+                <input type="text" class="addLine" id= "addLine2" placeholder="line 2">
+                <input type="text" class="addLine" id= "addLine3" placeholder="line 3">
+                <input type="text" class="addLine" id= "addLine4" placeholder="line 4">
                 <input type="text" id="addImage" placeholder="image src">
-                <button type="submit" id="addButtuon">+</button>
+                <button type="submit" id="addButton">+</button>
             </div>
 
             <div class="editAdv">
@@ -61,9 +61,8 @@
                 <input type="text" class="editLine" id="editLine3" placeholder="line 3">
                 <input type="text" class="editLine" id="editLine4" placeholder="line 4">
                 <input type="text" id="editImage" placeholder="image src">
-                <button type="submit" id="editButtuon">Save</button>
+                <button type="submit" id="editButton">Save</button>
             </div>
-            
         </div>
     </div>
 </body>
@@ -73,110 +72,125 @@
 <script>
 
     const socket = io.connect('http://localhost:8080');
+
+    /* *********************** Information of numClients and numAdvs *********************** */
+   
     const numOfAdvs = document.getElementById("numOfAdvs");
     const numOfClients = document.getElementById("numOfClients");
-
-    /* ********************** buttons *********************** */ 
-    const addBtn = document.getElementById("addButtuon");
-    const editBtn = document.getElementById("editButtuon");
-    
-    /* ******************* info from lines ****************** */
-    const lines = document.querySelectorAll(".addLine");
-    const editLines = document.querySelectorAll(".editLine");
-
-    /* ****************************************************** */
-    const selectAdv = document.getElementById("advSelect");
-    const addImage = document.getElementById("addImage");
-   
-    var dataLines = [];
-    const editDataLines = [];
-    // let flag = 1;
 
     socket.on("getInfoForAdmin",function(info){
         numOfClients.innerHTML = info[0];
         numOfAdvs.innerHTML = info[1];
     });
 
+    var allAdvs; 
+
+    socket.on("getAllAdvs", function(alladvs){
+        allAdvs = alladvs;
+    });
+
+
+    /* *********************** Information from lines (from the client) *********************** */
+
+    const addlines = document.querySelectorAll(".addLine");
+    const editLines = document.querySelectorAll(".editLine");
+
+    /* *********************** buttons *********************** */ 
+
+    const addBtn = document.getElementById("addButton");
+    const editBtn = document.getElementById("editButton");
+    const deleteButton = document.getElementById("delete");
+    const addButton  = document.getElementById("add");
+    const editButton  = document.getElementById("edit");
+
+    addBtn.addEventListener("click",()=>{
+        console.log("addBtn clicked");
+        var arrAdd = creatInfoOfAdvInArray(addlines);
+        cleanInputsAdd();
+        socket.emit("newAdvData",arrAdd);
+    });
+
+    editBtn.addEventListener("click",()=> {
+
+        console.log("editBtn clicked");
+        var arrEdit = creatInfoOfAdvInArray(editLines);
+        cleanInputsEdit();
+        socket.emit("editAdvData",arrEdit);
+    });
+
+    addButton.addEventListener("click", ()=>{
+       
+        console.log("addButton clicked");
+    });
+
+    editButton.addEventListener("click", ()=>{
+
+        console.log("editButton clicked");
+    });
+
+    deleteButton.addEventListener("click", ()=>{
+        
+        console.log("deleteButton clicked");
+        socket.emit("deleteAdv", idOfChoosenAdv);
+    });
+
+
+    /* ****************************************************** */
+    const selectAdv = document.getElementById("advSelect");
+    const addImage = document.getElementById("addImage");
+   
+    /* ****************************************************** */
+
+    var idOfChoosenAdv;  // the id of the choosen  
+    var advsArray; // all advs 
+    var countAdvs = 0; 
+
+    /* ****************************************************** */
+
+
     socket.on("sendAdv", function(allAdvs){
         var allAdv = [] 
         allAdv = allAdvs;
+        advsArray = allAdv;
+
+        countAdvs = advsArray[advsArray.length - 1].myId;
+        console.log("count ==== " + countAdvs);
+
         createOption(allAdvs);
     });
 
     selectAdv.addEventListener("load",createOption());  
 
-    /* ***************************** listeners ******************************** */
+    /* ************************************************ */
 
-    addBtn.addEventListener("click",()=>{
-        // dataLines.length = 0;
-        // // console.log("lines:" +  lines);
-        // creatAdv(lines);
-        // cleanInputs();
-        // socket.emit("newAdvData",dataLines);
-        // console.log(dataLines);
-
-        var arrAdd = creatAdv(lines);
-        cleanInputs();
-        socket.emit("newAdvData",arrAdd);
-        console.log("arrAdd:" + arrAdd);
-        
-        // socket.on("getAllAdvsForAdd", function(allAdvsForAdd){
-        //     createOption(allAdvsForAdd);
-        // });
-        
-    });
-
-    editBtn.addEventListener("click",()=> {
-       
-        // dataLines.length = 0;
-        // // console.log("editLines: " + editLines);
-        // creatAdv(editLines);
-        // console.log("dataLine in edit:" + dataLines);
-        // socket.emit("editAdvData",dataLines);
-        // cleanInputs();
-        console.log(editLines);
-        var arrEdit = creatAdv(editLines);
-        cleanInputs();
-        socket.emit("editAdvData",arrEdit);
-        console.log("arrEdit:" + arrEdit);
-    });
-
-    function creatAdv(dlines){
+    function creatInfoOfAdvInArray(dlines){ // return an array with informatin from lines (from client).
         var dataLines = [];
         dlines.forEach((line)=>{
             // if(line.value !== "")
                 dataLines.push(line.value);
         });
-        if(addImage.value !== "" ){
+        if(addImage.value !== "" ){   // TODO: change!!!
             dataLines.push(addImage.value);
         }
         return dataLines;
-
-     
     }
 
-    function cleanInputs(){
-        lines.forEach((line)=>{
+    function cleanInputsAdd(){
+        addlines.forEach((line)=>{
             line.value = "";
         });
         addImage.value = "";
     }
 
-    function editAdv(editDataLines){
-        
+    function cleanInputsEdit(){
+        editLines.forEach((line)=>{
+            line.value = "";
+        });
+        editImage.value = "";
     }
 
+    
     function createOption(allAdvs){
-
-
-        //  var opt = document.createElement('option');
-        // if(selectAdv.childElementCount.length != 0){
-        //     while (selectAdv.childNodes.length > 1) {
-        //     selectAdv.removeChild(selectAdv.lastChild);
-        //     }
-        // }
-        
-
         if(allAdvs !== undefined){
             allAdvs.forEach((adv)=> {
                 var opt = document.createElement('option');
@@ -186,14 +200,12 @@
                 selectAdv.appendChild(opt);
             });
         }
-       
     }
-
-
-    // const title = document.getElementById("line1");
 
     function selectAdvOption(){
         socket.emit("getSelectAdv",selectAdv.options[selectAdv.selectedIndex].value);
+        idOfChoosenAdv = selectAdv.options[selectAdv.selectedIndex].value;
+        console.log("the id ======= " + selectAdv.options[selectAdv.selectedIndex].value);
         socket.on("returnSelectedAdv",function(res){
             console.log("the adv ========== " + res.title);
             displayAdv(res);
@@ -229,7 +241,3 @@
 
 </script>
 
-<!-- <script src='/socket.io/socket.io.js'></script>
-<script>
-    const socket = io.connect('http://localhost:8080');
-</script> -->

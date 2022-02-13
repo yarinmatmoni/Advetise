@@ -177,83 +177,58 @@ function sendTiming(socket, num){
       const dbo = db.db("AdvDB");
       dbo.collection("users").find({status: "active"}).toArray(function(err,numOfClients){
         if (err) throw err;
-        // console.log("count in admin === " + count);
         result[0] = count; 
+
+        var array;
+
         dbo.collection("advData").find({}).toArray(function(err,Advs){
           if (err) throw err;
           result[1] = Advs.length;
+          array = Advs;
           socket.emit("getInfoForAdmin", result); // send to num of connections and num of advs. 
           socket.emit("sendAdv",Advs); // send all the advs.
         });
 
         /* *********************** sockets for buttons ********************** */
 
-        // add button:
+        ////////////////////////////////// add button //////////////////////////////////
+
+        // need to do a refresh at the end!!! (effect the id and the selector!)
 
         socket.on("newAdvData",function(res){
-          result[1];
-          var a = newObj(res,result[1]);
-          result[1]++;
-          dbo.collection("advData").insertOne(a,function(err,res){
-            if(err)
-              throw err;
-            console.log(res);
-            dbo.collection("advData").find({}).toArray(function(err, res){
-              if(err) throw err;
-              socket.emit("getAllAdvsForAdd", res);
-            });
+          var lastId = array[array.length - 1].myId; 
+          console.log("the last id is: " + lastId);
+          var newAdv = createAdv(res, (++lastId));
+
+          dbo.collection("advData").insertOne(newAdv,function(err,res){
+            if(err) throw err;
+          //   dbo.collection("advData").find({}).toArray(function(err, res){
+          //     if(err) throw err;
+          //     socket.emit("getAllAdvsForAdd", res);
+          //   });
           });
-        });
+        });        
+
+        ////////////////////////////////// edit button //////////////////////////////////
 
         socket.on("getSelectAdv",function(idAdv){
+
           dbo.collection("advData").findOne({myId:idAdv},function(err,res){
-            if(err)
-              throw err;
+            if(err) throw err;
             socket.emit("returnSelectedAdv",res);
           });
 
-
-          // edit button: 
-
           socket.on("editAdvData", function(res){
-
-            var adv = newObj(res, idAdv);
-            // var a = adv.get();
-            console.log("inside the edit in mongo");
-
-            console.log("res: " + res);
-            console.log("res[0]: " + res[0]);
-            console.log("res[1]: " + res[1]);
-            console.log("res[2]: " + res[2]);
-            console.log("res[3]: " + res[3]);
-
+            var adv = createAdv(res, idAdv);
             dbo.collection("advData").replaceOne({myId: idAdv}, adv);
-
-
-          
-            // dbo.collection("advData").updateOne({myId: idAdv},  { $set: {
-            //    title: adv.title,
-            //    line1:adv.text.line1,
-            //    line2: adv.text.line2,
-            //    line3: adv.text.line3,
-            //    line4: adv.text.line4,
-            //    line1color: adv.colors.line1color,
-            //    line2color: adv.colors.line2color,
-            //    line3color: adv.colors.line3color,
-            //    line4color: adv.colors.line4color,
-            //    background: adv.colors.background,
-            //    imgsrc: adv.imgsrc,
-            //    show: adv.show,
-            //      }  } );
-
-
-                 console.log("after the edit in mongo");
-           
-            
           });
 
-        });
-        
+        ////////////////////////////////// delete button //////////////////////////////////
+
+          socket.on("deleteAdv", function(idOfAdv){
+            dbo.collection("advData").deleteOne({myId: idOfAdv});
+          });
+        });  
       });
     }); 
   }
@@ -261,17 +236,17 @@ function sendTiming(socket, num){
 server.listen(8080);
 
 
+function createAdv(res,num){
 
-
-function newObj(res,num){
+  console.log("the num is: " + num);
   var Advobj = {
     myId: num.toString(),
     title: res[0],
     text: {
-      line1: res[0],
-      line2: res[1],
-      line3: res[2],
-      line4: res[3],
+      line1: res[1],
+      line2: res[2],
+      line3: res[3],
+      line4: res[4],
     },
     colors: {
       line1color: "#E9724C",
