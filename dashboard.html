@@ -90,9 +90,10 @@
             </div>
         </div>
         <div class="divForAddToScreen hide" id="divForAddToScreen"> 
-            <select name="addAdvToScreen" id="addAdvToScreenSelect">
+            <select name="addAdvToScreen" id="addAdvToScreenSelect" onchange="addAdvSelect()" >
                 <option disabled selected value> -- select adv -- </option>
             </select>
+            <input type="text" placeholder="Duration Time" id="durationTimeAdd">
             <button id="saveBtnAdvToScreen"> save </button>
         </div>
         <div class="divForDeleteToScreen hide" id="divForDeleteToScreen"> 
@@ -154,12 +155,16 @@
     const divForDeleteToScreen = document.querySelector("#divForDeleteToScreen");
     const addAdvToScreenSelect = document.querySelector("#addAdvToScreenSelect");
     const deleteAdvFromScreenSelect = document.querySelector("#deleteAdvFromScreenSelect");
+    const durationTimeAdd = document.querySelector("#durationTimeAdd");
 
 
     deleteButton.disabled=true;
     editButton.disabled = true;
     addAdvToScreen.disabled = true;
     deleteAdvFromScreen.disabled = true;
+    addToScreen.disabled = true;
+    durationTimeAdd.disabled = true;
+    
 
     addBtn.addEventListener("click",()=>{
         console.log("addBtn clicked");
@@ -343,6 +348,16 @@
         document.getElementById("editLine3").value = res.text.line3;
         document.getElementById("editLine4").value = res.text.line4;
         document.getElementById("editImage").value = res.imgsrc;
+    }
+
+    function addAdvSelect(){
+        durationTimeAdd.disabled = false;
+        durationTimeAdd.addEventListener("input",()=>{
+            if(durationTimeAdd.value.length > 0)
+                addToScreen.disabled = false;
+            else
+            addToScreen.disabled = true; 
+        });
     }
 
 </script>

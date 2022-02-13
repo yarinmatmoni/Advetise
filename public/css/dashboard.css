@@ -147,6 +147,11 @@ h1 {
 #addAdvToScreenSelect,
 #deleteAdvFromScreenSelect,
 #saveBtnAdvToScreen,
-#deleteBtnAdvFromSceeen {
+#deleteBtnAdvFromSceeen,
+#durationTimeAdd {
   padding: 0.4rem;
+}
+
+#durationTimeAdd {
+  width: 5.5rem;
 }
