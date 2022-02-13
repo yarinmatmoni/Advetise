@@ -21,7 +21,47 @@
             <h2 id="numOfAdvs">0</h2>
         </div>
     </div>
-    <div class="priview-continer">
+    <div class="SelectMode">
+        <button id="OverAll">OverAll</button>
+        <button id="Clients">Clients</button>
+    </div>
+    <div class="priview-continer hide" id="priview-continer">
+        <div class="control">
+            <div class = "control-container">
+                <select name="Adv" id="advSelect" onchange="selectAdvOption()">
+                    <option disabled selected value> -- select an advertie -- </option>
+                </select> 
+                <div class="buttons">
+                    <button id="add">Add</button>
+                    <button id="edit">Edit</button>
+                    <button id="delete">Delete</button>
+                </div> 
+            </div>
+
+            <div class="addNewAdv hide" id="addNewAdv">
+                <div class="addNewAdv-input">
+                    <input type="text" class="addLine" id= "addTitle" placeholder="title">
+                    <input type="text" class="addLine" id= "addLine1" placeholder="line 1">
+                    <input type="text" class="addLine" id= "addLine2" placeholder="line 2">
+                    <input type="text" class="addLine" id= "addLine3" placeholder="line 3">
+                    <input type="text" class="addLine" id= "addLine4" placeholder="line 4">
+                    <input type="text" id="addImage" placeholder="image src">
+                </div>
+                <button type="submit" id="addButton">Add New Advertie</button>
+            </div>
+
+            <div class="editAdv hide" id="editAdv">
+                <div class="editAdv-input">
+                    <input type="text" class="editLine" id="editTitle" placeholder="title">
+                    <input type="text" class="editLine" id="editLine1" placeholder="line 1">
+                    <input type="text" class="editLine" id="editLine2" placeholder="line 2">
+                    <input type="text" class="editLine" id="editLine3" placeholder="line 3">
+                    <input type="text" class="editLine" id="editLine4" placeholder="line 4">
+                    <input type="text" id="editImage" placeholder="image src">
+                </div>
+                <button type="submit" id="editButton">Save</button>
+            </div>
+        </div>
         <div class="displayAdv">
             <div class="data">
                 <h2 id="line1"></h2>
@@ -33,41 +73,10 @@
                 <img id="myImg" src="#"/>
             </div>
         </div>
-        <div class="control">
-            <select name="Adv" id="advSelect" onchange="selectAdvOption()">
-                <option disabled selected value> -- select an advertie -- </option>
-            </select>
-
-            <div class = "buttons"> 
-                <button id="add">Add</button>
-                <button id="edit">Edit</button>
-                <button id="delete">Delete</button>
-            </div>
-
-            <div class="addNewAdv">
-                <input type="text" class="addLine" id= "addTitle" placeholder="title">
-                <input type="text" class="addLine" id= "addLine1" placeholder="line 1">
-                <input type="text" class="addLine" id= "addLine2" placeholder="line 2">
-                <input type="text" class="addLine" id= "addLine3" placeholder="line 3">
-                <input type="text" class="addLine" id= "addLine4" placeholder="line 4">
-                <input type="text" id="addImage" placeholder="image src">
-                <button type="submit" id="addButton">+</button>
-            </div>
-
-            <div class="editAdv">
-                <input type="text" class="editLine" id="editTitle" placeholder="title">
-                <input type="text" class="editLine" id="editLine1" placeholder="line 1">
-                <input type="text" class="editLine" id="editLine2" placeholder="line 2">
-                <input type="text" class="editLine" id="editLine3" placeholder="line 3">
-                <input type="text" class="editLine" id="editLine4" placeholder="line 4">
-                <input type="text" id="editImage" placeholder="image src">
-                <button type="submit" id="editButton">Save</button>
-            </div>
-        </div>
     </div>
 
-    <div class="clients"> 
-        <label> Please choose client: </label>
+    <div class="clients hide" id="client"> 
+        <!-- <label> Please choose client: </label> -->
         <select name="clientChoose" id="clientChoose" onchange="chooseScreen()">
             <option disabled selected value> -- select a screen -- </option>
             <option id="screen1" value="0"> screen 1 </option>
@@ -75,9 +84,13 @@
             <option id="screen3" value="2"> screen 3 </option>
         </select>
 
+        <div class="clients-toScreen hide" id="clients-toScreen">
+            <button id="addAdvToScreen"> add Adv to screen </button> 
+            <button id="deleteAdvFromScreen"> delete Adv from screen </button>
+        </div>
+        
         <div class="buttonsOfScreen">
             <div class="divForAddToScreen"> 
-            <button id="addAdvToScreen"> add Adv to screen </button> 
             <select name="addAdvToScreen" id="addAdvToScreen">
                 <option disabled selected value> -- select adv -- </option>
             </select>
@@ -85,7 +98,6 @@
         </div>
 
         <div class="divForDeleteToScreen"> 
-            <button id="deleteAdvFromScreen"> delete Adv from screen </button>
             <select name="deleteAdvFromScreen" id="deleteAdvFromScreen">
                 <option disabled selected value> -- select adv -- </option>
             </select>
@@ -131,6 +143,17 @@
     const editButton  = document.getElementById("edit");
     const addToScreen = document.getElementById("saveBtnAdvToScreen");
     const deleteToScreen = document.getElementById("deleteBtnAdvFromSceeen");
+    const clientsBtn = document.getElementById("Clients");
+    const add = document.querySelector("#addNewAdv");
+    const edit = document.querySelector("#editAdv");
+    const overAllBtn = document.querySelector("#OverAll");
+    const overAll = document.querySelector("#priview-continer");
+    const client = document.querySelector("#client");
+    const toScreen = document.querySelector("#clients-toScreen");
+
+
+    deleteButton.disabled=true;
+
 
 
     addBtn.addEventListener("click",()=>{
@@ -149,12 +172,16 @@
     });
 
     addButton.addEventListener("click", ()=>{
-       
+        if(!edit.classList.contains("hide"))
+            edit.classList.add("hide");
+        add.classList.toggle("hide");
         console.log("addButton clicked");
     });
 
     editButton.addEventListener("click", ()=>{
-
+        if(!add.classList.contains("hide"))
+            add.classList.add("hide");
+        edit.classList.toggle("hide");
         console.log("editButton clicked");
     });
 
@@ -173,6 +200,17 @@
         console.log("deleteToScreen clicked");
     });
 
+    overAllBtn.addEventListener("click", ()=>{
+        if(!client.classList.contains("hide"))
+        client.classList.add("hide");
+        overAll.classList.toggle("hide");
+    });
+
+    clientsBtn.addEventListener("click", ()=>{
+        if(!overAll.classList.contains("hide"))
+        overAll.classList.add("hide");
+       client.classList.toggle("hide");
+    });
 
     /* ****************************** selectors names ****************************** */
     const selectAdv = document.getElementById("advSelect");
@@ -247,6 +285,7 @@
 
     /* ************************* functions of select ************************* */
     function selectAdvOption(){
+        deleteButton.disabled=false;
         socket.emit("getSelectAdv",selectAdv.options[selectAdv.selectedIndex].value);
         idOfChoosenAdv = selectAdv.options[selectAdv.selectedIndex].value;
         socket.on("returnSelectedAdv",function(res){           
@@ -256,6 +295,7 @@
     }
 
     function chooseScreen(){
+        toScreen.classList.remove("hide");
         currentScreen = selectClient.options[selectClient.selectedIndex].value;
         socket.emit("getAdvByScreen", currentScreen);
     }

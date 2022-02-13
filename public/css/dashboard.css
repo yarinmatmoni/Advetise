@@ -30,77 +30,65 @@ h1 {
   border-color: #023047;
 }
 
-.info h3 {
+.info h3{
   font-size: 1.3rem;
 }
 
-.info h2 {
+.info h2{
   font-size: 2rem;
   color: #023047;
 }
 
+.SelectMode{
+  text-align: center;
+  padding: 1rem;
+}
+.SelectMode button{
+  padding: 0.5rem;
+  margin: 0.5rem;
+}
+
+.hide{
+  display: none;
+}
+
 .priview-continer {
-  border: 1px solid;
-  border-color: #023047;
-  min-height: 50vh;
+  align-items: center;
+  text-align: center;
+  margin-top: 1rem; 
+}
+
+.control-container, .clientChoose{
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+.buttons{
   display: flex;
 }
-
-.displayAdv {
-  border: 1px solid;
-  border-color: #023047;
-  flex: 0.9;
-}
-/* .control{
-   align-items: center;
-   display: flex;
-} */
-
-.btn {
-  background-color: #2196f3;
-  color: white;
-  padding: 16px;
-  font-size: 16px;
-  border: none;
-  outline: none;
+.buttons button{
+  padding: 0.5rem;
+  margin: 0px 2px;
 }
 
-.dropdown {
-  position: absolute;
-  display: inline-block;
+.addNewAdv-input, .editAdv-input{
+  display: flex;
+  flex-direction: column;
+  width: 20rem;
+  margin: auto;
+  padding-bottom: 0.5rem;
 }
 
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f1f1f1;
-  min-width: 160px;
-  z-index: 1;
+.addNewAdv input,
+.editAdv input {
+  padding: 0.4rem;
+  font-size: medium;
+  margin: 0.2rem 0rem;
 }
 
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-
-.dropdown-content a:hover {
-  background-color: #ddd;
-}
-
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-
-.btn:hover,
-.dropdown:hover .btn {
-  background-color: #0b7dda;
-}
-
-.buttons {
-  margin-top: 60px;
-  align-items: center;
+.addNewAdv,
+.editAdv {
+  padding: 0.5rem;
 }
 
 .continer_img > img {
@@ -113,16 +101,6 @@ h1 {
   border: 3px solid whitesmoke;
 }
 
-/* .data {
-  color: rgb(206, 212, 218);
-  padding: 1rem;
-  width: 40%;
-  display: flex;
-  flex-direction: column;
-  justify-content: end;
-  align-items: center;
-} */
-
 #line1 {
   font-size: 6rem;
 }
@@ -133,19 +111,6 @@ h1 {
   font-size: 3.5rem;
 }
 
-.addNewAdv,
-.editAdv {
-  padding: 0.5rem;
-}
-.addNewAdv input,
-.editAdv input {
-  display: flex;
-  flex-direction: column;
-  margin: 0.5rem;
-  width: 20rem;
-  padding: 0.4rem;
-}
-
 #advSelect {
   padding: 0.2rem;
   margin: 1rem;
@@ -154,4 +119,12 @@ h1 {
 
 #advSelect option {
   padding: 0.2rem;
+}
+
+.clients{
+  text-align: center;
+}
+#clientChoose{
+  margin-bottom: 1.5rem;
+  padding: 0.4rem;
 }
