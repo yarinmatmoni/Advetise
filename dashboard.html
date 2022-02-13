@@ -65,6 +65,33 @@
             </div>
         </div>
     </div>
+
+    <div class="clients"> 
+        <label> Please choose client: </label>
+        <select name="clientChoose" id="clientChoose" onchange="chooseScreen()">
+            <option disabled selected value> -- select a screen -- </option>
+            <option id="screen1" value="0"> screen 1 </option>
+            <option id="screen2" value="1"> screen 2 </option>
+            <option id="screen3" value="2"> screen 3 </option>
+        </select>
+
+        <div class="buttonsOfScreen">
+            <div class="divForAddToScreen"> 
+            <button id="addAdvToScreen"> add Adv to screen </button> 
+            <select name="addAdvToScreen" id="addAdvToScreen">
+                <option disabled selected value> -- select adv -- </option>
+            </select>
+            <button id="saveBtnAdvToScreen"> save </button>
+        </div>
+
+        <div class="divForDeleteToScreen"> 
+            <button id="deleteAdvFromScreen"> delete Adv from screen </button>
+            <select name="deleteAdvFromScreen" id="deleteAdvFromScreen">
+                <option disabled selected value> -- select adv -- </option>
+            </select>
+            <button id="deleteBtnAdvFromSceeen"> delete </button>
+        </div>
+    </div>
 </body>
 </html>
 
@@ -102,6 +129,9 @@
     const deleteButton = document.getElementById("delete");
     const addButton  = document.getElementById("add");
     const editButton  = document.getElementById("edit");
+    const addToScreen = document.getElementById("saveBtnAdvToScreen");
+    const deleteToScreen = document.getElementById("deleteBtnAdvFromSceeen");
+
 
     addBtn.addEventListener("click",()=>{
         console.log("addBtn clicked");
@@ -134,9 +164,21 @@
         socket.emit("deleteAdv", idOfChoosenAdv);
     });
 
+    addToScreen.addEventListener("click", ()=>{    
+        console.log("addToScreen clicked");
+        
+    });
 
-    /* ****************************************************** */
+    deleteToScreen.addEventListener("click", ()=>{
+        console.log("deleteToScreen clicked");
+    });
+
+
+    /* ****************************** selectors names ****************************** */
     const selectAdv = document.getElementById("advSelect");
+    const selectClient = document.getElementById("clientChoose");
+    var currentScreen; 
+
     const addImage = document.getElementById("addImage");
    
     /* ****************************************************** */
@@ -154,12 +196,12 @@
         advsArray = allAdv;
 
         countAdvs = advsArray[advsArray.length - 1].myId;
-        console.log("count ==== " + countAdvs);
-
+        // console.log("count ==== " + countAdvs);
         createOption(allAdvs);
     });
 
     selectAdv.addEventListener("load",createOption());  
+    
 
     /* ************************************************ */
 
@@ -202,17 +244,26 @@
         }
     }
 
+
+    /* ************************* functions of select ************************* */
     function selectAdvOption(){
         socket.emit("getSelectAdv",selectAdv.options[selectAdv.selectedIndex].value);
         idOfChoosenAdv = selectAdv.options[selectAdv.selectedIndex].value;
-        console.log("the id ======= " + selectAdv.options[selectAdv.selectedIndex].value);
-        socket.on("returnSelectedAdv",function(res){
-            console.log("the adv ========== " + res.title);
+        socket.on("returnSelectedAdv",function(res){           
             displayAdv(res);
             displayEdit(res);
-        });
-        
+        }); 
     }
+
+    function chooseScreen(){
+        currentScreen = selectClient.options[selectClient.selectedIndex].value;
+        socket.emit("getAdvByScreen", currentScreen);
+    }
+
+
+
+
+    /* ************************* displayes ************************* */
 
     function displayAdv(res){
         //document.getElementById("line1").style.color = allData[i].colors.line1color;

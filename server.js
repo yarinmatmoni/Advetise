@@ -228,7 +228,42 @@ function sendTiming(socket, num){
           socket.on("deleteAdv", function(idOfAdv){
             dbo.collection("advData").deleteOne({myId: idOfAdv});
           });
+
         });  
+
+        ////////////////////////////////// client /////////////////////////////////
+
+        socket.on("getAdvByScreen", function(currenScreen){
+
+          console.log("hereeeeeeeee");
+
+          dbo.collection("users").find({userId: currenScreen}).toArray(function(err, result){
+            if (err) throw err;
+            var advList = result[0].advList; // id of currentScreen
+            dbo.collection("advData").find({}).toArray(function(err, all){
+              var sendAdv = [];
+
+              for(let i=0; i<all.length; i++){
+
+              var bol = false; 
+              for(let j=0; j<advList.length; j++){
+
+                if(all[i].myId == advList[j]){
+                  bol = true;
+                }
+              }
+
+              if(bol == false){
+                sendAdv.push(all[i]);
+              }
+            }
+            console.log("sendAdv:" + sendAdv);
+        
+          });   
+
+        });
+      });
+
       });
     }); 
   }
