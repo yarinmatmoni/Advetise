@@ -16,7 +16,7 @@
     <!-- <form action=""> </form> -->
     <div class="info-continer">
         <div class="info">
-            <h3>Number of connected Clients</h3>
+            <h3>Connected Clients</h3>
             <h2 id="numOfClients">0</h2>
         </div>
         <div class="info">
@@ -61,32 +61,31 @@
 
             <div class="editAdv hide" id="editAdv">
                 <div class="editAdv-input">
-                    <input type="text" class="editLine" id="editTitle" placeholder="title">
-                    <input type="text" class="editLine" id="editLine1" placeholder="line 1">
-                    <input type="text" class="editLine" id="editLine2" placeholder="line 2">
-                    <input type="text" class="editLine" id="editLine3" placeholder="line 3">
-                    <input type="text" class="editLine" id="editLine4" placeholder="line 4">
-                    <input type="text" class="editLine" id= "editcolorLine1" placeholder="colorline 1">
-                    <input type="text" class="editLine" id= "editcolorLine2" placeholder="colorline 2">
-                    <input type="text" class="editLine" id= "editcolorLine3" placeholder="colorline 3">
-                    <input type="text" class="editLine" id= "editcolorLine4" placeholder="colorline 4">
-                    <input type="text" class="editLine" id= "editcolorBackground" placeholder="editcolorBackground">
-
-                    <input type="text" id="editImage" placeholder="image src">
+                    <div><label>Title</label><input type="text" class="editLine" id="editTitle"></div>
+                    <div><label>Line 1</label><input type="text" class="editLine" id="editLine1"></div>
+                    <div><label>Line 2</label><input type="text" class="editLine" id="editLine2"></div>
+                    <div><label>Line 3</label><input type="text" class="editLine" id="editLine3"></div>
+                    <div><label>Line 4</label><input type="text" class="editLine" id="editLine4"></div>
+                    <div><label>Color Line 1</label><input type="text" class="editLine" id= "editcolorLine1"></div>
+                    <div><label>Color Line 2</label><input type="text" class="editLine" id= "editcolorLine2"></div>
+                    <div><label>Color Line 3</label><input type="text" class="editLine" id= "editcolorLine3"></div>
+                    <div><label>Color Line 4</label><input type="text" class="editLine" id= "editcolorLine4"></div>
+                    <div><label>Color Background</label><input type="text" class="editLine" id= "editcolorBackground"></div>
+                    <div><label>Image Link</label><input type="text" id="editImage"></div>
                 </div>
                 <button type="submit" id="editButton">Save</button>
             </div>
         </div>
         <div class="displayAdv" id="displayAdv">
+            <div class="continer_img">
+                <img id="myImg" src="#"/>
+            </div>
             <div class="data">
                 <h2 id="line1"></h2>
                 <h2 id="line2"></h2>
                 <h2 id="line3"></h2>
                 <h2 id="line4"></h2>
             </div>  
-            <div class="continer_img">
-                <img id="myImg" src="#"/>
-            </div>
         </div>
     </div>
 
