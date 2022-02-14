@@ -9,9 +9,12 @@
     <title>Dashboard</title>
 </head>
 <body>
-        <form id="contactForm" method="POST" action="/changepass">
+        <!-- <form id="contactForm" method="POST" action="/changepass">
             <button id="changePassword" type="submit">change passowrd</button>
-          </form>
+          </form> -->
+          <div id="contactForm">
+            <button id="changePassword" type="submit">change passowrd</button>
+          </div>
     <h1>Dashboard</h1>
     <!-- <form action=""> </form> -->
     <div class="info-continer">
@@ -278,8 +281,6 @@
         overAll.classList.toggle("hide");
     });
 
-    
-
     clientsBtn.addEventListener("click", ()=>{
         console.log("clientsBtn clicked");
         if(!overAll.classList.contains("hide"))
@@ -299,6 +300,15 @@
         if(!divForAddToScreen.classList.contains("hide"))
             divForAddToScreen.classList.add("hide");
         divForDeleteToScreen.classList.toggle("hide");
+    });
+
+    changePassword.addEventListener("click",() =>{
+
+        console.log("i am here");
+        window.location.replace("http://localhost:8080/changepass");
+
+        
+        // location.href = "http://localhost:8080/changepass";
     });
    
     /* ****************************************************** */

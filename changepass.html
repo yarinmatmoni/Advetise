@@ -4,17 +4,23 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="css/login.css" />
+    <link rel="stylesheet" href="css/changepass.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>change password</title>
 </head>
 <body id="body">
     <div class="box">
         <h1> Change Password </h1>
-        <i class='far fa-user'></i>
         <div class="changePass">
-            <input type="text" id="lastPassword" placeholder="Last Password" autocomplete="off"/>
-            <input type="text" id="newpassword" placeholder="New password" autocomplete="off"/> 
-            <input type="text" id="verify" placeholder="Verify" autocomplete="off"/>
+            <div class="verName"> 
+                <input type="text" id="lastName" placeholder="Last Name" autocomplete="off"/>
+                <input type="text" id="newName" placeholder="New Name" autocomplete="off"/>
+            </div>
+            <div class="verPassword"> 
+                <input type="text" id="lastPassword" placeholder="Last Password" autocomplete="off"/>
+                <input type="text" id="newpassword" placeholder="New password" autocomplete="off"/> 
+                <input type="text" id="verify" placeholder="Verify" autocomplete="off"/>
+            </div>
             <button id="save" type="submit"> Save </button>
         </div>
     </div>
@@ -26,6 +32,8 @@
     
     const socket = io.connect('http://localhost:8080');
 
+    const lastName = document.getElementById("lastName");
+    const newName = document.getElementById("newName");
     const lastPassword = document.getElementById("lastPassword");
     const newpassword = document.getElementById("newpassword");
     const verify = document.getElementById("verify");
@@ -33,16 +41,15 @@
     const changePassDiv = document.getElementsByClassName("changePass");
     let flag = false;
 
-
     saveBtn.addEventListener("click", ()=> {
-       
         if(flag){
             flag = false;
             errorText.classList.remove("err");
             changePassDiv[0].removeChild(errorText);
         }
-        if(lastPassword.value !== "" && newpassword.value !== "" && verify.value !== "")
+        if(lastPassword.value !== "" && newpassword.value !== "" && verify.value !== ""){
             sumbit();
+        }
         else{
             flag = true;
             errorText = document.createElement("h3");
@@ -50,39 +57,50 @@
             errorText.classList.add("err");
             changePassDiv[0].appendChild(errorText);
         } 
-
-
-        socket.on("ok", function(err, res){
-
-            location.href = "/dashboard";
-
-        });
     });
 
     function sumbit(){
-        const adminData = [];
-        const name = userName.value;
-        const pass = password.value;
-        adminData.push(name);
-        adminData.push(pass);
-        socket.emit('getDataAdmin', adminData);
-        userName.value = "";
-        password.value = "";
 
-        socket.on("validition",function(){
-            if(flag){
-                flag = false;
-                errorText.classList.remove("err");
-                loginDiv[0].removeChild(errorText);
-            }
-            flag = true;
+        const lastPasswordV = lastPassword.value;
+        const newPasswordV = newpassword.value;
+        const verifyV = verify.value;
+        const lastNameV = lastName.value;
+        const newNameV = newName.value;
+
+        if(verifyV != newPasswordV){
             errorText = document.createElement("h3");
-            errorText.innerText = "* The password and/or username are wrong...";
+            errorText.innerText = "* Please verify your password again";
             errorText.classList.add("err");
-            loginDiv[0].appendChild(errorText);
-        });
+            changePassDiv[0].appendChild(errorText);
+        }
+        else{
+            var data = [];
+            data.push(lastNameV);
+            data.push(newNameV);
+            data.push(lastPasswordV);
+            data.push(newPasswordV);
+
+            socket.emit("change", data);
+            socket.on("right", function(verdata){
+                console.log("password and name changed!");
+
+                textsuccess = document.createElement("h3");
+                textsuccess.innerText = verdata;
+                textsuccess.classList.add("textsuccess");
+                changePassDiv[0].appendChild(textsuccess);
+                setTimeout(toDashboard, 2000);             
+            });
+
+            function toDashboard(){
+                location.href = "http://localhost:8080/dashboard";
+            }
+
+            socket.on("wrong", function(wrongver){
+                wrongText = document.createElement("h3");
+                wrongText.innerText = wrongver;
+                wrongText.classList.add("wrong");
+                changePassDiv[0].appendChild(wrongText);
+            });
+        }
     }
-
-
-  
 </script>

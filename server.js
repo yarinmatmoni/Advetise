@@ -26,11 +26,16 @@ app.get("/screen=:screen" , function(request, response){
   response.sendFile(path);
 });
 
-app.post("/changepass", function(request, response){
-  var path = __dirname + "/changepass.html"
-  response.sendFile(path);
+app.get("/changepass", function(req, res){
+  screen = "changepass";
+  res.sendFile(__dirname + "/changepass.html");
 });
 
+app.get("/logIn", function(req, res){
+
+  screen = "logIn"
+  res.sendFile(__dirname + "/logIn.html");
+});
 
 ioConnection();
 
@@ -61,6 +66,11 @@ function ioConnection(){
       console.log("admin here");
       mongoForAdmin(socket);
     }
+    else if(screen == "changepass"){
+      console.log("inside the change password");
+      mongoForChangePassword(socket);
+
+    }
     ioDisconnection(socket, screen);
   });
 }
@@ -87,6 +97,39 @@ function ioDisconnection(socket, num){
 }
 
 /* ****************************** mongo ************************* */
+
+function mongoForChangePassword(socket){
+
+  socket.on("change", function(data){
+
+    MongoClient.connect(url, function (err, db){
+      if(err) throw err; 
+      const dbo = db.db("AdvDB");
+
+      dbo.collection("userAdmin").find({}).toArray(function(err, result){
+        if (err) throw err;
+        var dbData = result[0];
+        var lastName = data[0];
+        var newName = data[1]
+        var ladtPassword = data[2];
+        var newPassword = data[3];
+
+        
+        console.log("dbData pass: " + dbData.password);
+        console.log("dbData name: " + dbData.userName);
+
+        if(dbData.password == ladtPassword && dbData.userName == lastName){
+          dbo.collection("userAdmin").updateOne({}, {$set: {password: newPassword}});
+          dbo.collection("userAdmin").updateOne({}, {$set: {userName: newName}});
+          socket.emit("right", "Password and name changed!");
+        }
+        else{
+          socket.emit("wrong", "Last password or last name Wrong!");
+        }
+      });
+    });
+  });
+}
 
 function mongoFor1(socket){
   MongoClient.connect(url, function (err, db){
