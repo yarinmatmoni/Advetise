@@ -97,7 +97,7 @@
             <button id="saveBtnAdvToScreen"> save </button>
         </div>
         <div class="divForDeleteToScreen hide" id="divForDeleteToScreen"> 
-            <select name="deleteAdvFromScreen" id="deleteAdvFromScreenSelect">
+            <select name="deleteAdvFromScreen" id="deleteAdvFromScreenSelect" onchange="deleteAdvFromScreen()">
                 <option disabled selected value> -- select adv -- </option>
             </select>
             <button id="deleteBtnAdvFromSceeen"> delete </button>
@@ -232,6 +232,12 @@
 
     deleteFromScreenBtn.addEventListener("click", ()=>{
         console.log("deleteFromScreenBtn clicked");
+        var data = []; 
+        data.push(currentScreen);
+        data.push(selectedAdvToDeleteFromScreen);
+        socket.emit("getAdvToDeleteFromScreen", data);
+
+
     });
 
     overAllBtn.addEventListener("click", ()=>{
@@ -348,7 +354,7 @@
     function addAdvSelect(){
         durationTimeAdd.disabled = false;
         selectedAdvToAddToScreen = addAdvToScreenSelect.options[addAdvToScreenSelect.selectedIndex].value; // the id of the selected adv
-        console.log("the selected adv to add to screen is: " + selectedAdvToAddToScreen);
+        // console.log("the selected adv to add to screen is: " + selectedAdvToAddToScreen);
         durationTimeAdd.addEventListener("input",()=>{
             if(durationTimeAdd.value.length > 0)
                 addToScreenBtn.disabled = false;
@@ -357,11 +363,14 @@
         });
     }
 
-    function selectAdvToAddToScreen(){
-       
-        
+    function deleteAdvFromScreen(){
+
+        selectedAdvToDeleteFromScreen = deleteAdvFromScreenSelect.options[deleteAdvFromScreenSelect.selectedIndex].value;
+        // socket.emit("getAdvToDeleteFromScreen", selectedAdvToDeleteFromScreen);
+
     }
 
+   
     /* ************************* displayes ************************* */
     function displayAdv(res){
         //document.getElementById("line1").style.color = allData[i].colors.line1color;
