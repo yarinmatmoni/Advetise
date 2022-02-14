@@ -201,10 +201,7 @@ function sendTiming(socket, num){
     MongoClient.connect(url, function (err, db) {
       if (err) throw err;
       const dbo = db.db("AdvDB");
-      // dbo.collection("users").find({status: "active"}).toArray(function(err,numOfClients){
-      if (err) throw err;
       result[0] = count; 
-
       var array;
 
       dbo.collection("advData").find({}).toArray(function(err,Advs){
@@ -224,14 +221,11 @@ function sendTiming(socket, num){
       socket.on("newAdvData",function(res){
         var lastId = array[array.length - 1].myId; 
         console.log("the last id is: " + lastId);
-        var newAdv = createAdv(res, (++lastId));
+        var sh = [];
+        var newAdv = createAdv(res, (++lastId), sh);
 
         dbo.collection("advData").insertOne(newAdv,function(err,res){
           if(err) throw err;
-        //   dbo.collection("advData").find({}).toArray(function(err, res){
-        //     if(err) throw err;
-        //     socket.emit("getAllAdvsForAdd", res);
-        //   });
         });
       });        
 
@@ -245,8 +239,11 @@ function sendTiming(socket, num){
         });
 
         socket.on("editAdvData", function(res){
-          var adv = createAdv(res, idAdv);
-          dbo.collection("advData").replaceOne({myId: idAdv}, adv);
+          dbo.collection("advData").find({myId: idAdv}).toArray(function(err, showArr){
+            var sh = showArr[0].show;
+            var newAdv = createAdv(res, idAdv, sh);
+            dbo.collection("advData").replaceOne({myId: idAdv}, newAdv);
+          });
         });
 
         ////////////////////////////////// delete button //////////////////////////////////
@@ -260,8 +257,6 @@ function sendTiming(socket, num){
             }
             dbo.collection("advData").deleteOne({myId: idOfAdv});
           });
-
-
         });
       });  
 
@@ -271,7 +266,7 @@ function sendTiming(socket, num){
 
         dbo.collection("users").find({userId: currenScreen}).toArray(function(err, result){
           if (err) throw err;
-          var advList = result[0].advList; // id of currentScreen
+          var advList = result[0].advList; 
           dbo.collection("advData").find({}).toArray(function(err, all){
             var sendAdv = [];
             var sendToDelete = [];
@@ -286,14 +281,12 @@ function sendTiming(socket, num){
         });
       });
 
-
       socket.on("getAdvToDeleteFromScreen", function(data){
         var currentScreen = data[0];
         var idToDelete = data[1];
         deleteFromAll(dbo, idToDelete, currentScreen);
 
-      });
-      // });  
+      });  
     }); 
   }
 
@@ -330,7 +323,6 @@ function addDataToScreen(socket, dbo){
     var advNum = data[1];
     var timingNum = data[2];
     var show = [];
-
 
     dbo.collection("advData").find({myId: advNum}).toArray(function(err, relevatAdv){
       if (err) throw err;
@@ -371,31 +363,29 @@ function findAdvsForAddAndDelete(all, advList, sendAdv, sendToDelete){
   }
 }
 
-function createAdv(res,num){
-
+function createAdv(res,num, showArray){
   console.log("the num is: " + num);
-  var Advobj = {
-    myId: num.toString(),
-    title: res[0],
-    text: {
-      line1: res[1],
-      line2: res[2],
-      line3: res[3],
-      line4: res[4],
-    },
-    colors: {
-      line1color: "#E9724C",
-      line2color: "#E9724C",
-      line3color: "#E9724C",
-      line4color: "",
-      background: "#EDF2F4",
-    },
-    imgsrc: res[5],
-    show: [""],
-  }
+    var Advobj = {
+      myId: num.toString(),
+      title: res[0],
+      text: {
+        line1: res[1],
+        line2: res[2],
+        line3: res[3],
+        line4: res[4],
+      },
+      colors: {
+        line1color: res[5],
+        line2color: res[6],
+        line3color: res[7],
+        line4color: res[8],
+        background: res[9],
+      },
+      imgsrc: res[10],
+      show: showArray,
+    }
   return Advobj;
-} 
-
+}
 
 /* *********************************** Active or Not Active *********************************** */
 
@@ -408,14 +398,11 @@ function setActive(a){
   });
 }
 
-
 function setNotActive(a){
   MongoClient.connect(url, function (err, db) {
     const dbo = db.db("AdvDB");
     var date = new Date();
-    // console.log("UTC: " + date.getUTCMonth());
     var currentDate = `${date.getUTCDate()}.${date.getMonth() + 1}.${date.getFullYear()}   ${date.getHours()}:${date.getUTCMinutes()}`;
-    // console.log("current date: " + currentDate);
     dbo
     .collection("users").updateOne({userId: a}, 
     {$set: {status: "Not Active"}});
