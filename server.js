@@ -21,13 +21,10 @@ app.use(express.static(__dirname + "/public"));
 
 let screen; 
 app.get("/screen=:screen" , function(request, response){
-
   screen = request.params.screen;
   var path = __dirname +"/screen" + screen + ".html";
   response.sendFile(path);
-
 });
-
 ioConnection();
 
 /* **************************************** functions **************************************** */
@@ -39,7 +36,6 @@ function ioConnection(){
       setActive("0");
       count++; 
       mongoFor1(socket);
-
     }
     else if(screen == 2){
       console.log("con 2");
@@ -54,7 +50,6 @@ function ioConnection(){
       mongoFor3(socket);
     }
     else if(screen == "admin"){
-
       console.log("the count in connection to admin is: " + count);
       console.log("admin here");
       mongoForAdmin(socket);
@@ -64,11 +59,8 @@ function ioConnection(){
 }
 
 function ioDisconnection(socket, num){
-
   socket.on("disconnect", function(err, res){
-    
     console.log("screen in disconnection: " + num);
-
     if(num == 1){
       console.log("discon 1");
       setNotActive("0");
@@ -85,7 +77,6 @@ function ioDisconnection(socket, num){
       count--;
     }
   });
-
 }
 
 /* ****************************** mongo ************************* */
@@ -94,16 +85,25 @@ function mongoFor1(socket){
   MongoClient.connect(url, function (err, db){
     if(err) throw err; 
     const dbo = db.db("AdvDB");
+
     dbo
     .collection("advData")
     .find({show: "0"})
-    .toArray(function (err, result){
+    .toArray(function (err, result){ 
+     
       if(err) throw err;
-      socket.emit("getResultScreen1", result);
-      sendTiming(socket, 1);
+      dbo.collection("users").find({userId: "0"}).toArray(function(err, res){
+        var correctOrder = [];
+        var advsUserOreder = res[0].advList;
+        fixOrder(advsUserOreder, result, correctOrder);
+        if(err) throw err;
+        socket.emit("getResultScreen1", correctOrder);
+        sendTiming(socket, 1);
+      });
     });
   });
 }
+
 
 function mongoFor2(socket){
   MongoClient.connect(url, function (err, db){
@@ -115,8 +115,14 @@ function mongoFor2(socket){
     .toArray(function (err, result){
 
       if(err) throw err;
-      socket.emit("getResultScreen2", result);
-      sendTiming(socket, 2);
+      dbo.collection("users").find({userId: "1"}).toArray(function(err, res){
+        var correctOrder = [];
+        var advsUserOreder = res[0].advList;
+        fixOrder(advsUserOreder, result, correctOrder);
+        if(err) throw err;
+        socket.emit("getResultScreen2", correctOrder);
+        sendTiming(socket, 2);
+      });
     });
   });
 }
@@ -131,10 +137,29 @@ function mongoFor3(socket){
     .toArray(function (err, result){
 
       if(err) throw err;
-      socket.emit("getResultScreen3", result);
-      sendTiming(socket, 3);
+      dbo.collection("users").find({userId: "2"}).toArray(function(err, res){
+        var correctOrder = [];
+        var advsUserOreder = res[0].advList;
+        fixOrder(advsUserOreder, result, correctOrder);
+        if(err) throw err;
+        socket.emit("getResultScreen3", correctOrder);
+        sendTiming(socket, 3);
+      });
     });
   });
+}
+
+
+function fixOrder(advsUserOreder, result, correctOrder){
+ 
+  for(let i = 0; i<advsUserOreder.length; i++){
+    for(let j = 0; j<result.length; j++){
+      if(advsUserOreder[i] == result[j].myId){
+        correctOrder.push(result[j]);
+        break;
+      }
+    }
+  }
 }
 
 function sendTiming(socket, num){
@@ -155,9 +180,10 @@ function sendTiming(socket, num){
     const dbo = db.db("AdvDB");
       dbo
       .collection("users")
-      .find({userId: n.toString}) /////////////TODO: check this!
+      .find({userId: n.toString()}) 
       .toArray(function(err, user){
         if (err) throw err;
+        console.log("the str: " + str);
         socket.emit(str, user);
       });
   });
@@ -235,39 +261,82 @@ function sendTiming(socket, num){
 
         socket.on("getAdvByScreen", function(currenScreen){
 
-          console.log("hereeeeeeeee");
-
           dbo.collection("users").find({userId: currenScreen}).toArray(function(err, result){
             if (err) throw err;
             var advList = result[0].advList; // id of currentScreen
             dbo.collection("advData").find({}).toArray(function(err, all){
               var sendAdv = [];
               var sendToDelete = [];
-              for(let i=0; i<all.length; i++){
-                var bol = false; 
-                for(let j=0; j<advList.length; j++){
-                  if(all[i].myId == advList[j]){
-                    bol = true;
-                  }
-                }
-                if(bol == false){
-                  sendAdv.push(all[i]);
-                }else{
-                  sendToDelete.push(all[i]);
-                }
-            }
-            socket.emit("getArrayOfAdsToAdd",sendAdv);
-            socket.emit("getArrayOfAdsToDelete",sendToDelete);
-          });   
-        });
-      });
 
-      });
+              findAdvsForAddAndDelete(all, advList, sendAdv, sendToDelete);
+          
+              socket.emit("getArrayOfAdsToAdd",sendAdv);
+              socket.emit("getArrayOfAdsToDelete",sendToDelete);
+
+            });   
+
+
+            addDataToScreen(socket, dbo);
+
+          
+          });
+        });
+      });  
     }); 
   }
 
 server.listen(8080);
 
+
+function addDataToScreen(socket, dbo){
+
+  socket.on("addAdvToScreen", function(data){
+    var screenNum = data[0];
+    var advNum = data[1];
+    var timingNum = data[2];
+    var show = [];
+
+
+    dbo.collection("advData").find({myId: advNum}).toArray(function(err, relevatAdv){
+      if (err) throw err;
+      showArray = relevatAdv[0].show;
+      showArray.push(screenNum); 
+
+      dbo.collection("advData").updateOne({myId: advNum}, {$set: {show: showArray}});
+      dbo.collection("users").find({userId: screenNum}).toArray(function(err, users){
+        var user = users[0];
+        var timingArray = [];
+        var advListArray = [];
+
+        advListArray = user.advList;
+        advListArray.push(advNum);
+        timingArray = user.timing;
+        timingArray.push(timingNum)
+
+        dbo.collection("users").updateOne({userId: screenNum}, {$set: {advList: advListArray}});
+        dbo.collection("users").updateOne({userId: screenNum}, {$set: {timing: timingArray}});
+      });
+    });
+  });
+
+
+}
+
+function findAdvsForAddAndDelete(all, advList, sendAdv, sendToDelete){
+  for(let i=0; i<all.length; i++){
+    var bol = false; 
+    for(let j=0; j<advList.length; j++){
+      if(all[i].myId == advList[j]){
+        bol = true;
+      }
+    }
+    if(bol == false){
+      sendAdv.push(all[i]);
+    }else{
+      sendToDelete.push(all[i]);
+    }
+  }
+}
 
 function createAdv(res,num){
 
@@ -291,7 +360,6 @@ function createAdv(res,num){
     imgsrc: res[5],
     show: [""],
   }
-
   return Advobj;
 } 
 

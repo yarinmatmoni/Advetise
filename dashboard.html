@@ -137,32 +137,49 @@
 
     const addBtn = document.getElementById("addButton");
     const editBtn = document.getElementById("editButton");
+
     const deleteButton = document.getElementById("delete");
     const addButton  = document.getElementById("add");
     const editButton  = document.getElementById("edit");
-    const addToScreen = document.getElementById("saveBtnAdvToScreen");
-    const deleteToScreen = document.getElementById("deleteBtnAdvFromSceeen");
+
+    const addToScreenBtn = document.getElementById("saveBtnAdvToScreen");
+    const deleteFromScreenBtn = document.getElementById("deleteBtnAdvFromSceeen");
     const clientsBtn = document.getElementById("Clients");
+    const overAllBtn = document.querySelector("#OverAll");
+    const addAdvToScreenBtn = document.querySelector("#addAdvToScreen");
+    const deleteAdvFromScreenBtn = document.querySelector("#deleteAdvFromScreen");
+
+    /* ****************************** selectors names ****************************** */
+
+    const selectAdv = document.getElementById("advSelect");
+    const selectClient = document.getElementById("clientChoose");
+    var currentScreen; 
+    const addAdvToScreenSelect = document.querySelector("#addAdvToScreenSelect");
+    var selectedAdvToAddToScreen; 
+    const deleteAdvFromScreenSelect = document.querySelector("#deleteAdvFromScreenSelect");
+    var selectedAdvToDeleteFromScreen;
+
+    /* *********************** divs *********************** */ 
     const add = document.querySelector("#addNewAdv");
     const edit = document.querySelector("#editAdv");
-    const overAllBtn = document.querySelector("#OverAll");
     const overAll = document.querySelector("#priview-continer");
     const client = document.querySelector("#client");
     const toScreen = document.querySelector("#clients-toScreen");
-    const addAdvToScreen = document.querySelector("#addAdvToScreen");
-    const deleteAdvFromScreen = document.querySelector("#deleteAdvFromScreen");
     const divForAddToScreen = document.querySelector("#divForAddToScreen");
     const divForDeleteToScreen = document.querySelector("#divForDeleteToScreen");
-    const addAdvToScreenSelect = document.querySelector("#addAdvToScreenSelect");
-    const deleteAdvFromScreenSelect = document.querySelector("#deleteAdvFromScreenSelect");
-    const durationTimeAdd = document.querySelector("#durationTimeAdd");
+
+    /* *********************** input time *********************** */ 
+
+    const durationTimeAdd = document.querySelector("#durationTimeAdd"); 
+
+    const addImage = document.getElementById("addImage");
 
 
     deleteButton.disabled=true;
     editButton.disabled = true;
-    addAdvToScreen.disabled = true;
-    deleteAdvFromScreen.disabled = true;
-    addToScreen.disabled = true;
+    addAdvToScreenBtn.disabled = true;
+    deleteAdvFromScreenBtn.disabled = true;
+    addToScreenBtn.disabled = true;
     durationTimeAdd.disabled = true;
     
 
@@ -174,7 +191,6 @@
     });
 
     editBtn.addEventListener("click",()=> {
-
         console.log("editBtn clicked");
         var arrEdit = creatInfoOfAdvInArray(editLines);
         cleanInputsEdit();
@@ -196,50 +212,55 @@
     });
 
     deleteButton.addEventListener("click", ()=>{
-        
         console.log("deleteButton clicked");
         socket.emit("deleteAdv", idOfChoosenAdv);
     });
 
-    addToScreen.addEventListener("click", ()=>{    
-        console.log("addToScreen clicked");
-        
+    addToScreenBtn.addEventListener("click", ()=>{    
+        console.log("addToScreenBtn clicked");
+        var duration = durationTimeAdd.value;
+
+        var dataOfAddAdvToScreen = [];
+        dataOfAddAdvToScreen.push(currentScreen);
+        dataOfAddAdvToScreen.push(selectedAdvToAddToScreen);
+        dataOfAddAdvToScreen.push(duration);
+
+        console.log("the info is: " + dataOfAddAdvToScreen);
+        socket.emit("addAdvToScreen", dataOfAddAdvToScreen);
+        // location.reload(true);
     });
 
-    deleteToScreen.addEventListener("click", ()=>{
-        console.log("deleteToScreen clicked");
+    deleteFromScreenBtn.addEventListener("click", ()=>{
+        console.log("deleteFromScreenBtn clicked");
     });
 
     overAllBtn.addEventListener("click", ()=>{
+        console.log("overAllBtn clicked");
         if(!client.classList.contains("hide"))
         client.classList.add("hide");
         overAll.classList.toggle("hide");
     });
 
     clientsBtn.addEventListener("click", ()=>{
+        console.log("clientsBtn clicked");
         if(!overAll.classList.contains("hide"))
         overAll.classList.add("hide");
        client.classList.toggle("hide");
     });
 
-    addAdvToScreen.addEventListener("click",()=>{
+    addAdvToScreenBtn.addEventListener("click",()=>{
+        console.log("addAdvToScreenBtn clicked");
         if(!divForDeleteToScreen.classList.contains("hide"))
             divForDeleteToScreen.classList.add("hide");
         divForAddToScreen.classList.toggle("hide");
     });
 
-    deleteAdvFromScreen.addEventListener("click",()=> {
+    deleteAdvFromScreenBtn.addEventListener("click",()=> {
+        console.log("deleteAdvFromScreenBtn clicked");
         if(!divForAddToScreen.classList.contains("hide"))
             divForAddToScreen.classList.add("hide");
         divForDeleteToScreen.classList.toggle("hide");
     });
-
-    /* ****************************** selectors names ****************************** */
-    const selectAdv = document.getElementById("advSelect");
-    const selectClient = document.getElementById("clientChoose");
-    var currentScreen; 
-
-    const addImage = document.getElementById("addImage");
    
     /* ****************************************************** */
 
@@ -253,9 +274,7 @@
         var allAdv = [] 
         allAdv = allAdvs;
         advsArray = allAdv;
-
         countAdvs = advsArray[advsArray.length - 1].myId;
-        // console.log("count ==== " + countAdvs);
         createOption(allAdvs,selectAdv);
     });
 
@@ -314,8 +333,8 @@
     }
 
     function chooseScreen(){
-        addAdvToScreen.disabled = false;
-        deleteAdvFromScreen.disabled = false;
+        addAdvToScreenBtn.disabled = false;
+        deleteAdvFromScreenBtn.disabled = false;
         currentScreen = selectClient.options[selectClient.selectedIndex].value;
         socket.emit("getAdvByScreen", currentScreen);
         socket.on("getArrayOfAdsToAdd",function(resToAddSelect){
@@ -324,6 +343,23 @@
         socket.on("getArrayOfAdsToDelete",function(resToDeleteSelect){
             createOption(resToDeleteSelect,deleteAdvFromScreenSelect);
         });
+    }
+
+    function addAdvSelect(){
+        durationTimeAdd.disabled = false;
+        selectedAdvToAddToScreen = addAdvToScreenSelect.options[addAdvToScreenSelect.selectedIndex].value; // the id of the selected adv
+        console.log("the selected adv to add to screen is: " + selectedAdvToAddToScreen);
+        durationTimeAdd.addEventListener("input",()=>{
+            if(durationTimeAdd.value.length > 0)
+                addToScreenBtn.disabled = false;
+            else
+            addToScreenBtn.disabled = true; 
+        });
+    }
+
+    function selectAdvToAddToScreen(){
+       
+        
     }
 
     /* ************************* displayes ************************* */
@@ -350,15 +386,7 @@
         document.getElementById("editImage").value = res.imgsrc;
     }
 
-    function addAdvSelect(){
-        durationTimeAdd.disabled = false;
-        durationTimeAdd.addEventListener("input",()=>{
-            if(durationTimeAdd.value.length > 0)
-                addToScreen.disabled = false;
-            else
-            addToScreen.disabled = true; 
-        });
-    }
+   
 
 </script>
 
