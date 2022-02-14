@@ -1,15 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap");
 
 body {
   margin: 0px;
   padding: 0px;
   box-sizing: border-box;
-  background-color: #FAFAFA;
-  font-family: 'Montserrat', sans-serif;
+  background-color: #fafafa;
+  font-family: "Montserrat", sans-serif;
 }
 
-.changePassword{
-  background-color:lightcoral;
+.changePassword {
+  background-color: lightcoral;
 }
 
 h1 {
@@ -23,7 +23,7 @@ h1 {
 }
 
 .info {
-  background-color: #FAFAFA;
+  background-color: #fafafa;
   width: 16rem;
   padding: 0rem 1rem;
   text-align: center;
@@ -59,7 +59,7 @@ h1 {
   margin: 0.5rem;
 }
 
-.SelectMode button:hover{
+.SelectMode button:hover {
   background: white;
   color: #376996;
   border: 2px solid #376996;
@@ -96,7 +96,7 @@ h1 {
   border-radius: 10px;
   transition: all 0.3s ease;
 }
-.buttons button:hover{
+.buttons button:hover {
   background: white;
   color: #4e87b9;
   border: 2px solid #4e87b9;
@@ -106,7 +106,7 @@ h1 {
 .editAdv-input {
   display: flex;
   flex-direction: column;
-  width: 20rem;
+  width: 28rem;
   margin: auto;
   padding-bottom: 0.5rem;
 }
@@ -116,6 +116,12 @@ h1 {
   padding: 0.4rem;
   font-size: medium;
   margin: 0.2rem 0rem;
+
+  margin-left: 17px;
+  border: none;
+  border-bottom: solid 1px cadetblue;
+  background-color: #fafafa;
+  outline: none;
 }
 
 .addNewAdv,
@@ -149,7 +155,7 @@ h1 {
   width: 11rem;
   border-radius: 10px;
   border-color: #376996;
-  color:#376996;
+  color: #376996;
   outline: none;
 }
 
@@ -168,7 +174,7 @@ h1 {
   width: 11rem;
   border-radius: 10px;
   border-color: #376996;
-  color:#376996;
+  color: #376996;
   outline: none;
 }
 
@@ -194,7 +200,7 @@ h1 {
   transition: all 0.3s ease;
 }
 
-.clients-toScreen button:hover{
+.clients-toScreen button:hover {
   background: white;
   color: #4e87b9;
   border: 2px solid #4e87b9;
@@ -212,11 +218,12 @@ h1 {
   width: 5.5rem;
 }
 
-.displayAdv{
+.displayAdv {
   display: flex;
 }
 
-#addButton{
+#addButton,
+#editButton {
   margin: 0px 2px;
   width: 150px;
   height: 38px;
@@ -228,8 +235,13 @@ h1 {
   border-radius: 10px;
   transition: all 0.3s ease;
 }
-#addButton:hover{
+#addButton:hover,
+#editButton:hover {
   background: white;
   color: #4e87b9;
   border: 2px solid #4e87b9;
+}
+.label-input {
+  display: flex;
+  justify-content: space-between;
 }
