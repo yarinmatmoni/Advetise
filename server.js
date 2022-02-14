@@ -25,6 +25,13 @@ app.get("/screen=:screen" , function(request, response){
   var path = __dirname +"/screen" + screen + ".html";
   response.sendFile(path);
 });
+
+app.post("/changepass", function(request, response){
+  var path = __dirname + "/changepass.html"
+  response.sendFile(path);
+});
+
+
 ioConnection();
 
 /* **************************************** functions **************************************** */
@@ -209,7 +216,7 @@ function sendTiming(socket, num){
         result[1] = Advs.length;
         array = Advs;
         socket.emit("getInfoForAdmin", result); // send to num of connections and num of advs. 
-        socket.emit("sendAdv",Advs); // send all the advs.
+        socket.emit("sendAllAdvs",Advs); // send all the advs.
       });
 
         /* *********************** sockets for buttons ********************** */
@@ -364,7 +371,7 @@ function findAdvsForAddAndDelete(all, advList, sendAdv, sendToDelete){
 }
 
 function createAdv(res,num, showArray){
-  console.log("the num is: " + num);
+  console.log("the res is: " + res);
     var Advobj = {
       myId: num.toString(),
       title: res[0],

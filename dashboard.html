@@ -9,6 +9,9 @@
     <title>Dashboard</title>
 </head>
 <body>
+        <form id="contactForm" method="POST" action="/changepass">
+            <button id="changePassword" type="submit">change passowrd</button>
+          </form>
     <h1>Dashboard</h1>
     <!-- <form action=""> </form> -->
     <div class="info-continer">
@@ -74,7 +77,7 @@
                 <button type="submit" id="editButton">Save</button>
             </div>
         </div>
-        <div class="displayAdv">
+        <div class="displayAdv" id="displayAdv">
             <div class="data">
                 <h2 id="line1"></h2>
                 <h2 id="line2"></h2>
@@ -134,11 +137,17 @@
     });
 
     var allAdvs; 
+    var advsArray; // all advs 
+    var idOfChoosenAdv;  // the id of the choosen  
+    var countAdvs = 0;  // save the last id number in db
 
-    socket.on("getAllAdvs", function(alladvs){
-        allAdvs = alladvs;
+    socket.on("sendAllAdvs", function(allAdvs){
+        var allAdv = [] 
+        allAdv = allAdvs;
+        advsArray = allAdv;
+        countAdvs = advsArray[advsArray.length - 1].myId;
+        createOption(allAdvs,selectAdv);
     });
-
 
     /* *********************** Information from lines (from the client) *********************** */
 
@@ -179,13 +188,13 @@
     const toScreen = document.querySelector("#clients-toScreen");
     const divForAddToScreen = document.querySelector("#divForAddToScreen");
     const divForDeleteToScreen = document.querySelector("#divForDeleteToScreen");
+    const divdisplayAdv = document.querySelector("#displayAdv");
 
     /* *********************** input time *********************** */ 
 
     const durationTimeAdd = document.querySelector("#durationTimeAdd"); 
 
     const addImage = document.getElementById("addImage");
-
 
     deleteButton.disabled=true;
     editButton.disabled = true;
@@ -197,16 +206,20 @@
 
     addBtn.addEventListener("click",()=>{
         console.log("addBtn clicked");
-        var arrAdd = creatInfoOfAdvInArray(addlines);
+        var arrAdd = creatInfoOfAdvInArray(addlines, true);
         cleanInputsAdd();
         socket.emit("newAdvData",arrAdd);
+        location.reload(true);
+
     });
 
     editBtn.addEventListener("click",()=> {
         console.log("editBtn clicked");
-        var arrEdit = creatInfoOfAdvInArray(editLines);
+        var arrEdit = creatInfoOfAdvInArray(editLines, false);
         cleanInputsEdit();
         socket.emit("editAdvData",arrEdit);
+        divdisplayAdv.innerHTML.reload;
+        location.reload(true);
     });
 
     addButton.addEventListener("click", ()=>{
@@ -221,11 +234,14 @@
             add.classList.add("hide");
         edit.classList.toggle("hide");
         console.log("editButton clicked");
+        // location.reload(true);
+        // location.reload(true);
     });
 
     deleteButton.addEventListener("click", ()=>{
         console.log("deleteButton clicked");
         socket.emit("deleteAdv", idOfChoosenAdv);
+        location.reload(true);
     });
 
     addToScreenBtn.addEventListener("click", ()=>{    
@@ -239,7 +255,7 @@
 
         console.log("the info is: " + dataOfAddAdvToScreen);
         socket.emit("addAdvToScreen", dataOfAddAdvToScreen);
-        // location.reload(true);
+        location.reload(true);
     });
 
     deleteFromScreenBtn.addEventListener("click", ()=>{
@@ -248,16 +264,22 @@
         data.push(currentScreen);
         data.push(selectedAdvToDeleteFromScreen);
         socket.emit("getAdvToDeleteFromScreen", data);
-
-
+        location.reload(true);
+        // clientsBtn.click();
     });
 
     overAllBtn.addEventListener("click", ()=>{
         console.log("overAllBtn clicked");
+
+        createOption(allAdvs, selectAdv);
+
+
         if(!client.classList.contains("hide"))
         client.classList.add("hide");
         overAll.classList.toggle("hide");
     });
+
+    
 
     clientsBtn.addEventListener("click", ()=>{
         console.log("clientsBtn clicked");
@@ -282,32 +304,18 @@
    
     /* ****************************************************** */
 
-    var idOfChoosenAdv;  // the id of the choosen  
-    var advsArray; // all advs 
-    var countAdvs = 0; 
-
-    /* ****************************************************** */
-
-    socket.on("sendAdv", function(allAdvs){
-        var allAdv = [] 
-        allAdv = allAdvs;
-        advsArray = allAdv;
-        countAdvs = advsArray[advsArray.length - 1].myId;
-        createOption(allAdvs,selectAdv);
-    });
-
-    selectAdv.addEventListener("load",createOption());  
-    
     /* ************************************************ */
 
-    function creatInfoOfAdvInArray(dlines){ // return an array with informatin from lines (from client).
+    function creatInfoOfAdvInArray(dlines, bol){ // return an array with informatin from lines (from client).
         var dataLines = [];
         dlines.forEach((line)=>{
-            // if(line.value !== "")
                 dataLines.push(line.value);
         });
-        if(addImage.value !== "" ){   // TODO: change!!!
+        if(bol == true){ // add image
             dataLines.push(addImage.value);
+        }
+        else{// edit image
+            dataLines.push(editImage.value);
         }
         return dataLines;
     }
@@ -383,17 +391,17 @@
    
     /* ************************* displayes ************************* */
     function displayAdv(res){
-        //document.getElementById("line1").style.color = allData[i].colors.line1color;
-        //document.getElementById("line2").style.color = allData[i].colors.line2color;
-        //document.getElementById("line3").style.color = allData[i].colors.line3color;
-        //document.getElementById("line4").style.color = allData[i].colors.line4color;
+        document.getElementById("line1").style.color = res.colors.line1color;
+        document.getElementById("line2").style.color = res.colors.line2color;
+        document.getElementById("line3").style.color = res.colors.line3color;
+        document.getElementById("line4").style.color = res.colors.line4color;
         // document.getElementById("title").innerHTML = res.text.title;
         document.getElementById("line1").innerHTML = res.text.line1;
         document.getElementById("line2").innerHTML = res.text.line2;
         document.getElementById("line3").innerHTML = res.text.line3;
         document.getElementById("line4").innerHTML = res.text.line4;
         document.getElementById("myImg").src = res.imgsrc;
-        //document.getElementById("body").style.background = allData[i].colors.background;
+        // document.getElementById("body").style.background = res.colors.background; // change the div of the background
     }
     
     function displayEdit(res){
@@ -402,7 +410,13 @@
         document.getElementById("editLine2").value = res.text.line2;
         document.getElementById("editLine3").value = res.text.line3;
         document.getElementById("editLine4").value = res.text.line4;
+        document.getElementById("editcolorLine1").value = res.colors.line1color;
+        document.getElementById("editcolorLine2").value = res.colors.line2color;
+        document.getElementById("editcolorLine3").value = res.colors.line3color;
+        document.getElementById("editcolorLine4").value = res.colors.line4color;
+        document.getElementById("editcolorBackground").value = res.colors.background;  // change the div of the background
         document.getElementById("editImage").value = res.imgsrc;
+        console.log("image src: " + res.imgsrc);
     }
 
    

@@ -8,6 +8,10 @@ body {
   font-family: "Assistant", sans-serif;
 }
 
+.changePassword{
+  background-color:lightcoral;
+}
+
 h1 {
   text-align: center;
   font-size: 4rem;

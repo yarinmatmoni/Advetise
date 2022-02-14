@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/login.css" />
+    <title>change password</title>
+</head>
+<body id="body">
+    <div class="box">
+        <h1> Change Password </h1>
+        <i class='far fa-user'></i>
+        <div class="changePass">
+            <input type="text" id="lastPassword" placeholder="Last Password" autocomplete="off"/>
+            <input type="text" id="newpassword" placeholder="New password" autocomplete="off"/> 
+            <input type="text" id="verify" placeholder="Verify" autocomplete="off"/>
+            <button id="save" type="submit"> Save </button>
+        </div>
+    </div>
+</body>
+</html>
+
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript">
+    
+    const socket = io.connect('http://localhost:8080');
+
+    const lastPassword = document.getElementById("lastPassword");
+    const newpassword = document.getElementById("newpassword");
+    const verify = document.getElementById("verify");
+    const saveBtn = document.getElementById("save");
+    const changePassDiv = document.getElementsByClassName("changePass");
+    let flag = false;
+
+
+    saveBtn.addEventListener("click", ()=> {
+       
+        if(flag){
+            flag = false;
+            errorText.classList.remove("err");
+            changePassDiv[0].removeChild(errorText);
+        }
+        if(lastPassword.value !== "" && newpassword.value !== "" && verify.value !== "")
+            sumbit();
+        else{
+            flag = true;
+            errorText = document.createElement("h3");
+            errorText.innerText = "* You have to enter your last password and the new password";
+            errorText.classList.add("err");
+            changePassDiv[0].appendChild(errorText);
+        } 
+
+
+        socket.on("ok", function(err, res){
+
+            location.href = "/dashboard";
+
+        });
+    });
+
+    function sumbit(){
+        const adminData = [];
+        const name = userName.value;
+        const pass = password.value;
+        adminData.push(name);
+        adminData.push(pass);
+        socket.emit('getDataAdmin', adminData);
+        userName.value = "";
+        password.value = "";
+
+        socket.on("validition",function(){
+            if(flag){
+                flag = false;
+                errorText.classList.remove("err");
+                loginDiv[0].removeChild(errorText);
+            }
+            flag = true;
+            errorText = document.createElement("h3");
+            errorText.innerText = "* The password and/or username are wrong...";
+            errorText.classList.add("err");
+            loginDiv[0].appendChild(errorText);
+        });
+    }
+
+
+  
+</script>
