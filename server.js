@@ -252,7 +252,16 @@ function sendTiming(socket, num){
         ////////////////////////////////// delete button //////////////////////////////////
 
         socket.on("deleteAdv", function(idOfAdv){
-          dbo.collection("advData").deleteOne({myId: idOfAdv});
+          dbo.collection("advData").find({myId: idOfAdv}).toArray(function(err, res){
+            var adv = res[0];
+            var arr = adv.show; 
+            for(let i = 0; i < arr.length; i++){
+              deleteFromAll(dbo, idOfAdv, arr[i]);
+            }
+            dbo.collection("advData").deleteOne({myId: idOfAdv});
+          });
+
+
         });
       });  
 
