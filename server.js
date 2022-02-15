@@ -338,7 +338,37 @@ function sendTiming(socket, num){
             dbo.collection("advData").deleteOne({myId: idOfAdv});
           });
         });
-      });  
+      }); 
+
+
+
+       ////////////////////////////////// Timing button //////////////////////////////////
+
+      socket.on("getTiming", function(id){
+        dbo.collection("users").find({userId: id}).toArray(function(err, res){
+          var timing = res[0].timing;
+          socket.emit("timingFromServer", timing);
+        });
+      });
+
+      socket.on("editDuration", function(data){
+        var currentScreen=data[0];
+        var index=data[1];
+        var currentTiming= data[2];
+        console.log("the curr:"+currentScreen );
+        console.log("the index:"+index );
+        console.log("the currentTiming:"+currentTiming );
+        dbo.collection("users").find({userId: currentScreen}).toArray(function(err,res){
+          var user=res[0];
+          var userTiming=user.timing;
+          userTiming[index]=currentTiming;
+          console.log("the userTiming:"+userTiming );
+          dbo.collection("users").updateOne({userId: currentScreen}, {$set: {timing: userTiming}});
+
+        });
+      });
+
+
 
         ////////////////////////////////// client /////////////////////////////////
 

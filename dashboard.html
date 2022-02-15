@@ -109,6 +109,7 @@
             <div class="clients-toScreen" id="clients-toScreen">
                 <button id="addAdvToScreen"> add Adv to screen </button> 
                 <button id="deleteAdvFromScreen"> delete Adv from screen </button>
+                <button id="changeDuration"> Change Duration </button>
             </div>
         </div>
         <div class="divForAddToScreen hide" id="divForAddToScreen"> 
@@ -124,6 +125,13 @@
                 <option disabled selected value> -- select adv -- </option>
             </select>
             <button id="deleteBtnAdvFromSceeen"> delete </button>
+        </div>
+        <div class="divChangeDuration hide" id="divChangeDuration"> 
+            <select name="changeDurationSelect" id="changeDurationSelect" onchange="changeDuration()">
+                <option disabled selected value> -- select adv -- </option>
+            </select>
+            <input type="text" id="changeDurationInput">
+            <button id="SaveNewDuration"> Save </button>
         </div>
     </div>
 </body>
@@ -193,6 +201,9 @@
     const addAdvToScreenBtn = document.querySelector("#addAdvToScreen");
     const deleteAdvFromScreenBtn = document.querySelector("#deleteAdvFromScreen");
 
+    const changeDurationBtn=document.getElementById("changeDuration");
+    const saveNewDurationBtn=document.getElementById("SaveNewDuration");
+
     /* ****************************** selectors names ****************************** */
 
     const selectAdv = document.getElementById("advSelect");
@@ -202,6 +213,8 @@
     var selectedAdvToAddToScreen; 
     const deleteAdvFromScreenSelect = document.querySelector("#deleteAdvFromScreenSelect");
     var selectedAdvToDeleteFromScreen;
+    const changeDurationSelect = document.querySelector("#changeDurationSelect");
+    var selectedchangeDuration;
 
     /* *********************** divs *********************** */ 
     const add = document.querySelector("#addNewAdv");
@@ -212,17 +225,21 @@
     const divForAddToScreen = document.querySelector("#divForAddToScreen");
     const divForDeleteToScreen = document.querySelector("#divForDeleteToScreen");
     const divdisplayAdv = document.querySelector("#displayAdv");
+    const divChangeDuration = document.querySelector("#divChangeDuration");
 
     /* *********************** input time *********************** */ 
 
     const durationTimeAdd = document.querySelector("#durationTimeAdd"); 
     const message = document.getElementById("message");
     const addImage = document.getElementById("addImage");
+    const changeDurationInput=document.getElementById("changeDurationInput");
 
     deleteButton.disabled=true;
     editButton.disabled = true;
     addAdvToScreenBtn.disabled = true;
     deleteAdvFromScreenBtn.disabled = true;
+    changeDurationBtn.disabled = true;
+
     
     logOut.addEventListener("click", ()=>{
         console.log("log out");
@@ -299,6 +316,17 @@
         socket.emit("inAdmin", true); // check
     });
 
+    saveNewDurationBtn.addEventListener("click", ()=>{
+        console.log("saveNewDurationBtn clicked");
+        var data=[];
+        var newTime=changeDurationInput.value;
+        data.push(currentScreen);
+        data.push(index);
+        data.push(newTime);
+        socket.emit("editDuration", data);
+        location.reload(true);
+    });
+
     overAllBtn.addEventListener("click", ()=>{
         console.log("overAllBtn clicked");
         createOption(allAdvs, selectAdv);
@@ -316,6 +344,8 @@
 
     addAdvToScreenBtn.addEventListener("click",()=>{
         console.log("addAdvToScreenBtn clicked");
+        if(!divChangeDuration.classList.contains("hide"))
+            divChangeDuration.classList.add("hide");
         if(!divForDeleteToScreen.classList.contains("hide"))
             divForDeleteToScreen.classList.add("hide");
         divForAddToScreen.classList.toggle("hide");;
@@ -323,9 +353,20 @@
 
     deleteAdvFromScreenBtn.addEventListener("click",()=> {
         console.log("deleteAdvFromScreenBtn clicked");
+        if(!divChangeDuration.classList.contains("hide"))
+            divChangeDuration.classList.add("hide");
         if(!divForAddToScreen.classList.contains("hide"))
             divForAddToScreen.classList.add("hide");
         divForDeleteToScreen.classList.toggle("hide");
+    });
+
+    changeDurationBtn.addEventListener("click", ()=>{
+        console.log("changeDurationBtn clicked");
+        if(!divForDeleteToScreen.classList.contains("hide"))
+            divForDeleteToScreen.classList.add("hide");
+        if(!divForAddToScreen.classList.contains("hide"))
+            divForAddToScreen.classList.add("hide");
+        divChangeDuration.classList.toggle("hide");
     });
 
     changePassword.addEventListener("click",() =>{
@@ -389,17 +430,31 @@
     }
 
     function chooseScreen(){
+        changeDurationBtn.disabled= false;
         addAdvToScreenBtn.disabled = false;
         deleteAdvFromScreenBtn.disabled = false;
         currentScreen = selectClient.options[selectClient.selectedIndex].value;
         socket.emit("getAdvByScreen", currentScreen);
+        socket.emit("getTiming", currentScreen);
         socket.once("getArrayOfAdsToAdd",function(resToAddSelect){
             createOption(resToAddSelect,addAdvToScreenSelect)
         });
         socket.once("getArrayOfAdsToDelete",function(resToDeleteSelect){
             createOption(resToDeleteSelect,deleteAdvFromScreenSelect);
+            createOption(resToDeleteSelect,changeDurationSelect);
+            // for(let i=0; i<resToDeleteSelect.length;i++){
+            //   console.log(resToDeleteSelect[i].myId);  
+            // }
         });
+        socket.once("timingFromServer",function(resToChangeDuration){
+           console.log("array to change:"+resToChangeDuration);
+           timingArray = resToChangeDuration;
+           changeDurationInput.value=timingArray[0];
+        });
+        
     }
+
+    var timingArray;
 
     function addAdvSelect(){
         selectedAdvToAddToScreen = addAdvToScreenSelect.options[addAdvToScreenSelect.selectedIndex].value; // the id of the selected adv
@@ -420,7 +475,15 @@
 
     }
 
-   
+    var index;
+
+   function changeDuration(){
+        selectedchangeDuration=changeDurationSelect.options[changeDurationSelect.selectedIndex].value;
+        index= changeDurationSelect.selectedIndex;
+        changeDurationInput.value=timingArray[index];
+        console.log("------" +selectedchangeDuration);
+   }
+
     /* ************************* displayes ************************* */
     function displayAdv(res){
         document.getElementById("line1").style.color = res.colors.line1color;
