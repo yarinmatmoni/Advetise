@@ -83,7 +83,7 @@
                 setTimeout(toDashboard, 2000);             
             });
             function toDashboard(){
-                location.href = "http://localhost:8080/dashboard";
+                location.href = "http://localhost:8080/login";
             }
             socket.on("wrong", function(wrongver){
                 message.innerHTML = wrongver;

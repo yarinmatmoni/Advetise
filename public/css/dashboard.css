@@ -245,3 +245,19 @@ h1 {
   display: flex;
   justify-content: space-between;
 }
+
+.client {
+  display: flex;
+}
+
+.connectionList ul {
+  list-style: none;
+}
+
+.dot {
+  height: 15px;
+  width: 15px;
+  background-color: #f44336;
+  border-radius: 50%;
+  display: inline-block;
+}
