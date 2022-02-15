@@ -1,102 +1,101 @@
 *:focus {
-    outline: none;
-  }
-  
-  body {
-    background-color: #eaf4f4;
-  }
-  
-  h1 {
-    color: #023047;
-    text-align: center;
-    font-family: "Dosis", sans-serif;
-    font-size: 35px;
-    margin-top: 40px;
-  }
-  
-  i {
-    font-size: 30px;
-    margin-bottom: 10px;
-    color: #023047;
-  }
-  
-  .box {
-    border: 2px solid;
-    border-color: #023047;
-    text-align: center;
-    flex-direction: column;
-    padding: 11px;
-    display: inline-block;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 32rem;
-    height: 25rem;
-    margin: auto;
-  }
-  
-  .login {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    width: 20rem;
-    margin: auto;
-    margin-bottom: 5rem;
-    margin-top: 25px;
-  }
-  
-  .login input {
-    margin: 0.5rem;
-    font-family: "Dosis", sans-serif;
-    background: #eaf4f4;
-    border: none;
-    border-bottom: 1px solid;
-    border-bottom-color: #6b9080;
-    font-size: 18px;
-    margin-bottom: 18px;
-  }
-  
-  textarea:focus,
-  input :focus {
-    outline: none;
-  }
-  
-  #loginbtn {
-    width: 20rem;
-    padding: 0.3rem;
-    font-family: "Dosis", sans-serif;
-    border-radius: 10px;
-    border: none;
-    background: #a4c3b2;
-    color: white;
-    margin-top: 20px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: 0.5s all ease;
-  }
-  
-  #loginbtn:hover {
-    background-color: #6b9080;
-  }
-  
-  .err {
-    font-family: "Dosis", sans-serif;
-    color: #ff0000b3;
-    font-size: 16px;
-  }
+  outline: none;
+}
 
-  .wrong{
-    font-family: "Dosis", sans-serif;
-    color: #ff0000b3;
-    font-size: 16px;
-  }
+body {
+  background-color: #eaf4f4;
+}
 
-  .textsuccess{
+h1 {
+  color: #023047;
+  text-align: center;
+  font-family: "Dosis", sans-serif;
+  font-size: 35px;
+  margin-top: 40px;
+}
 
-    font-family: "Dosis", sans-serif;
-    color: #00ff00b3;
-    font-size: 16px;
-  }
-  
+i {
+  font-size: 30px;
+  margin-bottom: 10px;
+  color: #023047;
+}
+
+.box {
+  border: 2px solid;
+  border-color: #023047;
+  text-align: center;
+  flex-direction: column;
+  padding: 11px;
+  display: inline-block;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 32rem;
+  height: 25rem;
+  margin: auto;
+}
+
+.login {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  width: 20rem;
+  margin: auto;
+  margin-bottom: 5rem;
+  margin-top: 25px;
+}
+
+.verName input,
+.verPassword input {
+  margin: 0.5rem;
+  font-family: "Dosis", sans-serif;
+  background: #eaf4f4;
+  border: none;
+  border-bottom: 1px solid;
+  border-bottom-color: #6b9080;
+  font-size: 18px;
+  margin-bottom: 18px;
+}
+
+textarea:focus,
+input :focus {
+  outline: none;
+}
+
+#save {
+  width: 20rem;
+  padding: 0.3rem;
+  font-family: "Dosis", sans-serif;
+  border-radius: 10px;
+  border: none;
+  background: #a4c3b2;
+  color: white;
+  margin-top: 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.5s all ease;
+}
+
+#save:hover {
+  background-color: #6b9080;
+}
+
+.err {
+  font-family: "Dosis", sans-serif;
+  color: #ff0000b3;
+  font-size: 16px;
+}
+
+.wrong {
+  font-family: "Dosis", sans-serif;
+  color: #ff0000b3;
+  font-size: 16px;
+}
+
+.textsuccess {
+  font-family: "Dosis", sans-serif;
+  color: #00ff00b3;
+  font-size: 16px;
+}
