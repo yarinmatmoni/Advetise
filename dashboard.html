@@ -8,15 +8,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Dashboard</title>
 </head>
-<body>
-        <!-- <form id="contactForm" method="POST" action="/changepass">
-            <button id="changePassword" type="submit">change passowrd</button>
-          </form> -->
+<body>       
           <div id="contactForm">
             <button id="changePassword" type="submit">change passowrd</button>
           </div>
     <h1>Dashboard</h1>
-    <!-- <form action=""> </form> -->
+    <div>
+        <button id="logOut" class="logOut"> log out </button>
+    </div>
     <div class="info-continer">
         <div class="info">
             <h3>Connected Clients</h3>
@@ -24,9 +23,9 @@
         </div>
         <div class="info connectionList">
             <ul>
-                <div class="client"><li>Sceen 1</li><span class="dot"></span></div>
-                <div class="client"><li>Sceen 2</li><span class="dot"></span></div>
-                <div class="client"><li>Sceen 3</li><span class="dot"></span></div>
+                <div class="client" id="screen1con"><li>Sceen 1</li><span id="dot1" class="dot"></span></div>
+                <div class="client" id="screen2con"><li>Sceen 2</li><span id="dot2" class="dot"></span></div>
+                <div class="client" id="screen3con"><li>Sceen 3</li><span id="dot3" class="dot"></span></div>
             </ul>
         </div>
         <div class="info">
@@ -41,7 +40,7 @@
     <div class="priview-continer hide" id="priview-continer">
         <div class="control">
             <div class = "control-container">
-                <select name="Adv" id="advSelect" onchange="selectAdvOption()">
+                <select name="Adv" id="advSelect" onchange="selectAdvOption()" >
                     <option disabled selected value> -- select an advertie -- </option>
                 </select> 
                 <div class="buttons">
@@ -100,7 +99,6 @@
     </div>
 
     <div class="clients hide" id="client"> 
-        <!-- <label> Please choose client: </label> -->
         <div class="clients-top">
             <select name="clientChoose" id="clientChoose" onchange="chooseScreen()">
                 <option disabled selected value> -- select a screen -- </option>
@@ -119,6 +117,7 @@
             </select>
             <input type="text" placeholder="Duration Time" id="durationTimeAdd">
             <button id="saveBtnAdvToScreen"> save </button>
+            <label id="message"> </label>
         </div>
         <div class="divForDeleteToScreen hide" id="divForDeleteToScreen"> 
             <select name="deleteAdvFromScreen" id="deleteAdvFromScreenSelect" onchange="deleteAdvFromScreen()">
@@ -145,6 +144,20 @@
         numOfAdvs.innerHTML = info[1];
     });
 
+    socket.on("infoClients", function(infoClients){
+        for(let i=0; i<infoClients.length; i++){
+            var id = i;
+            var idStr = "dot" + (++id); 
+            const d = document.getElementById(idStr);
+            if(infoClients[i] == true){
+                d.style.backgroundColor = "#00ff99";
+            }
+            else{
+                d.style.backgroundColor = "#cc0000";
+            }
+        }
+    });
+
     var allAdvs; 
     var advsArray; // all advs 
     var idOfChoosenAdv;  // the id of the choosen  
@@ -165,6 +178,7 @@
 
     /* *********************** buttons *********************** */ 
 
+    const logout = document.getElementById("logOut");
     const addBtn = document.getElementById("addButton");
     const editBtn = document.getElementById("editButton");
 
@@ -202,16 +216,19 @@
     /* *********************** input time *********************** */ 
 
     const durationTimeAdd = document.querySelector("#durationTimeAdd"); 
-
+    const message = document.getElementById("message");
     const addImage = document.getElementById("addImage");
 
     deleteButton.disabled=true;
     editButton.disabled = true;
     addAdvToScreenBtn.disabled = true;
     deleteAdvFromScreenBtn.disabled = true;
-    addToScreenBtn.disabled = true;
-    durationTimeAdd.disabled = true;
     
+    logOut.addEventListener("click", ()=>{
+        console.log("log out");
+        socket.emit("logout", false);
+        location.href = "/login";
+    });
 
     addBtn.addEventListener("click",()=>{
         console.log("addBtn clicked");
@@ -219,7 +236,6 @@
         cleanInputsAdd();
         socket.emit("newAdvData",arrAdd);
         location.reload(true);
-
     });
 
     editBtn.addEventListener("click",()=> {
@@ -243,8 +259,6 @@
             add.classList.add("hide");
         edit.classList.toggle("hide");
         console.log("editButton clicked");
-        // location.reload(true);
-        // location.reload(true);
     });
 
     deleteButton.addEventListener("click", ()=>{
@@ -256,33 +270,38 @@
     addToScreenBtn.addEventListener("click", ()=>{    
         console.log("addToScreenBtn clicked");
         var duration = durationTimeAdd.value;
-
-        var dataOfAddAdvToScreen = [];
-        dataOfAddAdvToScreen.push(currentScreen);
-        dataOfAddAdvToScreen.push(selectedAdvToAddToScreen);
-        dataOfAddAdvToScreen.push(duration);
-
-        console.log("the info is: " + dataOfAddAdvToScreen);
-        socket.emit("addAdvToScreen", dataOfAddAdvToScreen);
-        location.reload(true);
+        if(duration == ""){
+            message.innerHTML = "Please enter duration";
+        }
+        else{
+            var dataOfAddAdvToScreen = [];
+            if(selectedAdvToAddToScreen == undefined){
+                selectedAdvToAddToScreen = addAdvToScreenSelect.options[0].value;
+            }
+            dataOfAddAdvToScreen.push(currentScreen);
+            dataOfAddAdvToScreen.push(selectedAdvToAddToScreen);
+            dataOfAddAdvToScreen.push(duration);
+            socket.emit("addAdvToScreen", dataOfAddAdvToScreen);
+            location.reload(true);
+        }
     });
 
     deleteFromScreenBtn.addEventListener("click", ()=>{
         console.log("deleteFromScreenBtn clicked");
         var data = []; 
+        if(selectedAdvToDeleteFromScreen == undefined){
+            selectedAdvToDeleteFromScreen = deleteAdvFromScreenSelect.options[0].value;
+        }
         data.push(currentScreen);
         data.push(selectedAdvToDeleteFromScreen);
         socket.emit("getAdvToDeleteFromScreen", data);
         location.reload(true);
-        // clientsBtn.click();
+        socket.emit("inAdmin", true); // check
     });
 
     overAllBtn.addEventListener("click", ()=>{
         console.log("overAllBtn clicked");
-
         createOption(allAdvs, selectAdv);
-
-
         if(!client.classList.contains("hide"))
         client.classList.add("hide");
         overAll.classList.toggle("hide");
@@ -299,7 +318,7 @@
         console.log("addAdvToScreenBtn clicked");
         if(!divForDeleteToScreen.classList.contains("hide"))
             divForDeleteToScreen.classList.add("hide");
-        divForAddToScreen.classList.toggle("hide");
+        divForAddToScreen.classList.toggle("hide");;
     });
 
     deleteAdvFromScreenBtn.addEventListener("click",()=> {
@@ -310,17 +329,11 @@
     });
 
     changePassword.addEventListener("click",() =>{
-
         console.log("i am here");
         window.location.replace("http://localhost:8080/changepass");
-
-        
-        // location.href = "http://localhost:8080/changepass";
     });
    
     /* ****************************************************** */
-
-    /* ************************************************ */
 
     function creatInfoOfAdvInArray(dlines, bol){ // return an array with informatin from lines (from client).
         var dataLines = [];
@@ -352,20 +365,14 @@
  
     function createOption(allAdvs,selectAdv){
         if(allAdvs !== undefined){
-            if(selectAdv.length > 1){
-                for (var i=0; i<selectAdv.length; i++) {
-                    // console.log("delete ----------" + selectAdv.options[i].value);
-                    selectAdv.remove(i);
-                }
-            }
- 
+            selectAdv.innerHTML = "";
             allAdvs.forEach((adv)=> {
                 var opt = document.createElement('option');
                 opt.value = adv.myId;
                 opt.innerHTML = adv.title;
                 opt.classList.add("option");
                 selectAdv.appendChild(opt);
-            });
+            }); 
         }
     }
 
@@ -395,8 +402,10 @@
     }
 
     function addAdvSelect(){
-        durationTimeAdd.disabled = false;
         selectedAdvToAddToScreen = addAdvToScreenSelect.options[addAdvToScreenSelect.selectedIndex].value; // the id of the selected adv
+    }
+
+    function duration(){
         durationTimeAdd.addEventListener("input",()=>{
             if(durationTimeAdd.value.length > 0)
                 addToScreenBtn.disabled = false;
@@ -443,6 +452,5 @@
     }
 
    
-
 </script>
 

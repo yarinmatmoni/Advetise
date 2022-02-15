@@ -98,9 +98,9 @@ function ioDisconnection(socket, num){
       setNotActive("2");
       count--;
     }
-    else if(screen == "admin"){
-      accessAdmin = false; 
-    }
+    // else if(screen == "admin"){
+    //   accessAdmin = false; 
+    // }
   });
 }
 
@@ -275,6 +275,19 @@ function sendTiming(socket, num){
         socket.emit("sendAllAdvs",Advs); // send all the advs.
       });
 
+      dbo.collection("users").find({}).toArray(function(err, clients){
+        var isConnClient = [];
+        for(let i = 0; i<clients.length; i++){
+          if(clients[i].status == "active"){
+            isConnClient.push(true);
+          }
+          else{
+            isConnClient[i] = false;
+          }
+        }
+        socket.emit("infoClients", isConnClient);
+      });
+
         /* *********************** sockets for buttons ********************** */
 
         ////////////////////////////////// add button //////////////////////////////////
@@ -291,6 +304,10 @@ function sendTiming(socket, num){
           if(err) throw err;
         });
       });        
+
+      socket.on("logout", function(err, logout){
+        accessAdmin = logout;
+      });
 
       ////////////////////////////////// edit button //////////////////////////////////
 
