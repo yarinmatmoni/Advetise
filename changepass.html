@@ -21,6 +21,9 @@
                 <input type="text" id="newpassword" placeholder="New password" autocomplete="off"/> 
                 <input type="text" id="verify" placeholder="Verify" autocomplete="off"/>
             </div>
+            <div> 
+                <label id="message"> </label>
+            </div>
             <button id="save" type="submit"> Save </button>
         </div>
     </div>
@@ -39,39 +42,33 @@
     const verify = document.getElementById("verify");
     const saveBtn = document.getElementById("save");
     const changePassDiv = document.getElementsByClassName("changePass");
+    const message = document.getElementById("message");
     let flag = false;
 
     saveBtn.addEventListener("click", ()=> {
         if(flag){
             flag = false;
-            errorText.classList.remove("err");
-            changePassDiv[0].removeChild(errorText);
+            message.innerHTML = "Please input your details"
         }
-        if(lastPassword.value !== "" && newpassword.value !== "" && verify.value !== ""){
+        if(lastPassword.value !== "" && newpassword.value !== "" && verify.value !== "" && lastName.value !== "" && newName.value !== ""){
             sumbit();
         }
         else{
             flag = true;
             errorText = document.createElement("h3");
-            errorText.innerText = "* You have to enter your last password and the new password";
-            errorText.classList.add("err");
-            changePassDiv[0].appendChild(errorText);
+            message.innerHTML = "You have to enter your last password and the new password";
+            errorText.innerText = "You have to enter your last password and the new password";
         } 
     });
 
     function sumbit(){
-
         const lastPasswordV = lastPassword.value;
         const newPasswordV = newpassword.value;
         const verifyV = verify.value;
         const lastNameV = lastName.value;
         const newNameV = newName.value;
-
         if(verifyV != newPasswordV){
-            errorText = document.createElement("h3");
-            errorText.innerText = "* Please verify your password again";
-            errorText.classList.add("err");
-            changePassDiv[0].appendChild(errorText);
+            message.innerHTML = "Please check your verifacion";    
         }
         else{
             var data = [];
@@ -79,27 +76,18 @@
             data.push(newNameV);
             data.push(lastPasswordV);
             data.push(newPasswordV);
-
             socket.emit("change", data);
             socket.on("right", function(verdata){
                 console.log("password and name changed!");
-
-                textsuccess = document.createElement("h3");
                 textsuccess.innerText = verdata;
-                textsuccess.classList.add("textsuccess");
-                changePassDiv[0].appendChild(textsuccess);
+                message.innerHTML = verdata;
                 setTimeout(toDashboard, 2000);             
             });
-
             function toDashboard(){
                 location.href = "http://localhost:8080/dashboard";
             }
-
             socket.on("wrong", function(wrongver){
-                wrongText = document.createElement("h3");
-                wrongText.innerText = wrongver;
-                wrongText.classList.add("wrong");
-                changePassDiv[0].appendChild(wrongText);
+                message.innerHTML = wrongver;
             });
         }
     }
