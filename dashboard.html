@@ -280,6 +280,8 @@
 
     deleteButton.addEventListener("click", ()=>{
         console.log("deleteButton clicked");
+        idOfChoosenAdv = selectAdv.options[selectAdv.selectedIndex].value;
+        console.log("idOfChoosenAdv: " + idOfChoosenAdv)
         socket.emit("deleteAdv", idOfChoosenAdv);
         location.reload(true);
     });
@@ -319,6 +321,9 @@
     saveNewDurationBtn.addEventListener("click", ()=>{
         console.log("saveNewDurationBtn clicked");
         var data=[];
+        if(index == undefined){
+            index = 0;
+        }
         var newTime=changeDurationInput.value;
         data.push(currentScreen);
         data.push(index);

@@ -43,38 +43,28 @@ ioConnection();
 function ioConnection(){
     io.on("connection", function (socket) { // 4 times
     if(screen == 1){
-      console.log("con 1");
       setActive("0");
       count++; 
       mongoFor1(socket);
     }
     else if(screen == 2){
-      console.log("con 2");
       setActive("1");
       count++; 
       mongoFor2(socket);
     }
     else if(screen == 3){
-      console.log("con 3");
       setActive("2");
       count++; 
       mongoFor3(socket);
     }
     else if(screen == "admin"){
-      console.log("the count in connection to admin is: " + count);
-      console.log("admin here");
       mongoForAdmin(socket);
     }
     else if(screen == "changepass"){
-      console.log("inside the change password");
       mongoForChangePassword(socket);
-
     }
     else if(screen == "logIn"){
-      console.log("inside log in");
       mongoForLogIn(socket);
-
-
     }
     ioDisconnection(socket, screen);
   });
@@ -82,25 +72,18 @@ function ioConnection(){
 
 function ioDisconnection(socket, num){
   socket.on("disconnect", function(err, res){
-    console.log("screen in disconnection: " + num);
     if(num == 1){
-      console.log("discon 1");
       setNotActive("0");
       count--;
     }
     else if(num == 2){
-      console.log("discon 2");
       setNotActive("1");
       count--;
     }
     else if(num == 3){
-      console.log("discon 3");
       setNotActive("2");
       count--;
     }
-    // else if(screen == "admin"){
-    //   accessAdmin = false; 
-    // }
   });
 }
 
@@ -109,11 +92,9 @@ function ioDisconnection(socket, num){
 function mongoForChangePassword(socket){
 
   socket.on("change", function(data){
-
     MongoClient.connect(url, function (err, db){
       if(err) throw err; 
       const dbo = db.db("AdvDB");
-
       dbo.collection("userAdmin").find({}).toArray(function(err, result){
         if (err) throw err;
         var dbData = result[0];
@@ -121,11 +102,6 @@ function mongoForChangePassword(socket){
         var newName = data[1]
         var ladtPassword = data[2];
         var newPassword = data[3];
-
-        
-        console.log("dbData pass: " + dbData.password);
-        console.log("dbData name: " + dbData.userName);
-
         if(dbData.password == ladtPassword && dbData.userName == lastName){
           dbo.collection("userAdmin").updateOne({}, {$set: {password: newPassword}});
           dbo.collection("userAdmin").updateOne({}, {$set: {userName: newName}});
@@ -143,12 +119,10 @@ function mongoFor1(socket){
   MongoClient.connect(url, function (err, db){
     if(err) throw err; 
     const dbo = db.db("AdvDB");
-
     dbo
     .collection("advData")
     .find({show: "0"})
     .toArray(function (err, result){ 
-     
       if(err) throw err;
       dbo.collection("users").find({userId: "0"}).toArray(function(err, res){
         var correctOrder = [];
@@ -162,7 +136,6 @@ function mongoFor1(socket){
   });
 }
 
-
 function mongoFor2(socket){
   MongoClient.connect(url, function (err, db){
     if(err) throw err; 
@@ -171,7 +144,6 @@ function mongoFor2(socket){
     .collection("advData")
     .find({show: "1"})
     .toArray(function (err, result){
-
       if(err) throw err;
       dbo.collection("users").find({userId: "1"}).toArray(function(err, res){
         var correctOrder = [];
@@ -193,7 +165,6 @@ function mongoFor3(socket){
     .collection("advData")
     .find({show: "2"})
     .toArray(function (err, result){
-
       if(err) throw err;
       dbo.collection("users").find({userId: "2"}).toArray(function(err, res){
         var correctOrder = [];
@@ -207,9 +178,7 @@ function mongoFor3(socket){
   });
 }
 
-
 function fixOrder(advsUserOreder, result, correctOrder){
- 
   for(let i = 0; i<advsUserOreder.length; i++){
     for(let j = 0; j<result.length; j++){
       if(advsUserOreder[i] == result[j].myId){
@@ -241,7 +210,6 @@ function sendTiming(socket, num){
       .find({userId: n.toString()}) 
       .toArray(function(err, user){
         if (err) throw err;
-        console.log("the str: " + str);
         socket.emit(str, user);
       });
   });
@@ -292,14 +260,10 @@ function sendTiming(socket, num){
 
         ////////////////////////////////// add button //////////////////////////////////
 
-        // need to do a refresh at the end!!! (effect the id and the selector!)
-
       socket.on("newAdvData",function(res){
         var lastId = array[array.length - 1].myId; 
-        console.log("the last id is: " + lastId);
         var sh = [];
         var newAdv = createAdv(res, (++lastId), sh);
-
         dbo.collection("advData").insertOne(newAdv,function(err,res){
           if(err) throw err;
         });
@@ -312,7 +276,6 @@ function sendTiming(socket, num){
       ////////////////////////////////// edit button //////////////////////////////////
 
       socket.on("getSelectAdv",function(idAdv){
-
         dbo.collection("advData").findOne({myId:idAdv},function(err,res){
           if(err) throw err;
           socket.emit("returnSelectedAdv",res);
@@ -333,14 +296,13 @@ function sendTiming(socket, num){
             var adv = res[0];
             var arr = adv.show; 
             for(let i = 0; i < arr.length; i++){
-              deleteFromAll(dbo, idOfAdv, arr[i]);
+              // deleteFromAll(dbo, idOfAdv, arr[i], true);
+              deleteForDeleteButton(dbo, idOfAdv);
             }
-            dbo.collection("advData").deleteOne({myId: idOfAdv});
+            // dbo.collection("advData").deleteOne({myId: idOfAdv});
           });
         });
       }); 
-
-
 
        ////////////////////////////////// Timing button //////////////////////////////////
 
@@ -355,37 +317,26 @@ function sendTiming(socket, num){
         var currentScreen=data[0];
         var index=data[1];
         var currentTiming= data[2];
-        console.log("the curr:"+currentScreen );
-        console.log("the index:"+index );
-        console.log("the currentTiming:"+currentTiming );
         dbo.collection("users").find({userId: currentScreen}).toArray(function(err,res){
           var user=res[0];
           var userTiming=user.timing;
           userTiming[index]=currentTiming;
-          console.log("the userTiming:"+userTiming );
           dbo.collection("users").updateOne({userId: currentScreen}, {$set: {timing: userTiming}});
-
         });
       });
-
-
 
         ////////////////////////////////// client /////////////////////////////////
 
       socket.on("getAdvByScreen", function(currenScreen){
-
         dbo.collection("users").find({userId: currenScreen}).toArray(function(err, result){
           if (err) throw err;
           var advList = result[0].advList; 
           dbo.collection("advData").find({}).toArray(function(err, all){
             var sendAdv = [];
             var sendToDelete = [];
-
             findAdvsForAddAndDelete(all, advList, sendAdv, sendToDelete);
-            
             socket.emit("getArrayOfAdsToAdd",sendAdv);
             socket.emit("getArrayOfAdsToDelete",sendToDelete);
-
           });   
           addDataToScreen(socket, dbo);
         });
@@ -394,8 +345,8 @@ function sendTiming(socket, num){
       socket.on("getAdvToDeleteFromScreen", function(data){
         var currentScreen = data[0];
         var idToDelete = data[1];
-        deleteFromAll(dbo, idToDelete, currentScreen);
-
+        // deleteFromAll(dbo, idToDelete, currentScreen, false);
+        deleteForDeleteFromScreenBtn(dbo,idToDelete,currentScreen);
       });  
     }); 
   }
@@ -403,15 +354,91 @@ function sendTiming(socket, num){
 server.listen(8080);
 
 
-function deleteFromAll(dbo, idToDelete, currentScreen){
+function deleteFromUser(dbo ,idToDelete, currentScreen){ // users
+  dbo.collection("users").find({userId: currentScreen.toString()}).toArray(function(err, users){
+    var user = users[0];
+    console.log("the user is:" + user);
+    var newAdvList = user.advList;
+    var newTiming = user.timing;
+    var index = newAdvList.indexOf(idToDelete); 
+    newAdvList.splice(index, 1);
+    newTiming.splice(index, 1);
+    dbo.collection("users").updateOne({userId: currentScreen}, {$set: {advList: newAdvList}});
+    dbo.collection("users").updateOne({userId: currentScreen}, {$set: {timing: newTiming}});
+  });
+}
+
+function deleteFromAllUsers(dbo ,idToDelete){  
+  dbo.collection("users").find({}).toArray(function(err, users){
+    for(let i = 0; i < users.length; i++){
+      if(users[i].advList.includes(idToDelete)){
+        deleteFromUser(dbo,idToDelete, users[i].userId);
+      }
+    }
+  });
+}
+
+function deleteForDeleteButton(dbo, idToDelete){ // from everything
+  deleteAll(dbo, idToDelete);
+}
+
+function deleteForDeleteFromScreenBtn(dbo,idToDelete, currentScreen){ // from user and show
+  deleteFromUser(dbo, idToDelete, currentScreen);
+  deleteFromShow(dbo, idToDelete, currentScreen);
+}
+
+
+function deleteAll(dbo, idToDelete){ 
+  deleteFromAllUsers(dbo, idToDelete);
+  deleteFromAdvData(dbo, idToDelete);
+}
+
+function deleteFromAdvData(dbo, idToDelete){ 
+  dbo.collection("advData").deleteOne({myId: idToDelete});
+}
+
+function deleteFromShow(dbo, idToDelete, currentScreen){ 
   dbo.collection("advData").find({myId: idToDelete}).toArray(function(err, result){
     if(err) throw err; 
+    console.log("***************************");
+    console.log("result: " + result);
+    console.log("the title of the adv to delete: " + result[0].title);
+    console.log("idToDelete: " + idToDelete);
+    console.log("currentScreen: " + currentScreen);
+    console.log("showReplace: " + result[0].show)
     var showReplace = []; 
     showReplace = result[0].show;
-    console.log("the show: " + showReplace);
+    var index = showReplace.indexOf(currentScreen);
+    showReplace.splice(index, 1); // CHECK!!!
+    dbo.collection("advData").updateOne({myId: idToDelete}, {$set: {show: showReplace}});
+    console.log("delete from advData succeed");
+  });
+}
+
+
+function deleteFromAll(dbo, idToDelete, currentScreen, bol){
+
+  dbo.collection("advData").find({myId: idToDelete.toString()}).toArray(function(err, result){
+    if(err) throw err; 
+    console.log("***************************");
+    console.log("result: " + result);
+    console.log("the title of the adv to delete: " + result[0].title);
+    console.log("idToDelete: " + idToDelete);
+    console.log("currentScreen: " + currentScreen);
+    console.log("showReplace: " + result[0].show)
+    var showReplace = []; 
+    showReplace = result[0].show;
     var index = showReplace.indexOf(currentScreen);
     showReplace.splice(index);
     dbo.collection("advData").updateOne({myId: idToDelete}, {$set: {show: showReplace}});
+    console.log("delete from advData succeed")
+
+    // if(bol == true){
+    //   setTimeout(deleteFromAdvData(idToDelete),1000);
+    // }
+    // if(bol == true){
+    //   dbo.collection("advData").deleteOne({myId: idToDelete});
+    // }
   });
 
   dbo.collection("users").find({userId: currentScreen}).toArray(function(err, users){
@@ -426,6 +453,8 @@ function deleteFromAll(dbo, idToDelete, currentScreen){
   });
 }
 
+
+
 function addDataToScreen(socket, dbo){
 
   socket.on("addAdvToScreen", function(data){
@@ -438,18 +467,15 @@ function addDataToScreen(socket, dbo){
       if (err) throw err;
       showArray = relevatAdv[0].show;
       showArray.push(screenNum); 
-
       dbo.collection("advData").updateOne({myId: advNum}, {$set: {show: showArray}});
       dbo.collection("users").find({userId: screenNum}).toArray(function(err, users){
         var user = users[0];
         var timingArray = [];
         var advListArray = [];
-
         advListArray = user.advList;
         advListArray.push(advNum);
         timingArray = user.timing;
         timingArray.push(timingNum)
-
         dbo.collection("users").updateOne({userId: screenNum}, {$set: {advList: advListArray}});
         dbo.collection("users").updateOne({userId: screenNum}, {$set: {timing: timingArray}});
       });
@@ -474,7 +500,6 @@ function findAdvsForAddAndDelete(all, advList, sendAdv, sendToDelete){
 }
 
 function createAdv(res,num, showArray){
-  console.log("the res is: " + res);
     var Advobj = {
       myId: num.toString(),
       title: res[0],
@@ -519,11 +544,8 @@ function setNotActive(a){
 
     dbo.collection("users").updateOne({userId: a}, 
       {$set: {lastConnection: currentDate}});
-  
   });
 }
-
-
 
 /* ***************************** logIn ************************ */
 
@@ -549,7 +571,6 @@ function mongoForLogIn(socket){
     });
   });
 }
-
 
 
 
