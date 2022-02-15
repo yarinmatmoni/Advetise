@@ -1,524 +1,637 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/dashboard.css"> 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/dashboard.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
     <title>Dashboard</title>
-</head>
-<body>       
-          <div id="contactForm">
-            <button id="changePassword" type="submit">change passowrd</button>
-          </div>
-    <h1>Dashboard</h1>
-    <div>
-        <button id="logOut" class="logOut"> log out </button>
+  </head>
+  <body>
+      <div class="adminControl">
+        <button id="changePassword" type="submit">Change Passoword</button>
+        <button id="logOut" class="logOut">Log Out</button>
     </div>
+    <h1>Dashboard</h1>
     <div class="info-continer">
-        <div class="info">
-            <h3>Connected Clients</h3>
-            <h2 id="numOfClients">0</h2>
-        </div>
-        <div class="info connectionList">
-            <ul>
-                <div class="client" id="screen1con"><li>Sceen 1</li><span id="dot1" class="dot"></span></div>
-                <div class="client" id="screen2con"><li>Sceen 2</li><span id="dot2" class="dot"></span></div>
-                <div class="client" id="screen3con"><li>Sceen 3</li><span id="dot3" class="dot"></span></div>
-            </ul>
-        </div>
-        <div class="info">
-            <h3>Number of adverties</h3>
-            <h2 id="numOfAdvs">0</h2>
-        </div>
+      <div class="info">
+        <h3>Connected Clients</h3>
+        <h2 id="numOfClients">0</h2>
+      </div>
+      <div class="info connectionList">
+        <h3 id="status">Status</h2>
+        <ul>
+          <div class="client" id="screen1con">
+            <li>Sceen 1</li>
+            <span id="dot1" class="dot"></span>
+          </div>
+          <div class="client" id="screen2con">
+            <li>Sceen 2</li>
+            <span id="dot2" class="dot"></span>
+          </div>
+          <div class="client" id="screen3con">
+            <li>Sceen 3</li>
+            <span id="dot3" class="dot"></span>
+          </div>
+        </ul>
+      </div>
+      <div class="info">
+        <h3>Number of adverties</h3>
+        <h2 id="numOfAdvs">0</h2>
+      </div>
     </div>
     <div class="SelectMode">
-        <button id="OverAll">OverAll</button>
-        <button id="Clients">Clients</button>
+      <button id="OverAll">OverAll</button>
+      <button id="Clients">Clients</button>
     </div>
     <div class="priview-continer hide" id="priview-continer">
-        <div class="control">
-            <div class = "control-container">
-                <select name="Adv" id="advSelect" onchange="selectAdvOption()" >
-                    <option disabled selected value> -- select an advertie -- </option>
-                </select> 
-                <div class="buttons">
-                    <button id="add">Add</button>
-                    <button id="edit">Edit</button>
-                    <button id="delete">Delete</button>
-                </div> 
-            </div>
-
-            <div class="addNewAdv hide" id="addNewAdv">
-                <div class="addNewAdv-input">
-                    <input type="text" class="addLine" id= "addTitle" placeholder="title">
-                    <input type="text" class="addLine" id= "addLine1" placeholder="line 1">
-                    <input type="text" class="addLine" id= "addLine2" placeholder="line 2">
-                    <input type="text" class="addLine" id= "addLine3" placeholder="line 3">
-                    <input type="text" class="addLine" id= "addLine4" placeholder="line 4">
-                    <input type="text" class="addLine" id= "addcolorLine1" placeholder="colorline 1">
-                    <input type="text" class="addLine" id= "addcolorLine2" placeholder="colorline 2">
-                    <input type="text" class="addLine" id= "addcolorLine3" placeholder="colorline 3">
-                    <input type="text" class="addLine" id= "addcolorLine4" placeholder="colorline 4">
-                    <input type="text" class="addLine" id= "addcolorBackground" placeholder="colorBackground">
-
-                    <input type="text" id="addImage" placeholder="image src">
-                </div>
-                <button type="submit" id="addButton">Add New Advertie</button>
-            </div>
-
-            <div class="editAdv hide" id="editAdv">
-                <div class="editAdv-input">
-                    <div class="label-input"><label>Title</label><input type="text" class="editLine" id="editTitle"></div>
-                    <div class="label-input"><label>Line 1</label><input type="text" class="editLine" id="editLine1"></div>
-                    <div class="label-input"><label>Line 2</label><input type="text" class="editLine" id="editLine2"></div>
-                    <div class="label-input"><label>Line 3</label><input type="text" class="editLine" id="editLine3"></div>
-                    <div class="label-input"><label>Line 4</label><input type="text" class="editLine" id="editLine4"></div>
-                    <div class="label-input"><label>Color Line 1</label><input type="text" class="editLine" id= "editcolorLine1"></div>
-                    <div class="label-input"><label>Color Line 2</label><input type="text" class="editLine" id= "editcolorLine2"></div>
-                    <div class="label-input"><label>Color Line 3</label><input type="text" class="editLine" id= "editcolorLine3"></div>
-                    <div class="label-input"><label>Color Line 4</label><input type="text" class="editLine" id= "editcolorLine4"></div>
-                    <div class="label-input"><label>Color Background</label><input type="text" class="editLine" id= "editcolorBackground"></div>
-                    <div class="label-input"><label>Image Link</label><input type="text" id="editImage"></div>
-                </div>
-                <button type="submit" id="editButton">Save</button>
-            </div>
+      <div class="control">
+        <div class="control-container">
+          <select name="Adv" id="advSelect" onchange="selectAdvOption()">
+            <option disabled selected value>-- select an advertie --</option>
+          </select>
+          <div class="buttons">
+            <button id="add">Add</button>
+            <button id="edit">Edit</button>
+            <button id="delete">Delete</button>
+          </div>
         </div>
-        <div class="displayAdv" id="displayAdv">
-            <div class="continer_img">
-                <img id="myImg" src="#"/>
-            </div>
-            <div class="data">
-                <h2 id="line1"></h2>
-                <h2 id="line2"></h2>
-                <h2 id="line3"></h2>
-                <h2 id="line4"></h2>
-            </div>  
+
+        <div class="addNewAdv hide" id="addNewAdv">
+          <div class="addNewAdv-input">
+            <input
+              type="text"
+              class="addLine"
+              id="addTitle"
+              placeholder="title"
+            />
+            <input
+              type="text"
+              class="addLine"
+              id="addLine1"
+              placeholder="line 1"
+            />
+            <input
+              type="text"
+              class="addLine"
+              id="addLine2"
+              placeholder="line 2"
+            />
+            <input
+              type="text"
+              class="addLine"
+              id="addLine3"
+              placeholder="line 3"
+            />
+            <input
+              type="text"
+              class="addLine"
+              id="addLine4"
+              placeholder="line 4"
+            />
+            <input
+              type="text"
+              class="addLine"
+              id="addcolorLine1"
+              placeholder="colorline 1"
+            />
+            <input
+              type="text"
+              class="addLine"
+              id="addcolorLine2"
+              placeholder="colorline 2"
+            />
+            <input
+              type="text"
+              class="addLine"
+              id="addcolorLine3"
+              placeholder="colorline 3"
+            />
+            <input
+              type="text"
+              class="addLine"
+              id="addcolorLine4"
+              placeholder="colorline 4"
+            />
+            <input
+              type="text"
+              class="addLine"
+              id="addcolorBackground"
+              placeholder="colorBackground"
+            />
+
+            <input type="text" id="addImage" placeholder="image src" />
+          </div>
+          <button type="submit" id="addButton">Add New Advertie</button>
         </div>
+
+        <div class="editAdv hide" id="editAdv">
+          <div class="editAdv-input">
+            <div class="label-input">
+              <label>Title</label
+              ><input type="text" class="editLine" id="editTitle" />
+            </div>
+            <div class="label-input">
+              <label>Line 1</label
+              ><input type="text" class="editLine" id="editLine1" />
+            </div>
+            <div class="label-input">
+              <label>Line 2</label
+              ><input type="text" class="editLine" id="editLine2" />
+            </div>
+            <div class="label-input">
+              <label>Line 3</label
+              ><input type="text" class="editLine" id="editLine3" />
+            </div>
+            <div class="label-input">
+              <label>Line 4</label
+              ><input type="text" class="editLine" id="editLine4" />
+            </div>
+            <div class="label-input">
+              <label>Color Line 1</label
+              ><input type="text" class="editLine" id="editcolorLine1" />
+            </div>
+            <div class="label-input">
+              <label>Color Line 2</label
+              ><input type="text" class="editLine" id="editcolorLine2" />
+            </div>
+            <div class="label-input">
+              <label>Color Line 3</label
+              ><input type="text" class="editLine" id="editcolorLine3" />
+            </div>
+            <div class="label-input">
+              <label>Color Line 4</label
+              ><input type="text" class="editLine" id="editcolorLine4" />
+            </div>
+            <div class="label-input">
+              <label>Color Background</label
+              ><input type="text" class="editLine" id="editcolorBackground" />
+            </div>
+            <div class="label-input">
+              <label>Image Link</label><input type="text" id="editImage" />
+            </div>
+          </div>
+          <button type="submit" id="editButton">Save</button>
+        </div>
+      </div>
+      <div class="displayAdv" id="displayAdv">
+        <div class="continer_img">
+          <img id="myImg" class="hide" src="#" />
+        </div>
+        <div class="data">
+          <h2 id="line1"></h2>
+          <h2 id="line2"></h2>
+          <h2 id="line3"></h2>
+          <h2 id="line4"></h2>
+        </div>
+      </div>
     </div>
 
-    <div class="clients hide" id="client"> 
-        <div class="clients-top">
-            <select name="clientChoose" id="clientChoose" onchange="chooseScreen()">
-                <option disabled selected value> -- select a screen -- </option>
-                <option id="screen1" value="0"> screen 1 </option>
-                <option id="screen2" value="1"> screen 2 </option>
-                <option id="screen3" value="2"> screen 3 </option>
-            </select>
-            <div class="clients-toScreen" id="clients-toScreen">
-                <button id="addAdvToScreen"> add Adv to screen </button> 
-                <button id="deleteAdvFromScreen"> delete Adv from screen </button>
-                <button id="changeDuration"> Change Duration </button>
-            </div>
+    <div class="clients hide" id="client">
+      <div class="clients-top">
+        <select name="clientChoose" id="clientChoose" onchange="chooseScreen()">
+          <option disabled selected value>-- select a screen --</option>
+          <option id="screen1" value="0">screen 1</option>
+          <option id="screen2" value="1">screen 2</option>
+          <option id="screen3" value="2">screen 3</option>
+        </select>
+        <div class="clients-toScreen" id="clients-toScreen">
+          <button id="addAdvToScreen">Add Adv To Screen</button>
+          <button id="deleteAdvFromScreen">Delete Adv From Screen</button>
+          <button id="changeDuration">Change Duration</button>
         </div>
-        <div class="divForAddToScreen hide" id="divForAddToScreen"> 
-            <select name="addAdvToScreen" id="addAdvToScreenSelect" onchange="addAdvSelect()" >
-                <option disabled selected value> -- select adv -- </option>
-            </select>
-            <input type="text" placeholder="Duration Time" id="durationTimeAdd">
-            <button id="saveBtnAdvToScreen"> save </button>
-            <label id="message"> </label>
-        </div>
-        <div class="divForDeleteToScreen hide" id="divForDeleteToScreen"> 
-            <select name="deleteAdvFromScreen" id="deleteAdvFromScreenSelect" onchange="deleteAdvFromScreen()">
-                <option disabled selected value> -- select adv -- </option>
-            </select>
-            <button id="deleteBtnAdvFromSceeen"> delete </button>
-        </div>
-        <div class="divChangeDuration hide" id="divChangeDuration"> 
-            <select name="changeDurationSelect" id="changeDurationSelect" onchange="changeDuration()">
-                <option disabled selected value> -- select adv -- </option>
-            </select>
-            <input type="text" id="changeDurationInput">
-            <button id="SaveNewDuration"> Save </button>
-        </div>
+      </div>
+      <div class="divForAddToScreen hide" id="divForAddToScreen">
+        <select
+          name="addAdvToScreen"
+          id="addAdvToScreenSelect"
+          onchange="addAdvSelect()"
+        >
+          <option disabled selected value>-- select adv --</option>
+        </select>
+        <input type="text" placeholder="Duration Time" id="durationTimeAdd" />
+        <button id="saveBtnAdvToScreen">Save</button>
+        <label id="message"> </label>
+      </div>
+      <div class="divForDeleteToScreen hide" id="divForDeleteToScreen">
+        <select
+          name="deleteAdvFromScreen"
+          id="deleteAdvFromScreenSelect"
+          onchange="deleteAdvFromScreen()"
+        >
+          <option disabled selected value>-- select adv --</option>
+        </select>
+        <button id="deleteBtnAdvFromSceeen">Delete</button>
+      </div>
+      <div class="divChangeDuration hide" id="divChangeDuration">
+        <select
+          name="changeDurationSelect"
+          id="changeDurationSelect"
+          onchange="changeDuration()"
+        >
+          <option disabled selected value>-- select adv --</option>
+        </select>
+        <input type="text" id="changeDurationInput" />
+        <button id="SaveNewDuration">Save</button>
+      </div>
     </div>
-</body>
+  </body>
 </html>
 
-<script src='/socket.io/socket.io.js'></script>
+<script src="/socket.io/socket.io.js"></script>
 <script>
+  const socket = io.connect("http://localhost:8080");
 
-    const socket = io.connect('http://localhost:8080');
+  /* *********************** Information of numClients and numAdvs *********************** */
 
-    /* *********************** Information of numClients and numAdvs *********************** */
-   
-    const numOfAdvs = document.getElementById("numOfAdvs");
-    const numOfClients = document.getElementById("numOfClients");
+  const numOfAdvs = document.getElementById("numOfAdvs");
+  const numOfClients = document.getElementById("numOfClients");
 
-    socket.on("getInfoForAdmin",function(info){
-        numOfClients.innerHTML = info[0];
-        numOfAdvs.innerHTML = info[1];
-    });
+  socket.on("getInfoForAdmin", function (info) {
+    numOfClients.innerHTML = info[0];
+    numOfAdvs.innerHTML = info[1];
+  });
 
-    socket.on("infoClients", function(infoClients){
-        for(let i=0; i<infoClients.length; i++){
-            var id = i;
-            var idStr = "dot" + (++id); 
-            const d = document.getElementById(idStr);
-            if(infoClients[i] == true){
-                d.style.backgroundColor = "#00ff99";
-            }
-            else{
-                d.style.backgroundColor = "#cc0000";
-            }
-        }
-    });
+  socket.on("infoClients", function (infoClients) {
+    for (let i = 0; i < infoClients.length; i++) {
+      var id = i;
+      var idStr = "dot" + ++id;
+      const d = document.getElementById(idStr);
+      if (infoClients[i] == true) {
+        d.style.backgroundColor = "#289c13";
+      } else {
+        d.style.backgroundColor = "#cc0000";
+      }
+    }
+  });
 
-    var allAdvs; 
-    var advsArray; // all advs 
-    var idOfChoosenAdv;  // the id of the choosen  
-    var countAdvs = 0;  // save the last id number in db
+  var allAdvs;
+  var advsArray; // all advs
+  var idOfChoosenAdv; // the id of the choosen
+  var countAdvs = 0; // save the last id number in db
 
-    socket.on("sendAllAdvs", function(allAdvs){
-        var allAdv = [] 
-        allAdv = allAdvs;
-        advsArray = allAdv;
-        countAdvs = advsArray[advsArray.length - 1].myId;
-        createOption(allAdvs,selectAdv);
-    });
+  socket.on("sendAllAdvs", function (allAdvs) {
+    var allAdv = [];
+    allAdv = allAdvs;
+    advsArray = allAdv;
+    countAdvs = advsArray[advsArray.length - 1].myId;
+    createOption(allAdvs, selectAdv);
+  });
 
-    /* *********************** Information from lines (from the client) *********************** */
+  /* *********************** Information from lines (from the client) *********************** */
 
-    const addlines = document.querySelectorAll(".addLine");
-    const editLines = document.querySelectorAll(".editLine");
+  const addlines = document.querySelectorAll(".addLine");
+  const editLines = document.querySelectorAll(".editLine");
 
-    /* *********************** buttons *********************** */ 
+  /* *********************** buttons *********************** */
 
-    const logout = document.getElementById("logOut");
-    const addBtn = document.getElementById("addButton");
-    const editBtn = document.getElementById("editButton");
+  const logout = document.getElementById("logOut");
+  const addBtn = document.getElementById("addButton");
+  const editBtn = document.getElementById("editButton");
 
-    const deleteButton = document.getElementById("delete");
-    const addButton  = document.getElementById("add");
-    const editButton  = document.getElementById("edit");
+  const deleteButton = document.getElementById("delete");
+  const addButton = document.getElementById("add");
+  const editButton = document.getElementById("edit");
 
-    const addToScreenBtn = document.getElementById("saveBtnAdvToScreen");
-    const deleteFromScreenBtn = document.getElementById("deleteBtnAdvFromSceeen");
-    const clientsBtn = document.getElementById("Clients");
-    const overAllBtn = document.querySelector("#OverAll");
-    const addAdvToScreenBtn = document.querySelector("#addAdvToScreen");
-    const deleteAdvFromScreenBtn = document.querySelector("#deleteAdvFromScreen");
+  const addToScreenBtn = document.getElementById("saveBtnAdvToScreen");
+  const deleteFromScreenBtn = document.getElementById("deleteBtnAdvFromSceeen");
+  const clientsBtn = document.getElementById("Clients");
+  const overAllBtn = document.querySelector("#OverAll");
+  const addAdvToScreenBtn = document.querySelector("#addAdvToScreen");
+  const deleteAdvFromScreenBtn = document.querySelector("#deleteAdvFromScreen");
 
-    const changeDurationBtn=document.getElementById("changeDuration");
-    const saveNewDurationBtn=document.getElementById("SaveNewDuration");
+  const changeDurationBtn = document.getElementById("changeDuration");
+  const saveNewDurationBtn = document.getElementById("SaveNewDuration");
 
-    /* ****************************** selectors names ****************************** */
+  /* ****************************** selectors names ****************************** */
 
-    const selectAdv = document.getElementById("advSelect");
-    const selectClient = document.getElementById("clientChoose");
-    var currentScreen; 
-    const addAdvToScreenSelect = document.querySelector("#addAdvToScreenSelect");
-    var selectedAdvToAddToScreen; 
-    const deleteAdvFromScreenSelect = document.querySelector("#deleteAdvFromScreenSelect");
-    var selectedAdvToDeleteFromScreen;
-    const changeDurationSelect = document.querySelector("#changeDurationSelect");
-    var selectedchangeDuration;
+  const selectAdv = document.getElementById("advSelect");
+  const selectClient = document.getElementById("clientChoose");
+  var currentScreen;
+  const addAdvToScreenSelect = document.querySelector("#addAdvToScreenSelect");
+  var selectedAdvToAddToScreen;
+  const deleteAdvFromScreenSelect = document.querySelector(
+    "#deleteAdvFromScreenSelect"
+  );
+  var selectedAdvToDeleteFromScreen;
+  const changeDurationSelect = document.querySelector("#changeDurationSelect");
+  var selectedchangeDuration;
 
-    /* *********************** divs *********************** */ 
-    const add = document.querySelector("#addNewAdv");
-    const edit = document.querySelector("#editAdv");
-    const overAll = document.querySelector("#priview-continer");
-    const client = document.querySelector("#client");
-    const toScreen = document.querySelector("#clients-toScreen");
-    const divForAddToScreen = document.querySelector("#divForAddToScreen");
-    const divForDeleteToScreen = document.querySelector("#divForDeleteToScreen");
-    const divdisplayAdv = document.querySelector("#displayAdv");
-    const divChangeDuration = document.querySelector("#divChangeDuration");
+  /* *********************** divs *********************** */
+  const add = document.querySelector("#addNewAdv");
+  const edit = document.querySelector("#editAdv");
+  const overAll = document.querySelector("#priview-continer");
+  const client = document.querySelector("#client");
+  const toScreen = document.querySelector("#clients-toScreen");
+  const divForAddToScreen = document.querySelector("#divForAddToScreen");
+  const divForDeleteToScreen = document.querySelector("#divForDeleteToScreen");
+  const divdisplayAdv = document.querySelector("#displayAdv");
+  const divChangeDuration = document.querySelector("#divChangeDuration");
+  const myImage = document.querySelector("#myImg");
 
-    /* *********************** input time *********************** */ 
+  /* *********************** input time *********************** */
 
-    const durationTimeAdd = document.querySelector("#durationTimeAdd"); 
-    const message = document.getElementById("message");
-    const addImage = document.getElementById("addImage");
-    const changeDurationInput=document.getElementById("changeDurationInput");
+  const durationTimeAdd = document.querySelector("#durationTimeAdd");
+  const message = document.getElementById("message");
+  const addImage = document.getElementById("addImage");
+  const changeDurationInput = document.getElementById("changeDurationInput");
 
-    deleteButton.disabled=true;
-    editButton.disabled = true;
-    addAdvToScreenBtn.disabled = true;
-    deleteAdvFromScreenBtn.disabled = true;
-    changeDurationBtn.disabled = true;
+  deleteButton.disabled = true;
+  editButton.disabled = true;
+  addAdvToScreenBtn.disabled = true;
+  deleteAdvFromScreenBtn.disabled = true;
+  changeDurationBtn.disabled = true;
 
-    
-    logOut.addEventListener("click", ()=>{
-        console.log("log out");
-        socket.emit("logout", false);
-        location.href = "/login";
-    });
+  logOut.addEventListener("click", () => {
+    console.log("log out");
+    socket.emit("logout", false);
+    location.href = "/login";
+  });
 
-    addBtn.addEventListener("click",()=>{
-        console.log("addBtn clicked");
-        var arrAdd = creatInfoOfAdvInArray(addlines, true);
-        cleanInputsAdd();
-        socket.emit("newAdvData",arrAdd);
-        location.reload(true);
-    });
+  addBtn.addEventListener("click", () => {
+    console.log("addBtn clicked");
+    var arrAdd = creatInfoOfAdvInArray(addlines, true);
+    cleanInputsAdd();
+    socket.emit("newAdvData", arrAdd);
+    location.reload(true);
+  });
 
-    editBtn.addEventListener("click",()=> {
-        console.log("editBtn clicked");
-        var arrEdit = creatInfoOfAdvInArray(editLines, false);
-        cleanInputsEdit();
-        socket.emit("editAdvData",arrEdit);
-        divdisplayAdv.innerHTML.reload;
-        location.reload(true);
-    });
+  editBtn.addEventListener("click", () => {
+    console.log("editBtn clicked");
+    var arrEdit = creatInfoOfAdvInArray(editLines, false);
+    cleanInputsEdit();
+    socket.emit("editAdvData", arrEdit);
+    divdisplayAdv.innerHTML.reload;
+    location.reload(true);
+  });
 
-    addButton.addEventListener("click", ()=>{
-        if(!edit.classList.contains("hide"))
-            edit.classList.add("hide");
-        add.classList.toggle("hide");
-        console.log("addButton clicked");
-    });
+  addButton.addEventListener("click", () => {
+    if (!edit.classList.contains("hide")) edit.classList.add("hide");
+    add.classList.toggle("hide");
+    console.log("addButton clicked");
+  });
 
-    editButton.addEventListener("click", ()=>{
-        if(!add.classList.contains("hide"))
-            add.classList.add("hide");
-        edit.classList.toggle("hide");
-        console.log("editButton clicked");
-    });
+  editButton.addEventListener("click", () => {
+    if (!add.classList.contains("hide")) add.classList.add("hide");
+    edit.classList.toggle("hide");
+    console.log("editButton clicked");
+  });
 
-    deleteButton.addEventListener("click", ()=>{
-        console.log("deleteButton clicked");
-        idOfChoosenAdv = selectAdv.options[selectAdv.selectedIndex].value;
-        console.log("idOfChoosenAdv: " + idOfChoosenAdv)
-        socket.emit("deleteAdv", idOfChoosenAdv);
-        location.reload(true);
-    });
+  deleteButton.addEventListener("click", () => {
+    console.log("deleteButton clicked");
+    idOfChoosenAdv = selectAdv.options[selectAdv.selectedIndex].value;
+    console.log("idOfChoosenAdv: " + idOfChoosenAdv);
+    socket.emit("deleteAdv", idOfChoosenAdv);
+    location.reload(true);
+  });
 
-    addToScreenBtn.addEventListener("click", ()=>{    
-        console.log("addToScreenBtn clicked");
-        var duration = durationTimeAdd.value;
-        if(duration == ""){
-            message.innerHTML = "Please enter duration";
-        }
-        else{
-            var dataOfAddAdvToScreen = [];
-            if(selectedAdvToAddToScreen == undefined){
-                selectedAdvToAddToScreen = addAdvToScreenSelect.options[0].value;
-            }
-            dataOfAddAdvToScreen.push(currentScreen);
-            dataOfAddAdvToScreen.push(selectedAdvToAddToScreen);
-            dataOfAddAdvToScreen.push(duration);
-            socket.emit("addAdvToScreen", dataOfAddAdvToScreen);
-            location.reload(true);
-        }
-    });
+  addToScreenBtn.addEventListener("click", () => {
+    console.log("addToScreenBtn clicked");
+    var duration = durationTimeAdd.value;
+    if (duration == "") {
+      message.innerHTML = "Please enter duration";
+    } else {
+      var dataOfAddAdvToScreen = [];
+      if (selectedAdvToAddToScreen == undefined) {
+        selectedAdvToAddToScreen = addAdvToScreenSelect.options[0].value;
+      }
+      dataOfAddAdvToScreen.push(currentScreen);
+      dataOfAddAdvToScreen.push(selectedAdvToAddToScreen);
+      dataOfAddAdvToScreen.push(duration);
+      socket.emit("addAdvToScreen", dataOfAddAdvToScreen);
+      location.reload(true);
+    }
+  });
 
-    deleteFromScreenBtn.addEventListener("click", ()=>{
-        console.log("deleteFromScreenBtn clicked");
-        var data = []; 
-        if(selectedAdvToDeleteFromScreen == undefined){
-            selectedAdvToDeleteFromScreen = deleteAdvFromScreenSelect.options[0].value;
-        }
-        data.push(currentScreen);
-        data.push(selectedAdvToDeleteFromScreen);
-        socket.emit("getAdvToDeleteFromScreen", data);
-        location.reload(true);
-        socket.emit("inAdmin", true); // check
-    });
+  deleteFromScreenBtn.addEventListener("click", () => {
+    console.log("deleteFromScreenBtn clicked");
+    var data = [];
+    if (selectedAdvToDeleteFromScreen == undefined) {
+      selectedAdvToDeleteFromScreen =
+        deleteAdvFromScreenSelect.options[0].value;
+    }
+    data.push(currentScreen);
+    data.push(selectedAdvToDeleteFromScreen);
+    socket.emit("getAdvToDeleteFromScreen", data);
+    location.reload(true);
+    socket.emit("inAdmin", true); // check
+  });
 
-    saveNewDurationBtn.addEventListener("click", ()=>{
-        console.log("saveNewDurationBtn clicked");
-        var data=[];
-        if(index == undefined){
-            index = 0;
-        }
-        var newTime=changeDurationInput.value;
-        data.push(currentScreen);
-        data.push(index);
-        data.push(newTime);
-        socket.emit("editDuration", data);
-        location.reload(true);
-    });
+  saveNewDurationBtn.addEventListener("click", () => {
+    console.log("saveNewDurationBtn clicked");
+    var data = [];
+    if (index == undefined) {
+      index = 0;
+    }
+    var newTime = changeDurationInput.value;
+    data.push(currentScreen);
+    data.push(index);
+    data.push(newTime);
+    socket.emit("editDuration", data);
+    location.reload(true);
+  });
 
-    overAllBtn.addEventListener("click", ()=>{
-        console.log("overAllBtn clicked");
-        createOption(allAdvs, selectAdv);
-        if(!client.classList.contains("hide"))
-        client.classList.add("hide");
+  overAllBtn.addEventListener("click", () => {
+    console.log("overAllBtn clicked");
+    OverAll.classList.toggle("selectedBtn");
+    Clients.classList.remove("selectedBtn");
+    createOption(allAdvs, selectAdv);
+    if (!client.classList.contains("hide")) client.classList.add("hide");
         overAll.classList.toggle("hide");
+  });
+
+  clientsBtn.addEventListener("click", () => {
+    console.log("clientsBtn clicked");
+    Clients.classList.toggle("selectedBtn");
+    OverAll.classList.remove("selectedBtn");
+    if (!overAll.classList.contains("hide")) overAll.classList.add("hide");
+        client.classList.toggle("hide");
+  });
+
+  addAdvToScreenBtn.addEventListener("click", () => {
+    console.log("addAdvToScreenBtn clicked");
+    if (!divChangeDuration.classList.contains("hide"))
+      divChangeDuration.classList.add("hide");
+    if (!divForDeleteToScreen.classList.contains("hide"))
+      divForDeleteToScreen.classList.add("hide");
+    divForAddToScreen.classList.toggle("hide");
+  });
+
+  deleteAdvFromScreenBtn.addEventListener("click", () => {
+    console.log("deleteAdvFromScreenBtn clicked");
+    if (!divChangeDuration.classList.contains("hide"))
+      divChangeDuration.classList.add("hide");
+    if (!divForAddToScreen.classList.contains("hide"))
+      divForAddToScreen.classList.add("hide");
+    divForDeleteToScreen.classList.toggle("hide");
+  });
+
+  changeDurationBtn.addEventListener("click", () => {
+    console.log("changeDurationBtn clicked");
+    if (!divForDeleteToScreen.classList.contains("hide"))
+      divForDeleteToScreen.classList.add("hide");
+    if (!divForAddToScreen.classList.contains("hide"))
+      divForAddToScreen.classList.add("hide");
+    divChangeDuration.classList.toggle("hide");
+  });
+
+  changePassword.addEventListener("click", () => {
+    console.log("i am here");
+    window.location.replace("http://localhost:8080/changepass");
+  });
+
+  /* ****************************************************** */
+
+  function creatInfoOfAdvInArray(dlines, bol) {
+    // return an array with informatin from lines (from client).
+    var dataLines = [];
+    dlines.forEach((line) => {
+      dataLines.push(line.value);
     });
+    if (bol == true) {
+      // add image
+      dataLines.push(addImage.value);
+    } else {
+      // edit image
+      dataLines.push(editImage.value);
+    }
+    return dataLines;
+  }
 
-    clientsBtn.addEventListener("click", ()=>{
-        console.log("clientsBtn clicked");
-        if(!overAll.classList.contains("hide"))
-        overAll.classList.add("hide");
-       client.classList.toggle("hide");
+  function cleanInputsAdd() {
+    addlines.forEach((line) => {
+      line.value = "";
     });
+    addImage.value = "";
+  }
 
-    addAdvToScreenBtn.addEventListener("click",()=>{
-        console.log("addAdvToScreenBtn clicked");
-        if(!divChangeDuration.classList.contains("hide"))
-            divChangeDuration.classList.add("hide");
-        if(!divForDeleteToScreen.classList.contains("hide"))
-            divForDeleteToScreen.classList.add("hide");
-        divForAddToScreen.classList.toggle("hide");;
+  function cleanInputsEdit() {
+    editLines.forEach((line) => {
+      line.value = "";
     });
+    editImage.value = "";
+  }
 
-    deleteAdvFromScreenBtn.addEventListener("click",()=> {
-        console.log("deleteAdvFromScreenBtn clicked");
-        if(!divChangeDuration.classList.contains("hide"))
-            divChangeDuration.classList.add("hide");
-        if(!divForAddToScreen.classList.contains("hide"))
-            divForAddToScreen.classList.add("hide");
-        divForDeleteToScreen.classList.toggle("hide");
+  function createOption(allAdvs, selectAdv) {
+    if (allAdvs !== undefined) {
+      selectAdv.innerHTML = "";
+      allAdvs.forEach((adv) => {
+        var opt = document.createElement("option");
+        opt.value = adv.myId;
+        opt.innerHTML = adv.title;
+        opt.classList.add("option");
+        selectAdv.appendChild(opt);
+      });
+    }
+  }
+
+  /* ************************* functions of select ************************* */
+  function selectAdvOption() {
+    deleteButton.disabled = false;
+    editButton.disabled = false;
+    myImage.classList.remove("hide");
+    editButton.classList.add("afterChoose");
+    deleteButton.classList.add("afterChoose");
+    socket.emit(
+      "getSelectAdv",
+      selectAdv.options[selectAdv.selectedIndex].value
+    );
+    idOfChoosenAdv = selectAdv.options[selectAdv.selectedIndex].value;
+    socket.on("returnSelectedAdv", function (res) {
+      displayAdv(res);
+      displayEdit(res);
     });
+  }
 
-    changeDurationBtn.addEventListener("click", ()=>{
-        console.log("changeDurationBtn clicked");
-        if(!divForDeleteToScreen.classList.contains("hide"))
-            divForDeleteToScreen.classList.add("hide");
-        if(!divForAddToScreen.classList.contains("hide"))
-            divForAddToScreen.classList.add("hide");
-        divChangeDuration.classList.toggle("hide");
+  function chooseScreen() {
+    changeDurationBtn.disabled = false;
+    addAdvToScreenBtn.disabled = false;
+    deleteAdvFromScreenBtn.disabled = false;
+    deleteAdvFromScreenBtn.classList.add("afterChoose");
+    changeDurationBtn.classList.add("afterChoose");
+    addAdvToScreenBtn.classList.add("afterChoose");
+    currentScreen = selectClient.options[selectClient.selectedIndex].value;
+    socket.emit("getAdvByScreen", currentScreen);
+    socket.emit("getTiming", currentScreen);
+    socket.once("getArrayOfAdsToAdd", function (resToAddSelect) {
+      createOption(resToAddSelect, addAdvToScreenSelect);
     });
-
-    changePassword.addEventListener("click",() =>{
-        console.log("i am here");
-        window.location.replace("http://localhost:8080/changepass");
+    socket.once("getArrayOfAdsToDelete", function (resToDeleteSelect) {
+      createOption(resToDeleteSelect, deleteAdvFromScreenSelect);
+      createOption(resToDeleteSelect, changeDurationSelect);
+      // for(let i=0; i<resToDeleteSelect.length;i++){
+      //   console.log(resToDeleteSelect[i].myId);
+      // }
     });
-   
-    /* ****************************************************** */
+    socket.once("timingFromServer", function (resToChangeDuration) {
+      console.log("array to change:" + resToChangeDuration);
+      timingArray = resToChangeDuration;
+      changeDurationInput.value = timingArray[0];
+    });
+  }
 
-    function creatInfoOfAdvInArray(dlines, bol){ // return an array with informatin from lines (from client).
-        var dataLines = [];
-        dlines.forEach((line)=>{
-                dataLines.push(line.value);
-        });
-        if(bol == true){ // add image
-            dataLines.push(addImage.value);
-        }
-        else{// edit image
-            dataLines.push(editImage.value);
-        }
-        return dataLines;
-    }
+  var timingArray;
 
-    function cleanInputsAdd(){
-        addlines.forEach((line)=>{
-            line.value = "";
-        });
-        addImage.value = "";
-    }
+  function addAdvSelect() {
+    selectedAdvToAddToScreen =
+      addAdvToScreenSelect.options[addAdvToScreenSelect.selectedIndex].value; // the id of the selected adv
+  }
 
-    function cleanInputsEdit(){
-        editLines.forEach((line)=>{
-            line.value = "";
-        });
-        editImage.value = "";
-    }
- 
-    function createOption(allAdvs,selectAdv){
-        if(allAdvs !== undefined){
-            selectAdv.innerHTML = "";
-            allAdvs.forEach((adv)=> {
-                var opt = document.createElement('option');
-                opt.value = adv.myId;
-                opt.innerHTML = adv.title;
-                opt.classList.add("option");
-                selectAdv.appendChild(opt);
-            }); 
-        }
-    }
+  function duration() {
+    durationTimeAdd.addEventListener("input", () => {
+      if (durationTimeAdd.value.length > 0) addToScreenBtn.disabled = false;
+      else addToScreenBtn.disabled = true;
+    });
+  }
 
-    /* ************************* functions of select ************************* */
-    function selectAdvOption(){
-        deleteButton.disabled=false;
-        editButton.disabled = false;
-        socket.emit("getSelectAdv",selectAdv.options[selectAdv.selectedIndex].value);
-        idOfChoosenAdv = selectAdv.options[selectAdv.selectedIndex].value;
-        socket.on("returnSelectedAdv",function(res){           
-            displayAdv(res);
-            displayEdit(res);
-        }); 
-    }
+  function deleteAdvFromScreen() {
+    selectedAdvToDeleteFromScreen =
+      deleteAdvFromScreenSelect.options[deleteAdvFromScreenSelect.selectedIndex]
+        .value;
+  }
 
-    function chooseScreen(){
-        changeDurationBtn.disabled= false;
-        addAdvToScreenBtn.disabled = false;
-        deleteAdvFromScreenBtn.disabled = false;
-        currentScreen = selectClient.options[selectClient.selectedIndex].value;
-        socket.emit("getAdvByScreen", currentScreen);
-        socket.emit("getTiming", currentScreen);
-        socket.once("getArrayOfAdsToAdd",function(resToAddSelect){
-            createOption(resToAddSelect,addAdvToScreenSelect)
-        });
-        socket.once("getArrayOfAdsToDelete",function(resToDeleteSelect){
-            createOption(resToDeleteSelect,deleteAdvFromScreenSelect);
-            createOption(resToDeleteSelect,changeDurationSelect);
-            // for(let i=0; i<resToDeleteSelect.length;i++){
-            //   console.log(resToDeleteSelect[i].myId);  
-            // }
-        });
-        socket.once("timingFromServer",function(resToChangeDuration){
-           console.log("array to change:"+resToChangeDuration);
-           timingArray = resToChangeDuration;
-           changeDurationInput.value=timingArray[0];
-        });
-        
-    }
+  var index;
 
-    var timingArray;
+  function changeDuration() {
+    selectedchangeDuration =
+      changeDurationSelect.options[changeDurationSelect.selectedIndex].value;
+    index = changeDurationSelect.selectedIndex;
+    changeDurationInput.value = timingArray[index];
+    console.log("------" + selectedchangeDuration);
+  }
 
-    function addAdvSelect(){
-        selectedAdvToAddToScreen = addAdvToScreenSelect.options[addAdvToScreenSelect.selectedIndex].value; // the id of the selected adv
-    }
+  /* ************************* displayes ************************* */
+  function displayAdv(res) {
+    document.getElementById("line1").style.color = res.colors.line1color;
+    document.getElementById("line2").style.color = res.colors.line2color;
+    document.getElementById("line3").style.color = res.colors.line3color;
+    document.getElementById("line4").style.color = res.colors.line4color;
+    // document.getElementById("title").innerHTML = res.text.title;
+    document.getElementById("line1").innerHTML = res.text.line1;
+    document.getElementById("line2").innerHTML = res.text.line2;
+    document.getElementById("line3").innerHTML = res.text.line3;
+    document.getElementById("line4").innerHTML = res.text.line4;
+    document.getElementById("myImg").src = res.imgsrc;
+    document.getElementById("displayAdv").style.background = res.colors.background; // change the div of the background
+  }
 
-    function duration(){
-        durationTimeAdd.addEventListener("input",()=>{
-            if(durationTimeAdd.value.length > 0)
-                addToScreenBtn.disabled = false;
-            else
-            addToScreenBtn.disabled = true; 
-        });
-    }
-
-    function deleteAdvFromScreen(){
-
-        selectedAdvToDeleteFromScreen = deleteAdvFromScreenSelect.options[deleteAdvFromScreenSelect.selectedIndex].value;
-
-    }
-
-    var index;
-
-   function changeDuration(){
-        selectedchangeDuration=changeDurationSelect.options[changeDurationSelect.selectedIndex].value;
-        index= changeDurationSelect.selectedIndex;
-        changeDurationInput.value=timingArray[index];
-        console.log("------" +selectedchangeDuration);
-   }
-
-    /* ************************* displayes ************************* */
-    function displayAdv(res){
-        document.getElementById("line1").style.color = res.colors.line1color;
-        document.getElementById("line2").style.color = res.colors.line2color;
-        document.getElementById("line3").style.color = res.colors.line3color;
-        document.getElementById("line4").style.color = res.colors.line4color;
-        // document.getElementById("title").innerHTML = res.text.title;
-        document.getElementById("line1").innerHTML = res.text.line1;
-        document.getElementById("line2").innerHTML = res.text.line2;
-        document.getElementById("line3").innerHTML = res.text.line3;
-        document.getElementById("line4").innerHTML = res.text.line4;
-        document.getElementById("myImg").src = res.imgsrc;
-        // document.getElementById("body").style.background = res.colors.background; // change the div of the background
-    }
-    
-    function displayEdit(res){
-        document.getElementById("editTitle").value = res.title;
-        document.getElementById("editLine1").value = res.text.line1;
-        document.getElementById("editLine2").value = res.text.line2;
-        document.getElementById("editLine3").value = res.text.line3;
-        document.getElementById("editLine4").value = res.text.line4;
-        document.getElementById("editcolorLine1").value = res.colors.line1color;
-        document.getElementById("editcolorLine2").value = res.colors.line2color;
-        document.getElementById("editcolorLine3").value = res.colors.line3color;
-        document.getElementById("editcolorLine4").value = res.colors.line4color;
-        document.getElementById("editcolorBackground").value = res.colors.background;  // change the div of the background
-        document.getElementById("editImage").value = res.imgsrc;
-        console.log("image src: " + res.imgsrc);
-    }
-
-   
+  function displayEdit(res) {
+    document.getElementById("editTitle").value = res.title;
+    document.getElementById("editLine1").value = res.text.line1;
+    document.getElementById("editLine2").value = res.text.line2;
+    document.getElementById("editLine3").value = res.text.line3;
+    document.getElementById("editLine4").value = res.text.line4;
+    document.getElementById("editcolorLine1").value = res.colors.line1color;
+    document.getElementById("editcolorLine2").value = res.colors.line2color;
+    document.getElementById("editcolorLine3").value = res.colors.line3color;
+    document.getElementById("editcolorLine4").value = res.colors.line4color;
+    document.getElementById("editcolorBackground").value =
+      res.colors.background; // change the div of the background
+    document.getElementById("editImage").value = res.imgsrc;
+    console.log("image src: " + res.imgsrc);
+  }
 </script>
-
