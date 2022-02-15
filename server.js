@@ -32,8 +32,7 @@ app.get("/changepass", function(req, res){
 });
 
 app.get("/logIn", function(req, res){
-
-  screen = "logIn"
+  screen = "logIn";
   res.sendFile(__dirname + "/logIn.html");
 });
 
@@ -71,6 +70,12 @@ function ioConnection(){
       mongoForChangePassword(socket);
 
     }
+    else if(screen == "logIn"){
+      console.log("inside log in");
+      mongoForLogIn(socket);
+
+
+    }
     ioDisconnection(socket, screen);
   });
 }
@@ -92,6 +97,9 @@ function ioDisconnection(socket, num){
       console.log("discon 3");
       setNotActive("2");
       count--;
+    }
+    else if(screen == "admin"){
+      accessAdmin = false; 
     }
   });
 }
@@ -242,8 +250,13 @@ function sendTiming(socket, num){
 /* ******************************************** Admin ******************************************** */ 
 
   app.get('/dashboard', function (req, res) {
-    screen = "admin";
-    res.sendFile(__dirname + "/dashboard.html"); 
+    if(accessAdmin == true){
+      screen = "admin";
+      res.sendFile(__dirname + "/dashboard.html"); 
+    }
+    else{
+      res.send("Must verify admin details");
+    }
   }); 
 
   function mongoForAdmin(socket){
@@ -323,16 +336,6 @@ function sendTiming(socket, num){
 
             findAdvsForAddAndDelete(all, advList, sendAdv, sendToDelete);
             
-            sendAdv.forEach((x)=>{
-              console.log("send Adv =================== " +x.title);
-            });
-            
-            sendToDelete.forEach((x)=>{
-              console.log("send Delete =================== " +x.title);
-            });
-            
-            console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-
             socket.emit("getArrayOfAdsToAdd",sendAdv);
             socket.emit("getArrayOfAdsToDelete",sendToDelete);
 
@@ -472,4 +475,34 @@ function setNotActive(a){
   
   });
 }
+
+
+
+/* ***************************** logIn ************************ */
+
+var accessAdmin = false; 
+
+function mongoForLogIn(socket){
+  socket.on("getDataAdmin", function(data){
+    var name = data[0];
+    var pass = data[1];
+    MongoClient.connect(url, function (err, db) {
+      if (err) throw err;
+      const dbo = db.db("AdvDB");
+      dbo.collection("userAdmin").find({}).toArray(function(err, result){
+        var user = result[0];
+        if(user.password == pass && user.userName == name){
+          accessAdmin = true; 
+          socket.emit("ok", "success");
+        }
+        else{
+          socket.emit("validition", "wrong");
+        }
+      });
+    });
+  });
+}
+
+
+
 

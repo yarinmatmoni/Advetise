@@ -79,7 +79,6 @@
             socket.emit("change", data);
             socket.on("right", function(verdata){
                 console.log("password and name changed!");
-                textsuccess.innerText = verdata;
                 message.innerHTML = verdata;
                 setTimeout(toDashboard, 2000);             
             });
