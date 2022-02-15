@@ -322,7 +322,17 @@ function sendTiming(socket, num){
             var sendToDelete = [];
 
             findAdvsForAddAndDelete(all, advList, sendAdv, sendToDelete);
-          
+            
+            sendAdv.forEach((x)=>{
+              console.log("send Adv =================== " +x.title);
+            });
+            
+            sendToDelete.forEach((x)=>{
+              console.log("send Delete =================== " +x.title);
+            });
+            
+            console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+
             socket.emit("getArrayOfAdsToAdd",sendAdv);
             socket.emit("getArrayOfAdsToDelete",sendToDelete);
 

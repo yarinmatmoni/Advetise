@@ -345,6 +345,13 @@
  
     function createOption(allAdvs,selectAdv){
         if(allAdvs !== undefined){
+            if(selectAdv.length > 1){
+                for (var i=0; i<selectAdv.length; i++) {
+                    // console.log("delete ----------" + selectAdv.options[i].value);
+                    selectAdv.remove(i);
+                }
+            }
+ 
             allAdvs.forEach((adv)=> {
                 var opt = document.createElement('option');
                 opt.value = adv.myId;
@@ -372,12 +379,14 @@
         deleteAdvFromScreenBtn.disabled = false;
         currentScreen = selectClient.options[selectClient.selectedIndex].value;
         socket.emit("getAdvByScreen", currentScreen);
-        socket.on("getArrayOfAdsToAdd",function(resToAddSelect){
+        socket.once("getArrayOfAdsToAdd",function(resToAddSelect){
             createOption(resToAddSelect,addAdvToScreenSelect)
         });
-        socket.on("getArrayOfAdsToDelete",function(resToDeleteSelect){
+        socket.once("getArrayOfAdsToDelete",function(resToDeleteSelect){
             createOption(resToDeleteSelect,deleteAdvFromScreenSelect);
         });
+        console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+        
     }
 
     function addAdvSelect(){
