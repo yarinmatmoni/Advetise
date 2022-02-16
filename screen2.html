@@ -33,12 +33,7 @@
 
         socket.on("getTimingScreen2", function(timing){
 
-            // for(let j=0; j<data.length; j++){
-            //     console.log("title"+ j + " "+ data[j].title);
-            // }
-         
             var timingArray = timing[0].timing;
-            console.log("timingArray: " + timingArray);
             allData = data;
 
             const firstTime = timingArray[0] * 1000;

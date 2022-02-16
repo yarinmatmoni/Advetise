@@ -63,9 +63,10 @@ function ioConnection(){
     }
     else if(screen == "admin"){
       mongoForAdmin(socket);
-      setInterval(intervalForCon, 4000);
-      setInterval(whoIsCon, 4000);
-      setInterval(sendNumForEveryScreen, 4000);
+      socket.emit("getNumOfScreen", connectionsArray);
+      setInterval(intervalForCon, 3000);
+      setInterval(whoIsCon, 3000);
+      setInterval(sendNumForEveryScreen, 3000);
     }
     else if(screen == "changepass"){
       mongoForChangePassword(socket);

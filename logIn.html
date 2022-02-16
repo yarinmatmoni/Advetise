@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" type="text/css" href="css/login.css" /> -->
     <link rel="stylesheet" href="css/login.css"> 
     <style> @import url('https://fonts.googleapis.com/css2?family=Dosis&family=Inter:wght@400;700&family=Lobster&display=swap');</style>  
     <meta name='viewport' content='width=device-width, initial-scale=1'>
@@ -20,7 +19,6 @@
         <input type="text" id="userName" placeholder="User Name" autocomplete="off"/>
         <input type="text" id="password" placeholder="Password" autocomplete="off"/> 
         <button id="loginbtn" type="submit"> Log In </button>
-        <!-- <a id="loginbtn" href="/login">Log In</a> -->
         
     </div>
 
@@ -54,11 +52,8 @@
             loginDiv[0].appendChild(errorText);
         } 
 
-
         socket.on("ok", function(err, res){
-            
             location.href = "/dashboard";
-
         });
     });
 
