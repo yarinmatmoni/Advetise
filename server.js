@@ -101,9 +101,6 @@ function ioConnection(){
     function sendNumForEveryScreen(){
       socket.emit("getNumOfScreen", connectionsArray);
     }
-
-
-
   });
 }
 
@@ -127,8 +124,6 @@ function ioDisconnection(socket, num){
     }
   });
 }
-
-
 
 
 /* ****************************** mongo ************************* */
@@ -545,7 +540,7 @@ function setActive(a){
 }
 
 function setNotActive(a){ 
-  
+
   if(connectionsArray[a] == 0 ){
     MongoClient.connect(url, function (err, db) {
       const dbo = db.db("AdvDB");

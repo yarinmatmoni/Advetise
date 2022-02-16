@@ -276,12 +276,21 @@ h1 {
 .client {
   display: flex;
   justify-content: space-around;
-  width: 10rem;
+  width: 14rem;
+}
+
+.client label { 
+  color: black;
+  display: flex;
+  justify-content: space-around;
+  width: 6rem;
 }
 
 .connectionList ul {
   list-style: none;
+  margin-left: -38px;
 }
+
 
 .dot {
   height: 10px;
