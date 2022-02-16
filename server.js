@@ -14,6 +14,7 @@ const dataBase = require("./db.js");
 dataBase();
 
 let count = 0; 
+var connectionsArray = [0, 0, 0]; // save the number of connections to each screen.
 
 app.use(express.static(__dirname + "/public"));
 
@@ -45,22 +46,26 @@ function ioConnection(){
     if(screen == 1){
       setActive("0");
       count++; 
+      connectionsArray[0]++;
       mongoFor1(socket);
     }
     else if(screen == 2){
       setActive("1");
       count++; 
+      connectionsArray[1]++;
       mongoFor2(socket);
     }
     else if(screen == 3){
       setActive("2");
       count++; 
+      connectionsArray[2]++;
       mongoFor3(socket);
     }
     else if(screen == "admin"){
       mongoForAdmin(socket);
       setInterval(intervalForCon, 4000);
       setInterval(whoIsCon, 4000);
+      setInterval(sendNumForEveryScreen, 4000);
     }
     else if(screen == "changepass"){
       mongoForChangePassword(socket);
@@ -75,7 +80,6 @@ function ioConnection(){
     }
 
     function whoIsCon(){
-
       MongoClient.connect(url, function(err, db){
         if(err) throw err;
         const dbo = db.db("AdvDB");
@@ -93,6 +97,13 @@ function ioConnection(){
         });
       });
     }
+
+    function sendNumForEveryScreen(){
+      socket.emit("getNumOfScreen", connectionsArray);
+    }
+
+
+
   });
 }
 
@@ -100,19 +111,24 @@ function ioConnection(){
 function ioDisconnection(socket, num){
   socket.on("disconnect", function(err, res){
     if(num == 1){
+      connectionsArray[0]--;
       setNotActive("0");
       count--;
     }
     else if(num == 2){
+      connectionsArray[1]--;
       setNotActive("1");
       count--;
     }
     else if(num == 3){
+      connectionsArray[2]--;
       setNotActive("2");
       count--;
     }
   });
 }
+
+
 
 
 /* ****************************** mongo ************************* */
@@ -257,6 +273,7 @@ function sendTiming(socket, num){
 
   function mongoForAdmin(socket){
     const result = [];
+
     MongoClient.connect(url, function (err, db) {
       if (err) throw err;
       const dbo = db.db("AdvDB");
@@ -310,12 +327,9 @@ function sendTiming(socket, num){
         });
 
         socket.on("editAdvData", function(res){
-          console.log("button edit was clicked");
-          console.log("the id is: " + idAdv);
           dbo.collection("advData").find({myId: idAdv}).toArray(function(err, showArr){
             var sh = showArr[0].show;
             var newAdv = createAdv(res, idAdv, sh);
-            console.log("the new adv: " + newAdv);
             dbo.collection("advData").replaceOne({myId: idAdv}, newAdv);
           });
         });
@@ -403,7 +417,6 @@ server.listen(8080);
 function deleteFromUser(dbo ,idToDelete, currentScreen){ // users
   dbo.collection("users").find({userId: currentScreen.toString()}).toArray(function(err, users){
     var user = users[0];
-    console.log("the user is:" + user);
     var newAdvList = user.advList;
     var newTiming = user.timing;
     var index = newAdvList.indexOf(idToDelete); 
@@ -450,47 +463,8 @@ function deleteFromShow(dbo, idToDelete, currentScreen){
     var index = showReplace.indexOf(currentScreen);
     showReplace.splice(index, 1); 
     dbo.collection("advData").updateOne({myId: idToDelete}, {$set: {show: showReplace}});
-    console.log("delete from advData succeed");
   });
 }
-
-
-// function deleteFromAll(dbo, idToDelete, currentScreen, bol){
-
-//   dbo.collection("advData").find({myId: idToDelete.toString()}).toArray(function(err, result){
-//     if(err) throw err; 
-//     console.log("***************************");
-//     console.log("result: " + result);
-//     console.log("the title of the adv to delete: " + result[0].title);
-//     console.log("idToDelete: " + idToDelete);
-//     console.log("currentScreen: " + currentScreen);
-//     console.log("showReplace: " + result[0].show)
-//     var showReplace = []; 
-//     showReplace = result[0].show;
-//     var index = showReplace.indexOf(currentScreen);
-//     showReplace.splice(index);
-//     dbo.collection("advData").updateOne({myId: idToDelete}, {$set: {show: showReplace}});
-//     console.log("delete from advData succeed")
-
-//     // if(bol == true){
-//     //   setTimeout(deleteFromAdvData(idToDelete),1000);
-//     // }
-//     // if(bol == true){
-//     //   dbo.collection("advData").deleteOne({myId: idToDelete});
-//     // }
-//   });
-
-//   dbo.collection("users").find({userId: currentScreen}).toArray(function(err, users){
-//     var user = users[0];
-//     var newAdvList = user.advList;
-//     var newTiming = user.timing;
-//     var index = newAdvList.indexOf(idToDelete); 
-//     newAdvList.splice(index, 1);
-//     newTiming.splice(index, 1);
-//     dbo.collection("users").updateOne({userId: currentScreen}, {$set: {advList: newAdvList}});
-//     dbo.collection("users").updateOne({userId: currentScreen}, {$set: {timing: newTiming}});
-//   });
-// }
 
 function addDataToScreen(socket, dbo){
 
@@ -570,18 +544,21 @@ function setActive(a){
   });
 }
 
-function setNotActive(a){
-  MongoClient.connect(url, function (err, db) {
-    const dbo = db.db("AdvDB");
-    var date = new Date();
-    var currentDate = `${date.getUTCDate()}.${date.getMonth() + 1}.${date.getFullYear()}   ${date.getHours()}:${date.getUTCMinutes()}`;
-    dbo
-    .collection("users").updateOne({userId: a}, 
-    {$set: {status: "Not Active"}});
+function setNotActive(a){ 
+  
+  if(connectionsArray[a] == 0 ){
+    MongoClient.connect(url, function (err, db) {
+      const dbo = db.db("AdvDB");
+      var date = new Date();
+      var currentDate = `${date.getUTCDate()}.${date.getMonth() + 1}.${date.getFullYear()}   ${date.getHours()}:${date.getUTCMinutes()}`;
+      dbo
+      .collection("users").updateOne({userId: a}, 
+      {$set: {status: "Not Active"}});
 
-    dbo.collection("users").updateOne({userId: a}, 
-      {$set: {lastConnection: currentDate}});
-  });
+      dbo.collection("users").updateOne({userId: a}, 
+        {$set: {lastConnection: currentDate}});
+    });
+  }
 }
 
 /* ***************************** logIn ************************ */

@@ -27,14 +27,17 @@
         <ul>
           <div class="client" id="screen1con">
             <li>Sceen 1</li>
+            <label id="s1"> 0 </label>
             <span id="dot1" class="dot"></span>
           </div>
           <div class="client" id="screen2con">
             <li>Sceen 2</li>
+            <label id="s2"> 0 </label>
             <span id="dot2" class="dot"></span>
           </div>
           <div class="client" id="screen3con">
             <li>Sceen 3</li>
+            <label id="s3"> 0 </label>
             <span id="dot3" class="dot"></span>
           </div>
         </ul>
@@ -261,13 +264,6 @@
       numOfClients.innerHTML = count;
   });
 
-//   socket.on("count", function(count){
-//       console.log("the new count: " + count);
-//     numOfClients.innerHTML = count;
-//     // document.getElementsByClassName("info-continer").reload(true);
-//     // document.getElementsById("info").reload(true);
-//   });
-
   socket.on("infoClients", function (infoClients) {
     for (let i = 0; i < infoClients.length; i++) {
       var id = i;
@@ -279,8 +275,12 @@
         d.style.backgroundColor = "#cc0000";
       }
     }
-    // document.getElementsByClassName("info-continer").reload(true);
+  });
 
+  socket.on("getNumOfScreen", function(array){
+    document.getElementById("s1").innerHTML = array[0];
+    document.getElementById("s2").innerHTML = array[1];
+    document.getElementById("s3").innerHTML = array[2];
   });
 
   var allAdvs;
@@ -379,7 +379,6 @@
     var arrEdit = creatInfoOfAdvInArray(editLines, false);
     cleanInputsEdit();
     socket.emit("editAdvData", arrEdit);
-    // console.log("the emit of edit: " + arrEdit);
     divdisplayAdv.innerHTML.reload;
     location.reload(true);
   });
