@@ -389,8 +389,9 @@
         idOfChoosenAdv = selectAdv.options[0].value;
         socket.emit("getSelectAdv", idOfChoosenAdv);
         socket.on("returnSelectedAdv", function (res) {
-        displayAdv(res);
-        displayEdit(res);
+            myImage.classList.remove("hide"); 
+            displayAdv(res);
+            displayEdit(res);
         });
     }
   });
@@ -631,8 +632,7 @@
     document.getElementById("editcolorLine2").value = res.colors.line2color;
     document.getElementById("editcolorLine3").value = res.colors.line3color;
     document.getElementById("editcolorLine4").value = res.colors.line4color;
-    document.getElementById("editcolorBackground").value =
-      res.colors.background; // change the div of the background
+    document.getElementById("editcolorBackground").value = res.colors.background; // change the div of the background
     document.getElementById("editImage").value = res.imgsrc;
   }
 </script>
