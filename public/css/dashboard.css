@@ -25,7 +25,7 @@ h1 {
 }
 
 .info {
-  background-color: #a4c3b2;
+  background-color: #eaf4f4;
   width: 16rem;
   padding: 0rem 1rem;
   text-align: center;
@@ -103,7 +103,9 @@ h1 {
   font-size: 16px;
   border-radius: 10px;
 }
-#add:hover, #edit:hover, #delete:hover {
+#add:hover,
+#edit:hover,
+#delete:hover {
   background-color: #6b9080;
   cursor: pointer;
   transition: all 0.5s ease;
@@ -130,9 +132,8 @@ h1 {
   font-size: medium;
   margin: 0.2rem 0rem;
   margin-left: 17px;
-  border: none;
-  border-bottom: solid 1px #6b9080;
-  background-color: #fafafa;
+  border: solid 1px #6b9080;
+  background-color: #eaf4f4;
   outline: none;
   border-radius: 4px;
 }
@@ -177,6 +178,10 @@ h1 {
 #advSelect option {
   padding: 0.3rem;
   border-radius: 10px;
+}
+
+#advSelect.decorated option:hover {
+  box-shadow: 0 0 10px 100px #1882a8 inset;
 }
 
 .clients {
@@ -279,7 +284,7 @@ h1 {
   width: 14rem;
 }
 
-.client label { 
+.client label {
   color: black;
   display: flex;
   justify-content: space-around;
@@ -288,9 +293,8 @@ h1 {
 
 .connectionList ul {
   list-style: none;
-  margin-left: -38px;
+  margin-left: -35px;
 }
-
 
 .dot {
   height: 10px;
@@ -338,4 +342,9 @@ h1 {
 label {
   font-size: 20px;
   color: #4d7262;
+}
+#s1,
+#s2,
+#s3 {
+  font-size: 15px;
 }
