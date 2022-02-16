@@ -41,7 +41,7 @@ ioConnection();
 /* **************************************** functions **************************************** */
 
 function ioConnection(){
-    io.on("connection", function (socket) { // 4 times
+    io.on("connection", function (socket) { 
     if(screen == 1){
       setActive("0");
       count++; 
@@ -59,6 +59,8 @@ function ioConnection(){
     }
     else if(screen == "admin"){
       mongoForAdmin(socket);
+      setInterval(intervalForCon, 5000);
+      setInterval(whoIsCon, 5000);
     }
     else if(screen == "changepass"){
       mongoForChangePassword(socket);
@@ -67,8 +69,37 @@ function ioConnection(){
       mongoForLogIn(socket);
     }
     ioDisconnection(socket, screen);
+
+    function intervalForCon(){
+      socket.emit("count", count);
+    }
+
+    function whoIsCon(){
+
+      MongoClient.connect(url, function(err, db){
+        if(err) throw err;
+        const dbo = db.db("AdvDB");
+        dbo.collection("users").find({}).toArray(function(err, clients){
+          var isConnClient = [];
+          for(let i = 0; i<clients.length; i++){
+            if(clients[i].status == "active"){
+              isConnClient.push(true);
+            }
+            else{
+              isConnClient[i] = false;
+            }
+          }
+          socket.emit("infoClients", isConnClient);
+        });
+
+
+      });
+    }
+
   });
 }
+
+
 
 function ioDisconnection(socket, num){
   socket.on("disconnect", function(err, res){
@@ -86,6 +117,7 @@ function ioDisconnection(socket, num){
     }
   });
 }
+
 
 /* ****************************** mongo ************************* */
 
@@ -276,33 +308,39 @@ function sendTiming(socket, num){
       ////////////////////////////////// edit button //////////////////////////////////
 
       socket.on("getSelectAdv",function(idAdv){
+        // console.log("the choosen adv: " + idAdv);
         dbo.collection("advData").findOne({myId:idAdv},function(err,res){
           if(err) throw err;
           socket.emit("returnSelectedAdv",res);
         });
 
         socket.on("editAdvData", function(res){
+          console.log("button edit was clicked");
+          console.log("the id is: " + idAdv);
           dbo.collection("advData").find({myId: idAdv}).toArray(function(err, showArr){
             var sh = showArr[0].show;
             var newAdv = createAdv(res, idAdv, sh);
+            console.log("the new adv: " + newAdv);
             dbo.collection("advData").replaceOne({myId: idAdv}, newAdv);
           });
         });
 
         ////////////////////////////////// delete button //////////////////////////////////
 
-        socket.on("deleteAdv", function(idOfAdv){
-          dbo.collection("advData").find({myId: idOfAdv}).toArray(function(err, res){
-            var adv = res[0];
-            var arr = adv.show; 
-            for(let i = 0; i < arr.length; i++){
-              // deleteFromAll(dbo, idOfAdv, arr[i], true);
-              deleteForDeleteButton(dbo, idOfAdv);
-            }
-            // dbo.collection("advData").deleteOne({myId: idOfAdv});
-          });
-        });
+        
       }); 
+
+      socket.on("deleteAdv", function(idOfAdv){
+        dbo.collection("advData").find({myId: idOfAdv}).toArray(function(err, res){
+          var adv = res[0];
+          var arr = adv.show; 
+          // for(let i = 0; i < arr.length; i++){
+            // deleteFromAll(dbo, idOfAdv, arr[i], true);
+            deleteForDeleteButton(dbo, idOfAdv);
+          // }
+          // dbo.collection("advData").deleteOne({myId: idOfAdv});
+        });
+      });
 
        ////////////////////////////////// Timing button //////////////////////////////////
 
@@ -335,10 +373,30 @@ function sendTiming(socket, num){
             var sendAdv = [];
             var sendToDelete = [];
             findAdvsForAddAndDelete(all, advList, sendAdv, sendToDelete);
-            socket.emit("getArrayOfAdsToAdd",sendAdv);
-            socket.emit("getArrayOfAdsToDelete",sendToDelete);
+            socket.emit("getArrayOfAdsToAdd",sendAdv); // to create selector for add
+            socket.emit("getArrayOfAdsToDelete",sendToDelete); // to create selector for delete
           });   
           addDataToScreen(socket, dbo);
+        });
+
+        // to create selector for duration:
+        dbo.collection("users").find({userId: currenScreen}).toArray(function(err, result){
+          if (err) throw err; 
+          var arrayToSend = [];
+          var advIdList = result[0].advList; // the advs id we need in the correct order.
+
+          dbo.collection("advData").find({}).toArray(function(err, arrayAll){
+            for(let i = 0; i < advIdList.length; i++){
+              for(let j = 0; j < arrayAll.length; j++){
+                if(advIdList[i] == arrayAll[j].myId){
+                  arrayToSend.push(arrayAll[j]);
+                  break;
+                }
+              }
+            }
+
+            socket.emit("getAdvArrayForDuration", arrayToSend);
+          });
         });
       });
 

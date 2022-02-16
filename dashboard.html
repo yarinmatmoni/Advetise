@@ -256,6 +256,18 @@
     numOfAdvs.innerHTML = info[1];
   });
 
+  socket.on("count", function(count){
+      console.log(count);
+      numOfClients.innerHTML = count;
+  });
+
+//   socket.on("count", function(count){
+//       console.log("the new count: " + count);
+//     numOfClients.innerHTML = count;
+//     // document.getElementsByClassName("info-continer").reload(true);
+//     // document.getElementsById("info").reload(true);
+//   });
+
   socket.on("infoClients", function (infoClients) {
     for (let i = 0; i < infoClients.length; i++) {
       var id = i;
@@ -267,6 +279,8 @@
         d.style.backgroundColor = "#cc0000";
       }
     }
+    // document.getElementsByClassName("info-continer").reload(true);
+
   });
 
   var allAdvs;
@@ -340,8 +354,8 @@
   const addImage = document.getElementById("addImage");
   const changeDurationInput = document.getElementById("changeDurationInput");
 
-  deleteButton.disabled = true;
-  editButton.disabled = true;
+//   deleteButton.disabled = true;
+//   editButton.disabled = true;
   addAdvToScreenBtn.disabled = true;
   deleteAdvFromScreenBtn.disabled = true;
   changeDurationBtn.disabled = true;
@@ -365,6 +379,7 @@
     var arrEdit = creatInfoOfAdvInArray(editLines, false);
     cleanInputsEdit();
     socket.emit("editAdvData", arrEdit);
+    // console.log("the emit of edit: " + arrEdit);
     divdisplayAdv.innerHTML.reload;
     location.reload(true);
   });
@@ -379,12 +394,24 @@
     if (!add.classList.contains("hide")) add.classList.add("hide");
     edit.classList.toggle("hide");
     console.log("editButton clicked");
+    if(idOfChoosenAdv == undefined){
+        idOfChoosenAdv = selectAdv.options[0].value;
+        socket.emit("getSelectAdv", idOfChoosenAdv);
+        // console.log("after the emit: " + idOfChoosenAdv);
+        socket.on("returnSelectedAdv", function (res) {
+        displayAdv(res);
+        displayEdit(res);
+        });
+    }
   });
 
   deleteButton.addEventListener("click", () => {
     console.log("deleteButton clicked");
     idOfChoosenAdv = selectAdv.options[selectAdv.selectedIndex].value;
-    console.log("idOfChoosenAdv: " + idOfChoosenAdv);
+    if(idOfChoosenAdv == undefined){
+        idOfChoosenAdv = selectAdv.options[0].value;
+        socket.emit("getSelectAdv", idOfChoosenAdv);
+    }
     socket.emit("deleteAdv", idOfChoosenAdv);
     location.reload(true);
   });
@@ -418,7 +445,6 @@
     data.push(selectedAdvToDeleteFromScreen);
     socket.emit("getAdvToDeleteFromScreen", data);
     location.reload(true);
-    socket.emit("inAdmin", true); // check
   });
 
   saveNewDurationBtn.addEventListener("click", () => {
@@ -536,11 +562,14 @@
     myImage.classList.remove("hide");
     editButton.classList.add("afterChoose");
     deleteButton.classList.add("afterChoose");
-    socket.emit(
-      "getSelectAdv",
-      selectAdv.options[selectAdv.selectedIndex].value
-    );
-    idOfChoosenAdv = selectAdv.options[selectAdv.selectedIndex].value;
+    idOfChoosenAdv =  selectAdv.options[selectAdv.selectedIndex].value;
+    if(idOfChoosenAdv == undefined){
+        idOfChoosenAdv = selectAdv.options[0].value;
+    }
+    console.log("the selected option: " + idOfChoosenAdv);
+    socket.emit("getSelectAdv", idOfChoosenAdv);
+    // socket.emit("getSelectAdv", selectAdv.options[selectAdv.selectedIndex].value);
+    // idOfChoosenAdv = selectAdv.options[selectAdv.selectedIndex].value;
     socket.on("returnSelectedAdv", function (res) {
       displayAdv(res);
       displayEdit(res);
@@ -562,10 +591,9 @@
     });
     socket.once("getArrayOfAdsToDelete", function (resToDeleteSelect) {
       createOption(resToDeleteSelect, deleteAdvFromScreenSelect);
-      createOption(resToDeleteSelect, changeDurationSelect);
-      // for(let i=0; i<resToDeleteSelect.length;i++){
-      //   console.log(resToDeleteSelect[i].myId);
-      // }
+    });
+    socket.once("getAdvArrayForDuration", function(resultArray){
+        createOption(resultArray,changeDurationSelect)
     });
     socket.once("timingFromServer", function (resToChangeDuration) {
       console.log("array to change:" + resToChangeDuration);
@@ -597,8 +625,7 @@
   var index;
 
   function changeDuration() {
-    selectedchangeDuration =
-      changeDurationSelect.options[changeDurationSelect.selectedIndex].value;
+    selectedchangeDuration = changeDurationSelect.options[changeDurationSelect.selectedIndex].value;
     index = changeDurationSelect.selectedIndex;
     changeDurationInput.value = timingArray[index];
     console.log("------" + selectedchangeDuration);
