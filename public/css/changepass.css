@@ -78,6 +78,20 @@ input :focus {
   transition: 0.5s all ease;
 }
 
+#back { 
+    width: 5rem;
+    padding: 0.3rem;
+    font-family: "Dosis", sans-serif;
+    border-radius: 10px;
+    border: none;
+    background: #a4c3b2;
+    color: white;
+    margin-top: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.5s all ease;
+}
+
 #save:hover {
   background-color: #6b9080;
 }

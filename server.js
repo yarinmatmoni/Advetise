@@ -59,8 +59,8 @@ function ioConnection(){
     }
     else if(screen == "admin"){
       mongoForAdmin(socket);
-      setInterval(intervalForCon, 5000);
-      setInterval(whoIsCon, 5000);
+      setInterval(intervalForCon, 4000);
+      setInterval(whoIsCon, 4000);
     }
     else if(screen == "changepass"){
       mongoForChangePassword(socket);
@@ -91,14 +91,10 @@ function ioConnection(){
           }
           socket.emit("infoClients", isConnClient);
         });
-
-
       });
     }
-
   });
 }
-
 
 
 function ioDisconnection(socket, num){
@@ -308,7 +304,6 @@ function sendTiming(socket, num){
       ////////////////////////////////// edit button //////////////////////////////////
 
       socket.on("getSelectAdv",function(idAdv){
-        // console.log("the choosen adv: " + idAdv);
         dbo.collection("advData").findOne({myId:idAdv},function(err,res){
           if(err) throw err;
           socket.emit("returnSelectedAdv",res);
@@ -324,21 +319,15 @@ function sendTiming(socket, num){
             dbo.collection("advData").replaceOne({myId: idAdv}, newAdv);
           });
         });
-
-        ////////////////////////////////// delete button //////////////////////////////////
-
-        
       }); 
+
+      ////////////////////////////////// delete button //////////////////////////////////
 
       socket.on("deleteAdv", function(idOfAdv){
         dbo.collection("advData").find({myId: idOfAdv}).toArray(function(err, res){
           var adv = res[0];
           var arr = adv.show; 
-          // for(let i = 0; i < arr.length; i++){
-            // deleteFromAll(dbo, idOfAdv, arr[i], true);
             deleteForDeleteButton(dbo, idOfAdv);
-          // }
-          // dbo.collection("advData").deleteOne({myId: idOfAdv});
         });
       });
 
@@ -403,7 +392,6 @@ function sendTiming(socket, num){
       socket.on("getAdvToDeleteFromScreen", function(data){
         var currentScreen = data[0];
         var idToDelete = data[1];
-        // deleteFromAll(dbo, idToDelete, currentScreen, false);
         deleteForDeleteFromScreenBtn(dbo,idToDelete,currentScreen);
       });  
     }); 
@@ -445,7 +433,6 @@ function deleteForDeleteFromScreenBtn(dbo,idToDelete, currentScreen){ // from us
   deleteFromShow(dbo, idToDelete, currentScreen);
 }
 
-
 function deleteAll(dbo, idToDelete){ 
   deleteFromAllUsers(dbo, idToDelete);
   deleteFromAdvData(dbo, idToDelete);
@@ -458,60 +445,52 @@ function deleteFromAdvData(dbo, idToDelete){
 function deleteFromShow(dbo, idToDelete, currentScreen){ 
   dbo.collection("advData").find({myId: idToDelete}).toArray(function(err, result){
     if(err) throw err; 
-    console.log("***************************");
-    console.log("result: " + result);
-    console.log("the title of the adv to delete: " + result[0].title);
-    console.log("idToDelete: " + idToDelete);
-    console.log("currentScreen: " + currentScreen);
-    console.log("showReplace: " + result[0].show)
     var showReplace = []; 
     showReplace = result[0].show;
     var index = showReplace.indexOf(currentScreen);
-    showReplace.splice(index, 1); // CHECK!!!
+    showReplace.splice(index, 1); 
     dbo.collection("advData").updateOne({myId: idToDelete}, {$set: {show: showReplace}});
     console.log("delete from advData succeed");
   });
 }
 
 
-function deleteFromAll(dbo, idToDelete, currentScreen, bol){
+// function deleteFromAll(dbo, idToDelete, currentScreen, bol){
 
-  dbo.collection("advData").find({myId: idToDelete.toString()}).toArray(function(err, result){
-    if(err) throw err; 
-    console.log("***************************");
-    console.log("result: " + result);
-    console.log("the title of the adv to delete: " + result[0].title);
-    console.log("idToDelete: " + idToDelete);
-    console.log("currentScreen: " + currentScreen);
-    console.log("showReplace: " + result[0].show)
-    var showReplace = []; 
-    showReplace = result[0].show;
-    var index = showReplace.indexOf(currentScreen);
-    showReplace.splice(index);
-    dbo.collection("advData").updateOne({myId: idToDelete}, {$set: {show: showReplace}});
-    console.log("delete from advData succeed")
+//   dbo.collection("advData").find({myId: idToDelete.toString()}).toArray(function(err, result){
+//     if(err) throw err; 
+//     console.log("***************************");
+//     console.log("result: " + result);
+//     console.log("the title of the adv to delete: " + result[0].title);
+//     console.log("idToDelete: " + idToDelete);
+//     console.log("currentScreen: " + currentScreen);
+//     console.log("showReplace: " + result[0].show)
+//     var showReplace = []; 
+//     showReplace = result[0].show;
+//     var index = showReplace.indexOf(currentScreen);
+//     showReplace.splice(index);
+//     dbo.collection("advData").updateOne({myId: idToDelete}, {$set: {show: showReplace}});
+//     console.log("delete from advData succeed")
 
-    // if(bol == true){
-    //   setTimeout(deleteFromAdvData(idToDelete),1000);
-    // }
-    // if(bol == true){
-    //   dbo.collection("advData").deleteOne({myId: idToDelete});
-    // }
-  });
+//     // if(bol == true){
+//     //   setTimeout(deleteFromAdvData(idToDelete),1000);
+//     // }
+//     // if(bol == true){
+//     //   dbo.collection("advData").deleteOne({myId: idToDelete});
+//     // }
+//   });
 
-  dbo.collection("users").find({userId: currentScreen}).toArray(function(err, users){
-    var user = users[0];
-    var newAdvList = user.advList;
-    var newTiming = user.timing;
-    var index = newAdvList.indexOf(idToDelete); 
-    newAdvList.splice(index, 1);
-    newTiming.splice(index, 1);
-    dbo.collection("users").updateOne({userId: currentScreen}, {$set: {advList: newAdvList}});
-    dbo.collection("users").updateOne({userId: currentScreen}, {$set: {timing: newTiming}});
-  });
-}
-
-
+//   dbo.collection("users").find({userId: currentScreen}).toArray(function(err, users){
+//     var user = users[0];
+//     var newAdvList = user.advList;
+//     var newTiming = user.timing;
+//     var index = newAdvList.indexOf(idToDelete); 
+//     newAdvList.splice(index, 1);
+//     newTiming.splice(index, 1);
+//     dbo.collection("users").updateOne({userId: currentScreen}, {$set: {advList: newAdvList}});
+//     dbo.collection("users").updateOne({userId: currentScreen}, {$set: {timing: newTiming}});
+//   });
+// }
 
 function addDataToScreen(socket, dbo){
 
@@ -608,7 +587,6 @@ function setNotActive(a){
 /* ***************************** logIn ************************ */
 
 var accessAdmin = false; 
-
 function mongoForLogIn(socket){
   socket.on("getDataAdmin", function(data){
     var name = data[0];
